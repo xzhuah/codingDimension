@@ -8,3 +8,5 @@ java/target/*
 java/target
 !pom.xml
 *.pass
+*.txt
+*.png
