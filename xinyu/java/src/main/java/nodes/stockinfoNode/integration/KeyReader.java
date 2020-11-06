@@ -7,8 +7,8 @@ import common.io.file.PlaintextClient;
  * nodes.stockinfoNode.integration in codingDimensionTemplate
  */
 public class KeyReader {
-    private static final String keyFile = "key.pass";
-    public static getKey() {
-
+    private static final String keyFile = "stockinfoKey.pass";
+    public static String getKey() {
+        return PlaintextClient.readFile(keyFile).trim();
     }
 }
