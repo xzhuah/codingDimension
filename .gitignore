@@ -7,3 +7,4 @@
 java/target/*
 java/target
 !pom.xml
+*.pass
