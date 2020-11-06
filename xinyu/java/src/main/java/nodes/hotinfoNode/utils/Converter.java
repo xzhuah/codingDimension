@@ -9,6 +9,8 @@ import nodes.hotinfoNode.models.BilibiliAnalyzableVideoRecord;
 import nodes.hotinfoNode.models.RankingRuleVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -149,6 +151,13 @@ public class Converter {
 
         return jsonObject;
     }
+
+    public static Bson toPrimaryFilter(BilibiliAnalyzableVideoRecord bilibiliAnalyzableVideoRecord) {
+        return new Document("videoAddress", bilibiliAnalyzableVideoRecord.getVideoAddress())
+                .append("rankType", bilibiliAnalyzableVideoRecord.getRankType())
+                .append("recordTime", bilibiliAnalyzableVideoRecord.getRecordTime());
+    }
+
 
     public static BilibiliAnalyzableVideoRecord toBilibiliAnalyzableVideoRecord(VideoRecordVO videoRecordVO, RankingRuleVO rankingRuleVO, long createTime) {
         BilibiliAnalyzableVideoRecord bilibiliAnalyzableVideoRecord = new BilibiliAnalyzableVideoRecord();

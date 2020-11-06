@@ -54,12 +54,18 @@ public class BilibiliInfoManagerImpl implements BilibiliInfoManager {
             for (BilibiliAnalyzableVideoRecord bilibiliAnalyzableVideoRecord : recordList) {
                 try {
                     mongoCollection.insertOne(bilibiliAnalyzableVideoRecord);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    continue;
+                } catch (Exception duplicateException) {
+                    try {
+                        // update duplication
+                        mongoCollection.findOneAndDelete(Converter.toPrimaryFilter(bilibiliAnalyzableVideoRecord));
+                        mongoCollection.insertOne(bilibiliAnalyzableVideoRecord);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        continue;
+                    }
+
                 }
             }
-
 
             start = end;
 
