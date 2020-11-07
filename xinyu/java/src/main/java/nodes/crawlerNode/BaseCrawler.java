@@ -21,6 +21,12 @@ import static common.utils.ConditionChecker.checkStatus;
  * nodes.crawlerNode.impl in codingDimensionTemplate
  * <p>
  * You can inherit it, you can inject it, very handy
+ * <p>
+ * If you used tag to mark requests, you must use the same tag to fetch those result, the crawler won't memorize
+ * which result belongs to which url + params combination
+ * <p>
+ * If you didn't use tag to mark request, the crawler will memorize which result belongs to which
+ * url + params combination, so you need to provide url + params to fetch the result
  */
 public class BaseCrawler {
     PoolingAsyncHttpClient poolingAsyncHttpClient;
@@ -30,6 +36,12 @@ public class BaseCrawler {
     public BaseCrawler(ResponseProcessor responseProcessor) {
         poolingAsyncHttpClient = new PoolingAsyncHttpClientImpl(responseProcessor);
         currentStatus = CrawlerStatus.RUNNING_JOB_ASYNC;
+    }
+
+    // For lazy me :)
+    public synchronized void addJobToQueue(String url) throws Exception {
+        // In this case, tag is just the url
+        addJobToQueue(null, url, null, CrawlerConstant.DEFAULT_HEADER);
     }
 
     // For lazy me :)
@@ -43,6 +55,9 @@ public class BaseCrawler {
     }
 
     // params, header can be null
+    // You can use the same tag for multiple different request, is up to you, we return all result under that tag when you
+    // ask for it, if you provide a null tag, we will create a unique tag for you based on url and params so that you can
+    // later find what you want
     public synchronized void addJobToQueue(String tag, String url, Map<String, String> params, Map<String, String> header) throws Exception {
         checkStatus(canAcceptNewJob(), "Crawler can't accept new Job! crawler status: " + currentStatus);
         if (null == tag) {

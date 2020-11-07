@@ -1,15 +1,14 @@
 package nodes.hotinfoNode.crawler.impls;
 
 
-import common.io.web.PoolingAsyncHttpClient;
-import common.io.web.impl.PoolingAsyncHttpClientImpl;
 import common.io.web.models.ResponseProcessResult;
+import nodes.crawlerNode.BaseCrawler;
+import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
 import nodes.hotinfoNode.crawler.facade.ResponseToRankListProcessor;
 import nodes.hotinfoNode.models.RankingRuleVO;
 import nodes.hotinfoNode.models.VideoRecordListVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
-import nodes.hotinfoNode.utils.Converter;
 import nodes.hotinfoNode.utils.EnumUtils;
 
 import java.util.HashMap;
@@ -18,16 +17,18 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static common.utils.ConditionChecker.checkStatus;
+
 /**
  * Created by Xinyu Zhu on 7/1/2020, 12:08 PM
  * xinyu.hotinfo.biz.bilibili.impls in HotInfo
  */
 public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawlerService {
-    private PoolingAsyncHttpClient poolingAsyncHttpClient;
-    private AtomicInteger counter;
+    private final AtomicInteger counter;
+    private BaseCrawler crawler;
 
     public BilibiliHotRankCrawlerServiceImpl() {
-        poolingAsyncHttpClient = new PoolingAsyncHttpClientImpl(ResponseToRankListProcessor.getInstance());
+        crawler = new BaseCrawler(ResponseToRankListProcessor.getInstance());
         counter = new AtomicInteger(0);
     }
 
@@ -38,19 +39,16 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
 
         for (RankingRuleVO rankingRuleVO : rankingRules) {
             try {
-                poolingAsyncHttpClient.addRequestToPool(tag, Converter.toGetHttpUriRequest(rankingRuleVO.getUrl()));
+                crawler.addJobToQueue(tag, rankingRuleVO.getUrl(), null, CrawlerConstant.DEFAULT_HEADER);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw e;
             }
         }
-        List<Future<ResponseProcessResult>> rawResult = poolingAsyncHttpClient.startProcessing(tag);
+        List<Future<ResponseProcessResult>> rawResult = crawler.getResultFuture(tag);
 
         // ensure two size are equal
-        if (rawResult.size() != rankingRules.size()) {
-            throw new Exception("REQUEST_RESPONSE_MISMATCH_EXCEPTION");
-        }
-
+        checkStatus(rawResult.size() == rankingRules.size(), "REQUEST_RESPONSE_MISMATCH_EXCEPTION");
 
         for (int i = 0; i < rawResult.size(); i++) {
             Future<ResponseProcessResult> future = rawResult.get(i);
@@ -65,13 +63,13 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
 
             result.put(rankingRules.get(i), records.getVideoRecords());
         }
-      
+
         return result;
     }
 
     @Override
     public void stop() {
-        poolingAsyncHttpClient.finish();
+        crawler.shutDown();
     }
 
     public static void main(String[] args) throws Exception {
