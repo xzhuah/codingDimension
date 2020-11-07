@@ -6,8 +6,8 @@ import common.io.web.impl.PoolingAsyncHttpClientImpl;
 import common.io.web.models.ResponseProcessResult;
 import common.io.web.utils.RequestBuilder;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
-import nodes.stockinfoNode.crawler.constants.CrawlerConstant;
-import nodes.stockinfoNode.crawler.constants.CrawlerStatus;
+import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
+import nodes.crawlerNode.constants.CrawlerStatus;
 import nodes.stockinfoNode.crawler.facade.DailyPriceProcessor;
 import nodes.stockinfoNode.models.StockDailyRecordList;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
@@ -25,7 +25,6 @@ import static common.utils.ConditionChecker.checkStatus;
 public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.AlphavantageCrawler {
     private static final String keyFile = "stockinfoKey.pass";
     private static final String apiKey = getKeyForAlphavantageCrawler();
-
 
 
     private Set<String> acceptedSymbol;
@@ -95,7 +94,7 @@ public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.Alph
 
     // Build param for query online
     private static HttpGet buildGetRequestForDailyPrice(String symbol) throws Exception {
-        return RequestBuilder.buildHttpGet(CrawlerConstant.ALPHAVANTAGE_API_ENDPOINT, buildRequestParamForDailyPrice(symbol), CrawlerConstant.DEFAULT_HEADER);
+        return RequestBuilder.buildHttpGet(WebsiteConstant.ALPHAVANTAGE_API_ENDPOINT, buildRequestParamForDailyPrice(symbol), nodes.crawlerNode.constants.CrawlerConstant.DEFAULT_HEADER);
     }
 
 

@@ -1,8 +1,8 @@
-package nodes.stockinfoNode.crawler.constants;
+package nodes.crawlerNode.constants;
 
 /**
  * Created by Xinyu Zhu on 2020/11/7, 0:51
- * nodes.stockinfoNode.crawler.constants in codingDimensionTemplate
+ * nodes.crawlerNode.constants in codingDimensionTemplate
  * Only used for those advanced crawler which has more than one status during its lifetime
  * Stateless crawler does not need this
  */

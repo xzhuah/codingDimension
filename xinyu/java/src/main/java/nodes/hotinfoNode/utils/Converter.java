@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import common.io.web.utils.RequestBuilder;
 import common.time.TimeClient;
 import common.time.TimeConstant;
-import nodes.hotinfoNode.constants.WebsiteConstant;
 import nodes.hotinfoNode.models.BilibiliAnalyzableVideoRecord;
 import nodes.hotinfoNode.models.RankingRuleVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
@@ -25,7 +24,7 @@ import java.util.Set;
  */
 public class Converter {
     public static HttpUriRequest toGetHttpUriRequest(String url) throws Exception {
-        return RequestBuilder.buildHttpGet(url, null, WebsiteConstant.DEFAULT_HEADER);
+        return RequestBuilder.buildHttpGet(url, null, nodes.crawlerNode.constants.CrawlerConstant.DEFAULT_HEADER);
     }
 
     public static VideoRecordVO toVideoRecordVO(Element element) throws Exception {
