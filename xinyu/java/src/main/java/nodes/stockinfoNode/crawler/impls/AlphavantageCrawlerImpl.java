@@ -5,6 +5,8 @@ import common.io.web.PoolingAsyncHttpClient;
 import common.io.web.impl.PoolingAsyncHttpClientImpl;
 import common.io.web.models.ResponseProcessResult;
 import common.io.web.utils.RequestBuilder;
+import nodes.crawlerNode.BaseCrawler;
+import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
 import nodes.crawlerNode.constants.CrawlerStatus;
@@ -26,31 +28,26 @@ public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.Alph
     private static final String keyFile = "stockinfoKey.pass";
     private static final String apiKey = getKeyForAlphavantageCrawler();
 
-
     private Set<String> acceptedSymbol;
-    private CrawlerStatus currentStatus;
-
-    private PoolingAsyncHttpClient poolingAsyncHttpClient;
+    private BaseCrawler crawler;
 
 
     public AlphavantageCrawlerImpl() {
-        poolingAsyncHttpClient = new PoolingAsyncHttpClientImpl(DailyPriceProcessor.getInstance());
         acceptedSymbol = new HashSet<>();
-        currentStatus = CrawlerStatus.RUNNING_JOB_ASYNC;
+        crawler = new BaseCrawler(DailyPriceProcessor.getInstance());
     }
 
     @Override
     public synchronized void addSymbolToQueue(String symbol) throws Exception {
-        checkStatus(canAcceptNewJob(), "Crawler is not in running status");
         if (!acceptedSymbol.contains(symbol)) {
-            poolingAsyncHttpClient.addRequestToPool(symbol, buildGetRequestForDailyPrice(symbol));
+            crawler.addJobToQueue(symbol, WebsiteConstant.ALPHAVANTAGE_API_ENDPOINT,
+                    buildRequestParamForDailyPrice(symbol), CrawlerConstant.DEFAULT_HEADER);
             acceptedSymbol.add(symbol);
         }
     }
 
     @Override
     public void addSymbolsToQueue(Collection<String> symbols) {
-        checkStatus(canAcceptNewJob(), "Crawler is not in running status");
         for (String symbol : symbols) {
             try {
                 this.addSymbolToQueue(symbol);
@@ -63,12 +60,10 @@ public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.Alph
 
     @Override
     public Future<ResponseProcessResult> getResultFuture(String symbol) throws Exception {
-        checkStatus(canAcceptNewJob(), "Crawler is not in running status");
         if (!acceptedSymbol.contains(symbol)) {
             addSymbolToQueue(symbol);
         }
-
-        List<Future<ResponseProcessResult>> result = poolingAsyncHttpClient.startProcessing(symbol);
+        List<Future<ResponseProcessResult>> result = crawler.getResultFuture(symbol);
         if (!result.isEmpty()) {
             if (result.size() > 1) {
                 System.err.println("Error happend, somehow got two result for the same symbol, returned the first one");
@@ -80,23 +75,10 @@ public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.Alph
         }
     }
 
-
     @Override
     public void shutDown() {
-        this.currentStatus = CrawlerStatus.KILLED;
-        this.poolingAsyncHttpClient.finish();
+        this.crawler.shutDown();
     }
-
-    private boolean canAcceptNewJob() {
-        return this.currentStatus == CrawlerStatus.RUNNING_JOB_ASYNC;
-    }
-
-
-    // Build param for query online
-    private static HttpGet buildGetRequestForDailyPrice(String symbol) throws Exception {
-        return RequestBuilder.buildHttpGet(WebsiteConstant.ALPHAVANTAGE_API_ENDPOINT, buildRequestParamForDailyPrice(symbol), nodes.crawlerNode.constants.CrawlerConstant.DEFAULT_HEADER);
-    }
-
 
     // Build param for query online
     private static Map<String, String> buildRequestParamForDailyPrice(String symbol) {
