@@ -1,4 +1,4 @@
-package nodes.hotinfoNode.crawler.impls;
+package nodes.hotinfoNode.crawler.facade;
 
 import common.io.web.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
@@ -19,20 +19,20 @@ import java.util.List;
 
 /**
  * Created by Xinyu Zhu on 7/1/2020, 12:09 PM
- * xinyu.hotinfo.biz.bilibili.impls in HotInfo
+ * xinyu.hotinfo.biz.bilibili.facade in HotInfo
  */
-public class ResponseToRankListProcecssorImpl implements ResponseProcessor {
+public class ResponseToRankListProcessor implements ResponseProcessor {
 
     private static ResponseProcessor instance = null;
 
-    private ResponseToRankListProcecssorImpl() {
+    private ResponseToRankListProcessor() {
     }
 
     public static ResponseProcessor getInstance() {
         if (instance == null) {
-            synchronized (ResponseToRankListProcecssorImpl.class) {
+            synchronized (ResponseToRankListProcessor.class) {
                 if (instance == null) {
-                    instance = new ResponseToRankListProcecssorImpl();
+                    instance = new ResponseToRankListProcessor();
                 }
             }
         }

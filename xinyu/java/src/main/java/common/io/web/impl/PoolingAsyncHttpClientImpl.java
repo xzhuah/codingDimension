@@ -16,6 +16,7 @@ import java.util.concurrent.*;
 /**
  * Created by Xinyu Zhu on 7/1/2020, 10:24 AM
  * common.io.web.impl in AllInOne
+ * tag -> [request, request, ...]
  */
 public class PoolingAsyncHttpClientImpl implements PoolingAsyncHttpClient {
     private SyncHttpClient syncHttpClient;
@@ -56,6 +57,9 @@ public class PoolingAsyncHttpClientImpl implements PoolingAsyncHttpClient {
     public List<Future<ResponseProcessResult>> startProcessing(String tag) {
         List<Future<ResponseProcessResult>> currentResult = new ArrayList<>();
         Deque<HttpUriRequest> currentReceivedRequest = httpRequests.get(tag);
+        if (null == currentReceivedRequest) {
+            return currentResult;
+        }
         synchronized (currentReceivedRequest) {
             while (!currentReceivedRequest.isEmpty()) {
                 HttpUriRequest nextRequest = currentReceivedRequest.pollFirst();

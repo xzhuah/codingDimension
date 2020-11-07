@@ -13,5 +13,7 @@ import java.util.concurrent.Future;
 public interface PoolingAsyncHttpClient {
     void addRequestToPool(String tag, HttpUriRequest httpRequest);
     List<Future<ResponseProcessResult>> startProcessing(String tag);
+
+    // shutdown
     void finish();
 }

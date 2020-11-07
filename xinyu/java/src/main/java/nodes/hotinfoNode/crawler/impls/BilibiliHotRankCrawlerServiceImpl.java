@@ -5,6 +5,7 @@ import common.io.web.PoolingAsyncHttpClient;
 import common.io.web.impl.PoolingAsyncHttpClientImpl;
 import common.io.web.models.ResponseProcessResult;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
+import nodes.hotinfoNode.crawler.facade.ResponseToRankListProcessor;
 import nodes.hotinfoNode.models.RankingRuleVO;
 import nodes.hotinfoNode.models.VideoRecordListVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
@@ -26,7 +27,7 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
     private AtomicInteger counter;
 
     public BilibiliHotRankCrawlerServiceImpl() {
-        poolingAsyncHttpClient = new PoolingAsyncHttpClientImpl(ResponseToRankListProcecssorImpl.getInstance());
+        poolingAsyncHttpClient = new PoolingAsyncHttpClientImpl(ResponseToRankListProcessor.getInstance());
         counter = new AtomicInteger(0);
     }
 
