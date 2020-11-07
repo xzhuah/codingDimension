@@ -1,24 +1,17 @@
 package nodes.stockinfoNode.crawler.impls;
 
 import common.io.file.PlaintextClient;
-import common.io.web.PoolingAsyncHttpClient;
-import common.io.web.impl.PoolingAsyncHttpClientImpl;
 import common.io.web.models.ResponseProcessResult;
-import common.io.web.utils.RequestBuilder;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
-import nodes.crawlerNode.constants.CrawlerStatus;
 import nodes.stockinfoNode.crawler.facade.DailyPriceProcessor;
 import nodes.stockinfoNode.models.StockDailyRecordList;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import org.apache.http.client.methods.HttpGet;
 
 import java.util.*;
 import java.util.concurrent.Future;
-
-import static common.utils.ConditionChecker.checkStatus;
 
 /**
  * Created by Xinyu Zhu on 2020/11/6, 23:53
