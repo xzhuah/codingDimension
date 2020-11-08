@@ -9,5 +9,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
  * common.io.web in AllInOne
  */
 public interface ResponseProcessor {
-    ResponseProcessResult process(CloseableHttpResponse response) throws Exception;
+    // url field is the url for the response, it provide some context information so that we can encode more complex
+    // Info into the result, we can add more context information in the future when needed
+    ResponseProcessResult process(CloseableHttpResponse response, String url) throws Exception;
 }

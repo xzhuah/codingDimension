@@ -33,7 +33,7 @@ public class ResponseToJsonProcessorImpl implements ResponseProcessor {
     }
 
     @Override
-    public ResponseProcessResult process(CloseableHttpResponse response) throws Exception {
+    public ResponseProcessResult process(CloseableHttpResponse response, String url) throws Exception {
         HttpEntity entity = response.getEntity();
         String msg = "";
         msg = EntityUtils.toString(entity, ValueConstant.Encoding.UTF_8.getValue());

@@ -13,6 +13,7 @@ import nodes.wordcloudNode.constants.StyleConstant;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Xinyu Zhu on 2020/11/6, 22:27
@@ -111,5 +112,10 @@ public class WordCloudGeneratorImpl implements WordCloudGenerator {
     public void drawForFile(String filename) throws IOException {
         wordCloud.build(this.wordFrequencyHelper.getWordFrequencyFromFile(filename));
         wordCloud.writeToFile(this.outputFile);
+    }
+
+    @Override
+    public void setStopword(List<String> stopword) {
+        this.wordFrequencyHelper.setStopword(stopword);
     }
 }

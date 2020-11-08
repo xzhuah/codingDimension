@@ -41,7 +41,7 @@ public class ResponseToRankListProcessor implements ResponseProcessor {
 
 
     @Override
-    public VideoRecordListVO process(CloseableHttpResponse response) throws Exception {
+    public VideoRecordListVO process(CloseableHttpResponse response, String url) throws Exception {
         HttpEntity entity = response.getEntity();
         String msg = null;
         try {

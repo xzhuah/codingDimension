@@ -7,6 +7,7 @@ import nodes.wordcloudNode.WordFrequencyHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,9 +53,7 @@ public class WordFrequencyHelperImpl implements WordFrequencyHelper {
 
     // functional method
     public List<WordFrequency> getWordFrequencyFromString(String string) {
-        List<String> text = new ArrayList<>(1);
-        text.add(string);
-        return frequencyAnalyzer.load(text);
+        return frequencyAnalyzer.load(Arrays.asList(string.split(" ")));
     }
 
     public List<WordFrequency> getWordFrequencyFromFile(String filename) throws IOException {

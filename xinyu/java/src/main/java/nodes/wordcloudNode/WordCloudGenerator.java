@@ -7,6 +7,7 @@ import com.kennycason.kumo.wordstart.WordStartStrategy;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Xinyu Zhu on 2020/11/6, 23:23
@@ -37,4 +38,6 @@ public interface WordCloudGenerator {
     void drawForText(String text);
 
     void drawForFile(String filename) throws IOException;
+
+    void setStopword(List<String> stopword);
 }

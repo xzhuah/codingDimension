@@ -66,7 +66,7 @@ public class SyncHttpClientImpl implements SyncHttpClient {
         CloseableHttpResponse response = null;
         try {
             response = this.httpclient.execute(request);
-            return this.responseProcessor.process(response);
+            return this.responseProcessor.process(response, request.getURI().toString());
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         } finally {

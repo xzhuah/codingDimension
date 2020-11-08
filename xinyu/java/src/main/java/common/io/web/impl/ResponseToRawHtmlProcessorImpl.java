@@ -33,7 +33,7 @@ public class ResponseToRawHtmlProcessorImpl implements ResponseProcessor {
 
 
     @Override
-    public WebpageRawHtmlDTO process(CloseableHttpResponse response) throws Exception {
+    public WebpageRawHtmlDTO process(CloseableHttpResponse response, String url) throws Exception {
         HttpEntity entity = response.getEntity();
         String msg = "";
         msg = EntityUtils.toString(entity, ValueConstant.Encoding.UTF_8.getValue());

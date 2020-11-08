@@ -54,7 +54,7 @@ public class DailyPriceProcessor implements ResponseProcessor {
 
     }
 
-    public ResponseProcessResult process(CloseableHttpResponse response) throws Exception {
+    public ResponseProcessResult process(CloseableHttpResponse response, String url) throws Exception {
 
         HttpEntity entity = response.getEntity();
         String msg = "";
