@@ -2,7 +2,7 @@ package common.time;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Xinyu Zhu on 2020/11/3, 22:02

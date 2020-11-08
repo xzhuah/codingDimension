@@ -2,7 +2,7 @@ package common.io.web.constants;
 
 /**
  * Created by Xinyu Zhu on 6/29/2020, 7:30 PM
- *  common.io.web.constants in AllInOne
+ * common.io.web.constants in AllInOne
  */
 public interface ValueConstant<T> {
     public T getValue();

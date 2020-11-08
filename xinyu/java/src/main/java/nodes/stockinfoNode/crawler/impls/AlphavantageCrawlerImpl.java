@@ -30,6 +30,41 @@ public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.Alph
         crawler = new BaseCrawler(DailyPriceProcessor.getInstance());
     }
 
+    // Build param for query online
+    private static Map<String, String> buildRequestParamForDailyPrice(String symbol) {
+        Map<String, String> requestparam = new HashMap<>();
+        requestparam.put("function", "TIME_SERIES_DAILY_ADJUSTED");
+        requestparam.put("symbol", symbol);
+        requestparam.put("outputsize", "full");
+        requestparam.put("apikey", apiKey);
+        return requestparam;
+    }
+
+    // Load file from a file (avoid sensitive information being upload to public codebase)
+    private static String getKeyForAlphavantageCrawler() {
+        String loadKey = PlaintextClient.readFile(keyFile);
+        if (null == loadKey) {
+            // Default demo key which can be used with a lot of limitation
+            System.out.println("Key file not found, use default demo key");
+            loadKey = "demo";
+        } else {
+            loadKey = loadKey.trim();
+        }
+        return loadKey;
+    }
+
+    public static void main(String[] args) throws Exception {
+        AlphavantageCrawler alphavantageCrawler = new AlphavantageCrawlerImpl();
+        alphavantageCrawler.addSymbolToQueue("IBM");
+
+        Future<ResponseProcessResult> result = alphavantageCrawler.getResultFuture("IBM");
+        StockDailyRecordList stockDailyRecordList = (StockDailyRecordList) result.get();
+        List<StockDailyRecordPOJO> finalResult = stockDailyRecordList.getStockDailyRecordPOJOList();
+        System.out.println(finalResult.size());
+        System.out.println(finalResult.get(0));
+        alphavantageCrawler.shutDown();
+    }
+
     @Override
     public synchronized void addSymbolToQueue(String symbol) throws Exception {
         if (!acceptedSymbol.contains(symbol)) {
@@ -71,41 +106,6 @@ public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.Alph
     @Override
     public void shutDown() {
         this.crawler.shutDown();
-    }
-
-    // Build param for query online
-    private static Map<String, String> buildRequestParamForDailyPrice(String symbol) {
-        Map<String, String> requestparam = new HashMap<>();
-        requestparam.put("function", "TIME_SERIES_DAILY_ADJUSTED");
-        requestparam.put("symbol", symbol);
-        requestparam.put("outputsize", "full");
-        requestparam.put("apikey", apiKey);
-        return requestparam;
-    }
-
-    // Load file from a file (avoid sensitive information being upload to public codebase)
-    private static String getKeyForAlphavantageCrawler() {
-        String loadKey = PlaintextClient.readFile(keyFile);
-        if (null == loadKey) {
-            // Default demo key which can be used with a lot of limitation
-            System.out.println("Key file not found, use default demo key");
-            loadKey = "demo";
-        } else {
-            loadKey = loadKey.trim();
-        }
-        return loadKey;
-    }
-
-    public static void main(String[] args) throws Exception {
-        AlphavantageCrawler alphavantageCrawler = new AlphavantageCrawlerImpl();
-        alphavantageCrawler.addSymbolToQueue("IBM");
-
-        Future<ResponseProcessResult> result = alphavantageCrawler.getResultFuture("IBM");
-        StockDailyRecordList stockDailyRecordList = (StockDailyRecordList) result.get();
-        List<StockDailyRecordPOJO> finalResult = stockDailyRecordList.getStockDailyRecordPOJOList();
-        System.out.println(finalResult.size());
-        System.out.println(finalResult.get(0));
-        alphavantageCrawler.shutDown();
     }
 
 }

@@ -7,10 +7,9 @@ import nodes.stockinfoNode.querier.impls.StockPriceDBServiceImpl;
  * nodes.stockinfoNode.impls in codingDimensionTemplate
  */
 public class StockPriceServiceImpl {
+    private static StockPriceServiceImpl instance = null;
     PriceAutoUpdaterImpl priceAutoUpdater;
     StockPriceDBServiceImpl stockPriceDBService;
-
-    private static StockPriceServiceImpl instance = null;
 
     private StockPriceServiceImpl() {
         priceAutoUpdater = PriceAutoUpdaterImpl.getInstance();

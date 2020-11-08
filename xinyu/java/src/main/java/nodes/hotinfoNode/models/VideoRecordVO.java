@@ -28,6 +28,13 @@ public class VideoRecordVO {
         this.score = score;
     }
 
+    /**
+     * create Builder method
+     **/
+    public static Builder custom() {
+        return new Builder();
+    }
+
     @Override
     public String toString() {
         return "VideoRecordVO{" +
@@ -52,36 +59,29 @@ public class VideoRecordVO {
         return imgUrl;
     }
 
-
     public String getTitle() {
         return title;
     }
-
 
     public String getDescription() {
         return description;
     }
 
-
     public String getPalyCount() {
         return palyCount;
     }
-
 
     public String getCommentCount() {
         return commentCount;
     }
 
-
     public String getLikeCount() {
         return likeCount;
     }
 
-
     public Integer getRank() {
         return rank;
     }
-
 
     public Integer getScore() {
         return score;
@@ -90,14 +90,6 @@ public class VideoRecordVO {
     public String getVideoUrl() {
         return videoUrl;
     }
-
-    /**
-     * create Builder method
-     **/
-    public static Builder custom() {
-        return new Builder();
-    }
-
 
     public static class Builder {
         private String title;

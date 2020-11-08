@@ -19,7 +19,7 @@ public class ExampleServiceImplTest {
     NodeService nodeService;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         exampleService = new ExampleServiceImpl();
         nodeService = new ExampleServiceImpl();
     }

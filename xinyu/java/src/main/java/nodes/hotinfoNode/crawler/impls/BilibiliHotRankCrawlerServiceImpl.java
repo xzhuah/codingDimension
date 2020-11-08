@@ -32,6 +32,16 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
         counter = new AtomicInteger(0);
     }
 
+    public static void main(String[] args) throws Exception {
+        BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService = new BilibiliHotRankCrawlerServiceImpl();
+        Map<RankingRuleVO, List<VideoRecordVO>> result = bilibiliHotRankCrawlerService.achieveRecords(
+                EnumUtils.getAllPossibleRankingRule().subList(0, 1)
+        );
+        System.out.println(result);
+
+        bilibiliHotRankCrawlerService.stop();
+    }
+
     @Override
     public Map<RankingRuleVO, List<VideoRecordVO>> achieveRecords(List<RankingRuleVO> rankingRules) throws Exception {
         String tag = String.valueOf(counter.getAndAdd(1));
@@ -70,15 +80,5 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
     @Override
     public void stop() {
         crawler.shutDown();
-    }
-
-    public static void main(String[] args) throws Exception {
-        BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService = new BilibiliHotRankCrawlerServiceImpl();
-        Map<RankingRuleVO, List<VideoRecordVO>> result = bilibiliHotRankCrawlerService.achieveRecords(
-                EnumUtils.getAllPossibleRankingRule().subList(0, 1)
-        );
-        System.out.println(result);
-
-        bilibiliHotRankCrawlerService.stop();
     }
 }

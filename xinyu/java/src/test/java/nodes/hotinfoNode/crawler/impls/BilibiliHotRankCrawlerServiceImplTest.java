@@ -9,8 +9,6 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Xinyu Zhu on 2020/11/4, 21:13
  * nodes.hotinfoNode.crawler.impls in AllInOne

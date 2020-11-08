@@ -86,84 +86,84 @@ public class BilibiliAnalyzableVideoRecord {
         return videoAddress;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getRankType() {
-        return rankType;
-    }
-
-    public Integer getRank() {
-        return rank;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public Integer getLike() {
-        return like;
-    }
-
-    public Integer getPlay() {
-        return play;
-    }
-
-    public Integer getComment() {
-        return comment;
-    }
-
-    public Long getRecordTime() {
-        return recordTime;
-    }
-
     public void setVideoAddress(String videoAddress) {
         this.videoAddress = videoAddress;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public void setAuthor(String author) {
         this.author = author;
     }
 
+    public String getRankType() {
+        return rankType;
+    }
+
     public void setRankType(String rankType) {
         this.rankType = rankType;
+    }
+
+    public Integer getRank() {
+        return rank;
     }
 
     public void setRank(Integer rank) {
         this.rank = rank;
     }
 
+    public Integer getScore() {
+        return score;
+    }
+
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Integer getLike() {
+        return like;
     }
 
     public void setLike(Integer like) {
         this.like = like;
     }
 
+    public Integer getPlay() {
+        return play;
+    }
+
     public void setPlay(Integer play) {
         this.play = play;
     }
 
+    public Integer getComment() {
+        return comment;
+    }
+
     public void setComment(Integer comment) {
         this.comment = comment;
+    }
+
+    public Long getRecordTime() {
+        return recordTime;
     }
 
     public void setRecordTime(Long recordTime) {

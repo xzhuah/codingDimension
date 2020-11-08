@@ -29,8 +29,7 @@ public interface ValueConstant<T> {
         MINIMUM_CONCURRENT_REQUEST(1),
         MAXIMUM_CONCURRENT_REQUEST(4),
         MINMUM_WAIT_TIME(3000),
-        MAXIMUM_WAIT_TIME(15000)
-        ;
+        MAXIMUM_WAIT_TIME(15000);
         private final Integer value;
 
         CrawlerParameter(Integer value) {

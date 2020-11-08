@@ -28,6 +28,13 @@ public class BilibiliInfoManagerImpl implements BilibiliInfoManager {
         mongoCollection = mongoDBPojoClient.setAndGetCurrentCollection(ValueConstant.Path.COLLECTION_NAME.getValue(), BilibiliAnalyzableVideoRecord.class);
     }
 
+    public static void main(String[] args) {
+        BilibiliInfoManager bilibiliInfoManager = new BilibiliInfoManagerImpl();
+        long start = System.currentTimeMillis();
+        bilibiliInfoManager.collectLatestHotRanking();
+        System.out.println("Used " + (System.currentTimeMillis() - start) / 1000 + " seconds");
+        bilibiliInfoManager.exit();
+    }
 
     public void collectLatestHotRanking() {
         List<RankingRuleVO> allRankingRules = EnumUtils.getAllPossibleRankingRule();
@@ -84,14 +91,5 @@ public class BilibiliInfoManagerImpl implements BilibiliInfoManager {
     public void exit() {
         bilibiliHotRankCrawlerService.stop();
         mongoDBPojoClient.close();
-    }
-
-
-    public static void main(String[] args) {
-        BilibiliInfoManager bilibiliInfoManager = new BilibiliInfoManagerImpl();
-        long start = System.currentTimeMillis();
-        bilibiliInfoManager.collectLatestHotRanking();
-        System.out.println("Used " + (System.currentTimeMillis() - start) / 1000 + " seconds");
-        bilibiliInfoManager.exit();
     }
 }

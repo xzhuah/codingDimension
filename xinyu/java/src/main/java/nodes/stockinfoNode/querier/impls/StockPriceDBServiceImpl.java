@@ -12,9 +12,8 @@ import java.util.Set;
  * nodes.stockinfoNode.querier.impls in codingDimensionTemplate
  */
 public class StockPriceDBServiceImpl {
-    private MongoDBClient mongoDBClient;
-
     private static StockPriceDBServiceImpl instance = null;
+    private MongoDBClient mongoDBClient;
 
     private StockPriceDBServiceImpl() {
         mongoDBClient = new MongoDBPojoClientImpl();
@@ -35,6 +34,7 @@ public class StockPriceDBServiceImpl {
         // TODO
         return null;
     }
+
     public void insertSymbols(Set<String> symbols) {
         // TODO
     }

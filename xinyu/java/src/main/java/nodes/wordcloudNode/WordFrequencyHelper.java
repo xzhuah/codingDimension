@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Xinyu Zhu on 2020/11/6, 22:16
  * nodes.wordcloudNode in codingDimensionTemplate
- *
+ * <p>
  * This helper class interface helps to count word frequency, generate List<WordFrequency> which can be directly
  * used to generate word cloud
  */

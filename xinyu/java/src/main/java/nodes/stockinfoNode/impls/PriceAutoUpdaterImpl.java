@@ -10,9 +10,8 @@ import java.util.Map;
  * nodes.stockinfoNode.impls in codingDimensionTemplate
  */
 public class PriceAutoUpdaterImpl {
-    StockPriceDBServiceImpl stockPriceDBService;
-
     private static PriceAutoUpdaterImpl instance = null;
+    StockPriceDBServiceImpl stockPriceDBService;
 
     private PriceAutoUpdaterImpl() {
         stockPriceDBService = StockPriceDBServiceImpl.getInstance();

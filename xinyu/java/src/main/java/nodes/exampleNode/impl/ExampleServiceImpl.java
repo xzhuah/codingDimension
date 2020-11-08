@@ -13,15 +13,6 @@ import static nodes.exampleNode.contants.Constant.EXAMPLE_MESSAGE;
  */
 public class ExampleServiceImpl implements ExampleService {
 
-    public void runService(ServiceParam serviceParam) {
-        ExampleServiceParam exampleServiceParam = (ExampleServiceParam) serviceParam;
-        System.out.println(exampleServiceParam.getMessage() + ":" + getExampleString());
-    }
-
-    public String getExampleString() {
-        return EXAMPLE_MESSAGE;
-    }
-
     public static void main(String[] args) {
         // Used by user
         ExampleService exampleService = new ExampleServiceImpl();
@@ -32,6 +23,15 @@ public class ExampleServiceImpl implements ExampleService {
         ServiceParam exampleServiceParam = new ExampleServiceParam(String.valueOf(System.currentTimeMillis()));
         nodeService.runService(exampleServiceParam);
 
+    }
+
+    public void runService(ServiceParam serviceParam) {
+        ExampleServiceParam exampleServiceParam = (ExampleServiceParam) serviceParam;
+        System.out.println(exampleServiceParam.getMessage() + ":" + getExampleString());
+    }
+
+    public String getExampleString() {
+        return EXAMPLE_MESSAGE;
     }
 
 }

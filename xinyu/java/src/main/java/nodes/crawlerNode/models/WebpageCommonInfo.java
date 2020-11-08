@@ -2,7 +2,6 @@ package nodes.crawlerNode.models;
 
 import common.io.web.models.ResponseProcessResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

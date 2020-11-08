@@ -14,19 +14,13 @@ import java.util.*;
  * line must be splited by system default linesplitor
  */
 public class CsvFileClient {
+    private final String SPLITOR = ",";
     private List<String> header;
     private String filename;
-
-    private final String SPLITOR = ",";
 
     public CsvFileClient(String filename) {
         this.filename = filename;
 
-    }
-
-    // if not set, will be automatically identify as read or write content
-    public void setHeader(List<String> header) {
-        this.header = new ArrayList<>(header);
     }
 
     public List<JsonObject> readAsJson() {
@@ -101,6 +95,11 @@ public class CsvFileClient {
             return "";
         }
         return String.join(SPLITOR, header);
+    }
+
+    // if not set, will be automatically identify as read or write content
+    public void setHeader(List<String> header) {
+        this.header = new ArrayList<>(header);
     }
 
     private String convertToString(List<JsonObject> content) {

@@ -10,7 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Xinyu Zhu on 2020/11/3, 19:59
@@ -44,6 +45,6 @@ public class MongoDBClientImplTest {
         List<Document> resultInList = Converter.toList(result);
         assertEquals(resultInList.size(), 1);
         assertTrue(resultInList.get(0).getInteger("stars").equals(3));
-        assertEquals(((List<Double>)((Document)resultInList.get(0).get("contact")).get("location")).get(0), Double.valueOf(-73.92502));
+        assertEquals(((List<Double>) ((Document) resultInList.get(0).get("contact")).get("location")).get(0), Double.valueOf(-73.92502));
     }
 }

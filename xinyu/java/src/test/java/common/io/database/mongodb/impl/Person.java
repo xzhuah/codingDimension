@@ -3,15 +3,14 @@ package common.io.database.mongodb.impl;
 import org.bson.types.ObjectId;
 
 public final class Person {
+    // This is my personal design: maintain a public static final String field for storage table name in POJO class
+    public static final String TABLE_NAME = "test_collection_object";
     // This ObjectId is essential for Mongodb POJO
     private ObjectId id;
     private String name;
     // Can be int or Integer
     private Integer age;
     private Address address;
-
-    // This is my personal design: maintain a public static final String field for storage table name in POJO class
-    public static final String TABLE_NAME = "test_collection_object";
 
     public Person() {
     }

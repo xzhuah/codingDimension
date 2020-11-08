@@ -39,6 +39,20 @@ public class WordCloudGeneratorImpl implements WordCloudGenerator {
         outputFile = "wordCloud.png";
     }
 
+    public static void main(String[] args) throws IOException {
+        WordCloudGeneratorImpl wordCloudGenerator = new WordCloudGeneratorImpl();
+        wordCloudGenerator.setBackgroudColor(new Color(0xF1F1F1));
+        wordCloudGenerator.setMaxWordToDraw(300);
+        wordCloudGenerator.setBackgroudShape(StyleConstant.DEFAULT_CIRCLE_BACKGROUND);
+        wordCloudGenerator.setWordColor(StyleConstant.LINEAR_GRADIENT);
+        wordCloudGenerator.setWordScalar(StyleConstant.DEFAULT_SQRT_FONT_SCALAR);
+        wordCloudGenerator.setWordStartStrategy(StyleConstant.CENTER_WORD);
+
+        wordCloudGenerator.setOutputFile("wordCloudExample.png");
+        wordCloudGenerator.drawForFile("wordCloudExample.txt");
+
+    }
+
     @Override
     public void setMaxWordToDraw(int maxWordToDraw) {
         this.wordFrequencyHelper.setWordFrequenciesToReturn(maxWordToDraw);
@@ -97,19 +111,5 @@ public class WordCloudGeneratorImpl implements WordCloudGenerator {
     public void drawForFile(String filename) throws IOException {
         wordCloud.build(this.wordFrequencyHelper.getWordFrequencyFromFile(filename));
         wordCloud.writeToFile(this.outputFile);
-    }
-
-    public static void main(String[] args) throws IOException {
-        WordCloudGeneratorImpl wordCloudGenerator = new WordCloudGeneratorImpl();
-        wordCloudGenerator.setBackgroudColor(new Color(0xF1F1F1));
-        wordCloudGenerator.setMaxWordToDraw(300);
-        wordCloudGenerator.setBackgroudShape(StyleConstant.DEFAULT_CIRCLE_BACKGROUND);
-        wordCloudGenerator.setWordColor(StyleConstant.LINEAR_GRADIENT);
-        wordCloudGenerator.setWordScalar(StyleConstant.DEFAULT_SQRT_FONT_SCALAR);
-        wordCloudGenerator.setWordStartStrategy(StyleConstant.CENTER_WORD);
-
-        wordCloudGenerator.setOutputFile("wordCloudExample.png");
-        wordCloudGenerator.drawForFile("wordCloudExample.txt");
-
     }
 }

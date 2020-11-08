@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
  * Created by Xinyu Zhu on 2020/11/1, 20:30
  * common.io.web.models in AllInOne
  */
-public class WebpageJsonDTO implements ResponseProcessResult{
+public class WebpageJsonDTO implements ResponseProcessResult {
     private JsonObject jsonObject;
 
     public WebpageJsonDTO(JsonObject jsonObject) {

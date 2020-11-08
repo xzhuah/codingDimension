@@ -12,5 +12,6 @@ import java.util.Map;
  */
 public interface BilibiliHotRankCrawlerService {
     Map<RankingRuleVO, List<VideoRecordVO>> achieveRecords(List<RankingRuleVO> rankingRules) throws Exception;
+
     void stop();
 }

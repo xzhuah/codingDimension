@@ -38,6 +38,19 @@ public class BaseCrawler {
         currentStatus = CrawlerStatus.RUNNING_JOB_ASYNC;
     }
 
+    // We don't consider header, we assum content are determined by url and params
+    public static String getUniqueTag(String url, Map<String, String> params) {
+        StringBuilder tagBuilder = new StringBuilder(url);
+
+        if (null != params) {
+            SortedSet<String> keys = new TreeSet<>(params.keySet());
+            keys.stream().forEach(key -> {
+                tagBuilder.append(":").append(key).append(":").append(params.get(key));
+            });
+        }
+        return tagBuilder.toString();
+    }
+
     // For lazy me :)
     public synchronized void addJobToQueue(String url) throws Exception {
         // In this case, tag is just the url
@@ -99,18 +112,5 @@ public class BaseCrawler {
     public void shutDown() {
         this.currentStatus = CrawlerStatus.KILLED;
         this.poolingAsyncHttpClient.finish();
-    }
-
-    // We don't consider header, we assum content are determined by url and params
-    public static String getUniqueTag(String url, Map<String, String> params) {
-        StringBuilder tagBuilder = new StringBuilder(url);
-
-        if (null != params) {
-            SortedSet<String> keys = new TreeSet<>(params.keySet());
-            keys.stream().forEach(key -> {
-                tagBuilder.append(":").append(key).append(":").append(params.get(key));
-            });
-        }
-        return tagBuilder.toString();
     }
 }

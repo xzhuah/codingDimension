@@ -38,6 +38,22 @@ public class DailyPriceProcessor implements ResponseProcessor {
         return instance;
     }
 
+    private static StockDailyRecordPOJO toDailyPriceData(JsonObject dailyData, String dayString, String symbol) throws ParseException, java.text.ParseException {
+        StockDailyRecordPOJO stockDailyRecordPOJO = new StockDailyRecordPOJO();
+        stockDailyRecordPOJO.setOpen(dailyData.get("1. open").getAsDouble());
+        stockDailyRecordPOJO.setHigh(dailyData.get("2. high").getAsDouble());
+        stockDailyRecordPOJO.setLow(dailyData.get("3. low").getAsDouble());
+        stockDailyRecordPOJO.setClose(dailyData.get("4. close").getAsDouble());
+        stockDailyRecordPOJO.setAdjustedClose(dailyData.get("5. adjusted close").getAsDouble());
+        stockDailyRecordPOJO.setVolume(dailyData.get("6. volume").getAsDouble());
+        stockDailyRecordPOJO.setDividend(dailyData.get("7. dividend amount").getAsDouble());
+        stockDailyRecordPOJO.setSplitCoefficient(dailyData.get("8. split coefficient").getAsDouble());
+        stockDailyRecordPOJO.setTime(TimeClient.stringToTimestamp(dayString, TimeConstant.dateOnlyFormat));
+        stockDailyRecordPOJO.setStockSymbol(symbol);
+        return stockDailyRecordPOJO;
+
+    }
+
     public ResponseProcessResult process(CloseableHttpResponse response) throws Exception {
 
         HttpEntity entity = response.getEntity();
@@ -65,21 +81,5 @@ public class DailyPriceProcessor implements ResponseProcessor {
             System.err.println("Encountered invalid response: " + msg);
             return new StockDailyRecordList();
         }
-    }
-
-    private static StockDailyRecordPOJO toDailyPriceData(JsonObject dailyData, String dayString, String symbol) throws ParseException, java.text.ParseException {
-        StockDailyRecordPOJO stockDailyRecordPOJO = new StockDailyRecordPOJO();
-        stockDailyRecordPOJO.setOpen(dailyData.get("1. open").getAsDouble());
-        stockDailyRecordPOJO.setHigh(dailyData.get("2. high").getAsDouble());
-        stockDailyRecordPOJO.setLow(dailyData.get("3. low").getAsDouble());
-        stockDailyRecordPOJO.setClose(dailyData.get("4. close").getAsDouble());
-        stockDailyRecordPOJO.setAdjustedClose(dailyData.get("5. adjusted close").getAsDouble());
-        stockDailyRecordPOJO.setVolume(dailyData.get("6. volume").getAsDouble());
-        stockDailyRecordPOJO.setDividend(dailyData.get("7. dividend amount").getAsDouble());
-        stockDailyRecordPOJO.setSplitCoefficient(dailyData.get("8. split coefficient").getAsDouble());
-        stockDailyRecordPOJO.setTime(TimeClient.stringToTimestamp(dayString, TimeConstant.dateOnlyFormat));
-        stockDailyRecordPOJO.setStockSymbol(symbol);
-        return stockDailyRecordPOJO;
-
     }
 }

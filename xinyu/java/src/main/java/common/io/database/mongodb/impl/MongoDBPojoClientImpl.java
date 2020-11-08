@@ -2,7 +2,6 @@ package common.io.database.mongodb.impl;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
@@ -21,7 +20,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 /**
  * Created by Xinyu Zhu on 2020/11/3, 19:41
  * common.io.database.mongodb.impl in AllInOne
- *
+ * <p>
  * The PojoClient support POJO object: https://mongodb.github.io/mongo-java-driver/3.5/driver/getting-started/quick-start-pojo/
  * Start the local mongoDB instance first before using this client
  */
@@ -39,6 +38,7 @@ public class MongoDBPojoClientImpl implements MongoDBClient {
 
     /**
      * Set up connection with specific host and port
+     *
      * @param host host address
      * @param port port number
      */
@@ -49,6 +49,7 @@ public class MongoDBPojoClientImpl implements MongoDBClient {
     /**
      * Set up connection with a connectionUrl
      * I haven't encounter the need of remote connection, so the credential staff is not implemented yet
+     *
      * @param connectionUrl a string in this kind of format "hostname:27017"
      */
     public MongoDBPojoClientImpl(String connectionUrl) {
@@ -118,7 +119,7 @@ public class MongoDBPojoClientImpl implements MongoDBClient {
         return currentCollection;
     }
 
-    public MongoCollection setAndGetCurrentCollection(String collectionName,  Class cls) {
+    public MongoCollection setAndGetCurrentCollection(String collectionName, Class cls) {
         setCurrentCollection(collectionName, cls);
         return currentCollection;
     }

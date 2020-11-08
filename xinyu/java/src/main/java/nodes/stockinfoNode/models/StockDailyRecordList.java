@@ -15,6 +15,7 @@ public class StockDailyRecordList implements ResponseProcessResult {
     public StockDailyRecordList() {
         this.stockDailyRecordPOJOList = new ArrayList<>();
     }
+
     public StockDailyRecordList(List<StockDailyRecordPOJO> stockDailyRecordPOJOList) {
         this.stockDailyRecordPOJOList = stockDailyRecordPOJOList;
     }
