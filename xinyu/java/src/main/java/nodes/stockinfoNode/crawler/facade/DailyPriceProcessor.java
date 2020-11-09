@@ -10,6 +10,7 @@ import common.time.TimeClient;
 import common.time.TimeConstant;
 import nodes.stockinfoNode.models.StockDailyRecordList;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
+import nodes.stockinfoNode.utils.Converter;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -51,16 +52,11 @@ public class DailyPriceProcessor implements ResponseProcessor {
         stockDailyRecordPOJO.setTime(TimeClient.stringToTimestamp(dayString, TimeConstant.dateOnlyFormat));
         stockDailyRecordPOJO.setStockSymbol(symbol);
         return stockDailyRecordPOJO;
-
     }
 
     public ResponseProcessResult process(CloseableHttpResponse response, String url) throws Exception {
 
-        HttpEntity entity = response.getEntity();
-        String msg = "";
-        msg = EntityUtils.toString(entity, ValueConstant.Encoding.UTF_8.getValue());
-        JsonElement element = JsonParser.parseString(msg);
-        JsonObject jsonObject = element.getAsJsonObject();
+        JsonObject jsonObject = Converter.toJsonObject(response);
 
         try {
             JsonObject dailyPriceObject = jsonObject.get("Time Series (Daily)").getAsJsonObject();
@@ -78,8 +74,10 @@ public class DailyPriceProcessor implements ResponseProcessor {
             return new StockDailyRecordList(priceDataList);
         } catch (Exception e) {
             // Return Empty List if encounter error
-            System.err.println("Encountered invalid response: " + msg);
+            System.err.println("Encountered invalid response: " + response);
             return new StockDailyRecordList();
+        } finally {
+            response.close();
         }
     }
 }

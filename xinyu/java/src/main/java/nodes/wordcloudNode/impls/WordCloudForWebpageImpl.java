@@ -72,7 +72,8 @@ public class WordCloudForWebpageImpl implements WordCloudForWebpage {
         //wordCloudForWebpage.drawForUrl("https://www.cnn.com/2020/11/07/politics/transition-biden-coronavirus-task-force/index.html");
         //wordCloudForWebpage.drawForUrl("https://www.bbc.com/zhongwen/simp/world-54858911");
         //wordCloudForWebpage.drawForUrl("https://www.google.com/search?q=google+guice+example&rlz=1C1CHBF_enUS913US913&oq=google&aqs=chrome.0.69i59j69i57j35i39j0i20i131i263i433i457j69i60l2j69i65l2.3527j0j4&sourceid=chrome&ie=UTF-8");
-        wordCloudForWebpage.drawForUrl("https://www.bilibili.com/v/popular/rank/all");
+        //wordCloudForWebpage.drawForUrl("https://www.bilibili.com/v/popular/rank/all");
+        wordCloudForWebpage.drawForUrl("https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo");
         wordCloudForWebpage.shutdown();
     }
 

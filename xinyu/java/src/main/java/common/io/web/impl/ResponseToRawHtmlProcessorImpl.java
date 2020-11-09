@@ -37,7 +37,7 @@ public class ResponseToRawHtmlProcessorImpl implements ResponseProcessor {
         HttpEntity entity = response.getEntity();
         String msg = "";
         msg = EntityUtils.toString(entity, ValueConstant.Encoding.UTF_8.getValue());
-
+        response.close();
         return new WebpageRawHtmlDTO(msg);
     }
 }

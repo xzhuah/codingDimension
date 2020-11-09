@@ -49,6 +49,8 @@ public class ResponseToRankListProcessor implements ResponseProcessor {
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
+        } finally {
+            response.close();
         }
 
         List<VideoRecordVO> result = new ArrayList<>(100);

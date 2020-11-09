@@ -38,6 +38,7 @@ public class ResponseToJsonProcessorImpl implements ResponseProcessor {
         String msg = "";
         msg = EntityUtils.toString(entity, ValueConstant.Encoding.UTF_8.getValue());
         JsonObject jsonObject = new JsonParser().parse(msg).getAsJsonObject();
+        response.close();
         return new WebpageJsonDTO(jsonObject);
     }
 }

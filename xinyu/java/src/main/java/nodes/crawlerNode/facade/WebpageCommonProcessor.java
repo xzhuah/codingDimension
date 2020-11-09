@@ -44,6 +44,8 @@ public class WebpageCommonProcessor implements ResponseProcessor {
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
+        } finally {
+            response.close();
         }
         // Obtained document from website content
         Document document = Jsoup.parse(msg);
