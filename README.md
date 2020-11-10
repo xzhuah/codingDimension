@@ -1,6 +1,6 @@
 # codingDimension
 
-I will put a lot of interesting personal project here, they will be maintained using the [codingDimensionTemplate](https://github.com/xzhuah/codingDimensionTemplate), if you are interested in the template, please refer to that [repository](https://github.com/xzhuah/codingDimensionTemplate).
+I will put a lot of interesting personal project here, they will be maintained using the [codingDimensionTemplate](https://github.com/xzhuah/codingDimensionTemplate)(upgraded to [codingDimensionTemplate_Guice](https://github.com/xzhuah/codingDimensionTemplate_Guice) later), if you are interested in the template, please refer to that [repository](https://github.com/xzhuah/codingDimensionTemplate).
 
 I plan to create a video to demo what are those great things in this project, but I just don't have time. I will just summarize them a little bit here
 
