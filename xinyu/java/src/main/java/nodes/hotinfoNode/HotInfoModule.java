@@ -7,6 +7,7 @@ import nodes.crawlerNode.BaseCrawler;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
 import nodes.hotinfoNode.crawler.facade.ResponseToRankListProcessor;
 import nodes.hotinfoNode.crawler.impls.BilibiliHotRankCrawlerServiceImpl;
+import nodes.hotinfoNode.impls.BilibiliInfoManagerImpl;
 import nodes.hotinfoNode.models.VideoRecordVO;
 
 import java.util.List;
@@ -25,6 +26,6 @@ public class HotInfoModule extends AbstractModule {
 
         bind(BilibiliHotRankCrawlerService.class).to(BilibiliHotRankCrawlerServiceImpl.class);
 
-
+        bind(BilibiliInfoManager.class).to(BilibiliInfoManagerImpl.class);
     }
 }

@@ -1,5 +1,6 @@
 package nodes.hotinfoNode.impls;
 
+import com.google.inject.Inject;
 import com.mongodb.client.MongoCollection;
 import common.io.database.mongodb.MongoDBPojoClient;
 import common.io.database.mongodb.impl.MongoDBPojoClientImpl;
@@ -20,18 +21,21 @@ import java.util.Map;
 public class BilibiliInfoManagerImpl implements BilibiliInfoManager {
     private BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService;
     private MongoDBPojoClient mongoDBPojoClient;
+
+
     private MongoCollection<BilibiliAnalyzableVideoRecord> mongoCollection;
 
+    @Inject
+    public BilibiliInfoManagerImpl(BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService, MongoDBPojoClient mongoDBPojoClient) {
+        this.bilibiliHotRankCrawlerService = bilibiliHotRankCrawlerService;
+        this.mongoDBPojoClient = mongoDBPojoClient;
 
-    public BilibiliInfoManagerImpl() {
-        bilibiliHotRankCrawlerService = NodeModule.getGlobalInjector().getInstance(BilibiliHotRankCrawlerService.class);
-        mongoDBPojoClient = new MongoDBPojoClientImpl();
-        mongoDBPojoClient.setCurrentDatabase(ValueConstant.Path.DATABASE_NAME.getValue());
-        mongoCollection = mongoDBPojoClient.setAndGetCurrentCollection(ValueConstant.Path.COLLECTION_NAME.getValue(), BilibiliAnalyzableVideoRecord.class);
+        this.mongoDBPojoClient.setCurrentDatabase(ValueConstant.Path.DATABASE_NAME.getValue());
+        this.mongoCollection = mongoDBPojoClient.setAndGetCurrentCollection(ValueConstant.Path.COLLECTION_NAME.getValue(), BilibiliAnalyzableVideoRecord.class);
     }
 
     public static void main(String[] args) {
-        BilibiliInfoManager bilibiliInfoManager = new BilibiliInfoManagerImpl();
+        BilibiliInfoManager bilibiliInfoManager = NodeModule.getGlobalInjector().getInstance(BilibiliInfoManager.class);
         long start = System.currentTimeMillis();
         bilibiliInfoManager.collectLatestHotRanking();
         System.out.println("Used " + (System.currentTimeMillis() - start) / 1000 + " seconds");
