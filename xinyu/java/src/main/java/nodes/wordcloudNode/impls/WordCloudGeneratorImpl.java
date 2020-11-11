@@ -1,5 +1,6 @@
 package nodes.wordcloudNode.impls;
 
+import com.google.inject.Inject;
 import com.kennycason.kumo.CollisionMode;
 import com.kennycason.kumo.WordCloud;
 import com.kennycason.kumo.bg.Background;
@@ -7,6 +8,7 @@ import com.kennycason.kumo.font.KumoFont;
 import com.kennycason.kumo.font.scale.FontScalar;
 import com.kennycason.kumo.palette.ColorPalette;
 import com.kennycason.kumo.wordstart.WordStartStrategy;
+import nodes.NodeModule;
 import nodes.wordcloudNode.WordCloudGenerator;
 import nodes.wordcloudNode.WordFrequencyHelper;
 import nodes.wordcloudNode.constants.StyleConstant;
@@ -23,6 +25,12 @@ public class WordCloudGeneratorImpl implements WordCloudGenerator {
     WordFrequencyHelper wordFrequencyHelper;
     private WordCloud wordCloud;
     private String outputFile;
+
+    @Inject
+    public WordCloudGeneratorImpl(WordFrequencyHelper wordFrequencyHelper) {
+        // You have to change code here to modify the width and height
+        this(600, 600, wordFrequencyHelper);
+    }
 
     public WordCloudGeneratorImpl() {
         this(600, 600);
@@ -41,7 +49,7 @@ public class WordCloudGeneratorImpl implements WordCloudGenerator {
     }
 
     public static void main(String[] args) throws IOException {
-        WordCloudGeneratorImpl wordCloudGenerator = new WordCloudGeneratorImpl();
+        WordCloudGenerator wordCloudGenerator = NodeModule.getGlobalInjector().getInstance(WordCloudGenerator.class);
         wordCloudGenerator.setBackgroudColor(new Color(0xF1F1F1));
         wordCloudGenerator.setMaxWordToDraw(300);
         wordCloudGenerator.setBackgroudShape(StyleConstant.DEFAULT_CIRCLE_BACKGROUND);
@@ -52,6 +60,11 @@ public class WordCloudGeneratorImpl implements WordCloudGenerator {
         wordCloudGenerator.setOutputFile("wordCloudExample.png");
         wordCloudGenerator.drawForFile("wordCloudExample.txt");
 
+    }
+
+    @Override
+    public void setWordCloud(WordCloud wordCloud) {
+        this.wordCloud = wordCloud;
     }
 
     @Override

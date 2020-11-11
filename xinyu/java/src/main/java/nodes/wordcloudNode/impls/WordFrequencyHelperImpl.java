@@ -1,5 +1,6 @@
 package nodes.wordcloudNode.impls;
 
+import com.google.inject.Singleton;
 import com.kennycason.kumo.WordFrequency;
 import com.kennycason.kumo.nlp.FrequencyAnalyzer;
 import com.kennycason.kumo.nlp.tokenizers.ChineseWordTokenizer;

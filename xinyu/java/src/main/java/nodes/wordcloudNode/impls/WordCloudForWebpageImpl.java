@@ -1,5 +1,7 @@
 package nodes.wordcloudNode.impls;
 
+import com.google.inject.Inject;
+import nodes.NodeModule;
 import nodes.crawlerNode.facade.WebpageCommonProcessor;
 import nodes.crawlerNode.impl.WebpageCommonInfoCrawler;
 import nodes.crawlerNode.models.WebpageCommonInfo;
@@ -16,32 +18,44 @@ import static common.utils.ConditionChecker.checkStatus;
  * nodes.wordcloudNode.integration in codingDimensionTemplate
  */
 public class WordCloudForWebpageImpl implements WordCloudForWebpage {
-    WordCloudGenerator wordCloudGenerator;
-    WebpageCommonInfoCrawler webpageCommonInfoCrawler;
 
-    public WordCloudForWebpageImpl() {
-        this(new WordCloudGeneratorImpl());
-        // These are default recommended setting
-        wordCloudGenerator.setMaxWordToDraw(400);
-        wordCloudGenerator.setPadding(4);
-        wordCloudGenerator.setWordColor(StyleConstant.BLUE_FAMILY);
-        wordCloudGenerator.setWordScalar(StyleConstant.DEFAULT_LINEAR_FONT_SCALAR);
-        wordCloudGenerator.setWordStartStrategy(StyleConstant.CENTER_WORD);
-        wordCloudGenerator.setStopword(StyleConstant.DEFAULT_STOP_WORDS);
-    }
+    private WordCloudGenerator wordCloudGenerator;
+    private WebpageCommonInfoCrawler webpageCommonInfoCrawler;
 
-    public WordCloudForWebpageImpl(WordCloudGenerator wordCloudGenerator) {
+
+    @Inject
+    public WordCloudForWebpageImpl(WordCloudGenerator wordCloudGenerator, WebpageCommonInfoCrawler webpageCommonInfoCrawler) {
         this.wordCloudGenerator = wordCloudGenerator;
-        this.webpageCommonInfoCrawler = new WebpageCommonInfoCrawler(new WebpageCommonProcessor());
+        this.webpageCommonInfoCrawler = webpageCommonInfoCrawler;
+
+//        this.wordCloudGenerator.setMaxWordToDraw(400);
+//        this.wordCloudGenerator.setPadding(4);
+//        this.wordCloudGenerator.setWordColor(StyleConstant.BLUE_FAMILY);
+//        this.wordCloudGenerator.setWordScalar(StyleConstant.DEFAULT_LINEAR_FONT_SCALAR);
+//        this.wordCloudGenerator.setWordStartStrategy(StyleConstant.CENTER_WORD);
+//        this.wordCloudGenerator.setStopword(StyleConstant.DEFAULT_STOP_WORDS);
+
     }
 
     public static void main(String[] args) throws Exception {
-        WordCloudForWebpage wordCloudForWebpage = new WordCloudForWebpageImpl();
+        WordCloudForWebpage wordCloudForWebpage = NodeModule.getGlobalInjector().getInstance(WordCloudForWebpage.class);
+
+        WordCloudGenerator myWordCloudGenerator = NodeModule.getGlobalInjector().getInstance(WordCloudGenerator.class);
+        myWordCloudGenerator.setMaxWordToDraw(400);
+        myWordCloudGenerator.setPadding(4);
+        myWordCloudGenerator.setWordColor(StyleConstant.BLUE_FAMILY);
+        myWordCloudGenerator.setWordScalar(StyleConstant.DEFAULT_LINEAR_FONT_SCALAR);
+        myWordCloudGenerator.setWordStartStrategy(StyleConstant.CENTER_WORD);
+        myWordCloudGenerator.setStopword(StyleConstant.DEFAULT_STOP_WORDS);
+
+        wordCloudForWebpage.setWordCloudGenerator(myWordCloudGenerator);
+
+
         //wordCloudForWebpage.drawForUrl("https://www.cnn.com/2020/11/07/politics/transition-biden-coronavirus-task-force/index.html");
         //wordCloudForWebpage.drawForUrl("https://www.bbc.com/zhongwen/simp/world-54858911");
         //wordCloudForWebpage.drawForUrl("https://www.google.com/search?q=google+guice+example&rlz=1C1CHBF_enUS913US913&oq=google&aqs=chrome.0.69i59j69i57j35i39j0i20i131i263i433i457j69i60l2j69i65l2.3527j0j4&sourceid=chrome&ie=UTF-8");
-        //wordCloudForWebpage.drawForUrl("https://www.bilibili.com/v/popular/rank/all");
-        wordCloudForWebpage.drawForUrl("https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo");
+        wordCloudForWebpage.drawForUrl("https://www.bilibili.com/v/popular/rank/all");
+        // wordCloudForWebpage.drawForUrl("https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo");
         wordCloudForWebpage.shutdown();
     }
 

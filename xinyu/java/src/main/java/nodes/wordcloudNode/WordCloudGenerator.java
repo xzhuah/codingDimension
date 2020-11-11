@@ -1,5 +1,6 @@
 package nodes.wordcloudNode;
 
+import com.kennycason.kumo.WordCloud;
 import com.kennycason.kumo.bg.Background;
 import com.kennycason.kumo.font.scale.FontScalar;
 import com.kennycason.kumo.palette.ColorPalette;
@@ -14,6 +15,8 @@ import java.util.List;
  * nodes.wordcloudNode in codingDimensionTemplate
  */
 public interface WordCloudGenerator {
+    void setWordCloud(WordCloud wordCloud);
+
     void setMaxWordToDraw(int maxWordToDraw);
 
     void setBackgroudColor(Color color);
