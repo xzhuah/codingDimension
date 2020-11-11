@@ -5,7 +5,6 @@ import nodes.NodeModule;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
-import nodes.hotinfoNode.crawler.facade.ResponseToRankListProcessor;
 import nodes.hotinfoNode.models.RankingRuleVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
 import nodes.hotinfoNode.utils.EnumUtils;

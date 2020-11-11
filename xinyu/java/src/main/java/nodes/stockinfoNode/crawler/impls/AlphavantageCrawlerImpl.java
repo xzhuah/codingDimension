@@ -7,7 +7,6 @@ import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
-import nodes.stockinfoNode.crawler.facade.DailyPriceProcessor;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
 import java.util.*;

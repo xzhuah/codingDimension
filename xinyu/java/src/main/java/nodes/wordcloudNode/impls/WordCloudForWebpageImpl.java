@@ -2,7 +2,6 @@ package nodes.wordcloudNode.impls;
 
 import com.google.inject.Inject;
 import nodes.NodeModule;
-import nodes.crawlerNode.facade.WebpageCommonProcessor;
 import nodes.crawlerNode.impl.WebpageCommonInfoCrawler;
 import nodes.crawlerNode.models.WebpageCommonInfo;
 import nodes.wordcloudNode.WordCloudForWebpage;
