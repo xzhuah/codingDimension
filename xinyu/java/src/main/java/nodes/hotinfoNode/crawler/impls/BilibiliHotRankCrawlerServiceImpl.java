@@ -5,7 +5,6 @@ import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
 import nodes.hotinfoNode.crawler.facade.ResponseToRankListProcessor;
 import nodes.hotinfoNode.models.RankingRuleVO;
-import nodes.hotinfoNode.models.VideoRecordListVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
 import nodes.hotinfoNode.utils.EnumUtils;
 
@@ -24,7 +23,7 @@ import static common.utils.ConditionChecker.checkStatus;
  */
 public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawlerService {
     private final AtomicInteger counter;
-    private final BaseCrawler<VideoRecordListVO> crawler;
+    private final BaseCrawler<List<VideoRecordVO>> crawler;
 
     public BilibiliHotRankCrawlerServiceImpl() {
         crawler = new BaseCrawler<>(ResponseToRankListProcessor.getInstance());
@@ -54,14 +53,14 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
                 throw e;
             }
         }
-        List<Future<Optional<VideoRecordListVO>>> rawResult = crawler.getResultFuture(tag);
+        List<Future<Optional<List<VideoRecordVO>>>> rawResult = crawler.getResultFuture(tag);
 
         // ensure two size are equal
         checkStatus(rawResult.size() == rankingRules.size(), "REQUEST_RESPONSE_MISMATCH_EXCEPTION");
 
         for (int i = 0; i < rawResult.size(); i++) {
-            Future<Optional<VideoRecordListVO>> future = rawResult.get(i);
-            VideoRecordListVO records = null;
+            Future<Optional<List<VideoRecordVO>>> future = rawResult.get(i);
+            List<VideoRecordVO> records = null;
             try {
                 records = future.get().get();
             } catch (Exception e) {
@@ -70,7 +69,7 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
                 continue;
             }
 
-            result.put(rankingRules.get(i), records.getVideoRecords());
+            result.put(rankingRules.get(i), records);
         }
 
         return result;

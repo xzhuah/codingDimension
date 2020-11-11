@@ -1,11 +1,17 @@
 package nodes.stockinfoNode.models;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.bson.types.ObjectId;
 
 /**
  * Created by Xinyu Zhu on 2020/11/6, 23:36
  * nodes.stockinfoNode.models in codingDimensionTemplate
  */
+@Data
+@ToString(exclude = "id")
+@NoArgsConstructor
 public class StockDailyRecordPOJO {
 
     // This is POJO indicator: real primary key
@@ -24,112 +30,4 @@ public class StockDailyRecordPOJO {
     private double adjustedClose;
     private double dividend;
     private double splitCoefficient;
-
-    public StockDailyRecordPOJO() {
-
-    }
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
-    public String getStockSymbol() {
-        return stockSymbol;
-    }
-
-    public void setStockSymbol(String stockSymbol) {
-        this.stockSymbol = stockSymbol;
-    }
-
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
-    }
-
-    public double getOpen() {
-        return open;
-    }
-
-    public void setOpen(double open) {
-        this.open = open;
-    }
-
-    public double getHigh() {
-        return high;
-    }
-
-    public void setHigh(double high) {
-        this.high = high;
-    }
-
-    public double getLow() {
-        return low;
-    }
-
-    public void setLow(double low) {
-        this.low = low;
-    }
-
-    public double getClose() {
-        return close;
-    }
-
-    public void setClose(double close) {
-        this.close = close;
-    }
-
-    public double getVolume() {
-        return volume;
-    }
-
-    public void setVolume(double volume) {
-        this.volume = volume;
-    }
-
-    public double getAdjustedClose() {
-        return adjustedClose;
-    }
-
-    public void setAdjustedClose(double adjustedClose) {
-        this.adjustedClose = adjustedClose;
-    }
-
-    public double getDividend() {
-        return dividend;
-    }
-
-    public void setDividend(double dividend) {
-        this.dividend = dividend;
-    }
-
-    public double getSplitCoefficient() {
-        return splitCoefficient;
-    }
-
-    public void setSplitCoefficient(double splitCoefficient) {
-        this.splitCoefficient = splitCoefficient;
-    }
-
-    @Override
-    public String toString() {
-        return "StockDailyRecordPOJO{" +
-                "stockSymbol='" + stockSymbol + '\'' +
-                ", time=" + time +
-                ", start=" + open +
-                ", high=" + high +
-                ", low=" + low +
-                ", close=" + close +
-                ", volume=" + volume +
-                ", adjustedClose=" + adjustedClose +
-                ", dividend=" + dividend +
-                ", splitCoefficient=" + splitCoefficient +
-                '}';
-    }
 }

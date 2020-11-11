@@ -28,7 +28,7 @@ public class Converter {
     }
 
     public static VideoRecordVO toVideoRecordVO(Element element) throws Exception {
-        VideoRecordVO.Builder builder = VideoRecordVO.custom();
+        VideoRecordVO.VideoRecordVOBuilder builder = VideoRecordVO.builder();
 
         Element numDiv = element.selectFirst("div.num");
         Element imgDiv = element.selectFirst("div.img");
@@ -38,7 +38,7 @@ public class Converter {
 
         if (null != numDiv) {
             try {
-                builder.setRank(Integer.parseInt(numDiv.text()));
+                builder.rank(Integer.parseInt(numDiv.text()));
             } catch (Exception e) {
                 e.printStackTrace();
                 throw e;
@@ -48,10 +48,10 @@ public class Converter {
         if (null != imgDiv) {
             Element ele = imgDiv.getElementsByTag("a").first();
             if (null != ele) {
-                builder.setVideoUrl(ele.attr("href"));
+                builder.videoUrl(ele.attr("href"));
                 Element imgUrlEle = ele.getElementsByTag("img").first();
                 if (null != imgUrlEle) {
-                    builder.setImgUrl(imgUrlEle.attr("src"));
+                    builder.imgUrl(imgUrlEle.attr("src"));
                 }
             }
         }
@@ -59,11 +59,11 @@ public class Converter {
         if (null != infoDiv) {
             Element ele = infoDiv.getElementsByTag("a").first();
             if (null != ele) {
-                builder.setTitle(ele.text()).setVideoUrl(ele.attr("href"));
+                builder.title(ele.text()).videoUrl(ele.attr("href"));
             }
             Element pgcEle = infoDiv.select("div.pgc-info").first();
             if (null != pgcEle) {
-                builder.setDescription(pgcEle.text());
+                builder.description(pgcEle.text());
             }
         }
 
@@ -72,13 +72,13 @@ public class Converter {
             for (Element ele : eles) {
                 Set<String> classname = ele.getElementsByTag("i").first().classNames();
                 if (classname.contains("play")) {
-                    builder.setPalyCount(ele.text());
+                    builder.palyCount(ele.text());
                 } else if (classname.contains("view")) {
-                    builder.setCommentCount(ele.text());
+                    builder.commentCount(ele.text());
                 } else if (classname.contains("author")) {
-                    builder.setAuthor(ele.text());
+                    builder.author(ele.text());
                 } else if (classname.contains("fav")) {
-                    builder.setLikeCount(ele.text());
+                    builder.likeCount(ele.text());
                 }
             }
 
@@ -88,7 +88,7 @@ public class Converter {
             Element ele = ptsDiv.getElementsByTag("div").last();
             if (null != ele) {
                 try {
-                    builder.setScore(Integer.parseInt(ele.text()));
+                    builder.score(Integer.parseInt(ele.text()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw e;

@@ -2,7 +2,6 @@ package nodes.hotinfoNode.crawler.facade;
 
 import common.io.web.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
-import nodes.hotinfoNode.models.VideoRecordListVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
 import nodes.hotinfoNode.utils.Converter;
 import org.apache.http.HttpEntity;
@@ -22,14 +21,14 @@ import java.util.Optional;
  * Created by Xinyu Zhu on 7/1/2020, 12:09 PM
  * xinyu.hotinfo.biz.bilibili.facade in HotInfo
  */
-public class ResponseToRankListProcessor implements ResponseProcessor<VideoRecordListVO> {
+public class ResponseToRankListProcessor implements ResponseProcessor<List<VideoRecordVO>> {
 
-    private static ResponseProcessor<VideoRecordListVO> instance = null;
+    private static ResponseProcessor<List<VideoRecordVO>> instance = null;
 
     private ResponseToRankListProcessor() {
     }
 
-    public static ResponseProcessor<VideoRecordListVO> getInstance() {
+    public static ResponseProcessor<List<VideoRecordVO>> getInstance() {
         if (instance == null) {
             synchronized (ResponseToRankListProcessor.class) {
                 if (instance == null) {
@@ -42,7 +41,7 @@ public class ResponseToRankListProcessor implements ResponseProcessor<VideoRecor
 
 
     @Override
-    public Optional<VideoRecordListVO> process(CloseableHttpResponse response, String url) throws Exception {
+    public Optional<List<VideoRecordVO>> process(CloseableHttpResponse response, String url) throws Exception {
         HttpEntity entity = response.getEntity();
         String msg = null;
         try {
@@ -59,7 +58,7 @@ public class ResponseToRankListProcessor implements ResponseProcessor<VideoRecor
         Element rankList = document.selectFirst("ul.rank-list");
 
         if (null == rankList) {
-            return Optional.of(new VideoRecordListVO(result));
+            return Optional.of(result);
         }
 
 
@@ -68,6 +67,6 @@ public class ResponseToRankListProcessor implements ResponseProcessor<VideoRecor
             VideoRecordVO record = Converter.toVideoRecordVO(rankRecord);
             result.add(record);
         }
-        return Optional.of(new VideoRecordListVO(result));
+        return Optional.of(result);
     }
 }

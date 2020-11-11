@@ -5,7 +5,6 @@ import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
 import nodes.stockinfoNode.crawler.facade.DailyPriceProcessor;
-import nodes.stockinfoNode.models.StockDailyRecordList;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
 import java.util.*;
@@ -15,10 +14,10 @@ import java.util.concurrent.Future;
  * Created by Xinyu Zhu on 2020/11/6, 23:53
  * nodes.stockinfoNode.crawler.impls in codingDimensionTemplate
  */
-public class AlphavantageCrawlerImpl implements AlphavantageCrawler<StockDailyRecordList> {
+public class AlphavantageCrawlerImpl implements AlphavantageCrawler<List<StockDailyRecordPOJO>> {
 
     private final Set<String> acceptedSymbol;
-    private final BaseCrawler<StockDailyRecordList> crawler;
+    private final BaseCrawler<List<StockDailyRecordPOJO>> crawler;
 
 
     public AlphavantageCrawlerImpl() {
@@ -37,14 +36,13 @@ public class AlphavantageCrawlerImpl implements AlphavantageCrawler<StockDailyRe
     }
 
     public static void main(String[] args) throws Exception {
-        AlphavantageCrawler<StockDailyRecordList> alphavantageCrawler = new AlphavantageCrawlerImpl();
+        AlphavantageCrawler<List<StockDailyRecordPOJO>> alphavantageCrawler = new AlphavantageCrawlerImpl();
         alphavantageCrawler.addSymbolToQueue("IBM");
 
-        Future<Optional<StockDailyRecordList>> result = alphavantageCrawler.getResultFuture("IBM");
-        StockDailyRecordList stockDailyRecordList = result.get().get();
-        List<StockDailyRecordPOJO> finalResult = stockDailyRecordList.getStockDailyRecordPOJOList();
-        System.out.println(finalResult.size());
-        System.out.println(finalResult.get(0));
+        Future<Optional<List<StockDailyRecordPOJO>>> result = alphavantageCrawler.getResultFuture("IBM");
+        List<StockDailyRecordPOJO> stockDailyRecordList = result.get().get();
+        System.out.println(stockDailyRecordList.size());
+        System.out.println(stockDailyRecordList.get(0));
         alphavantageCrawler.shutDown();
     }
 
@@ -70,11 +68,11 @@ public class AlphavantageCrawlerImpl implements AlphavantageCrawler<StockDailyRe
     }
 
     @Override
-    public Future<Optional<StockDailyRecordList>> getResultFuture(String symbol) throws Exception {
+    public Future<Optional<List<StockDailyRecordPOJO>>> getResultFuture(String symbol) throws Exception {
         if (!acceptedSymbol.contains(symbol)) {
             addSymbolToQueue(symbol);
         }
-        List<Future<Optional<StockDailyRecordList>>> result = crawler.getResultFuture(symbol);
+        List<Future<Optional<List<StockDailyRecordPOJO>>>> result = crawler.getResultFuture(symbol);
         if (!result.isEmpty()) {
             if (result.size() > 1) {
                 System.err.println("Error happend, somehow got two result for the same symbol, returned the first one");

@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import common.io.web.ResponseProcessor;
 import common.time.TimeClient;
 import common.time.TimeConstant;
-import nodes.stockinfoNode.models.StockDailyRecordList;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import nodes.stockinfoNode.utils.Converter;
 import org.apache.http.ParseException;
@@ -13,14 +12,14 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.util.*;
 
-public class DailyPriceProcessor implements ResponseProcessor<StockDailyRecordList> {
+public class DailyPriceProcessor implements ResponseProcessor<List<StockDailyRecordPOJO>> {
 
-    private static ResponseProcessor<StockDailyRecordList> instance = null;
+    private static ResponseProcessor<List<StockDailyRecordPOJO>> instance = null;
 
     private DailyPriceProcessor() {
     }
 
-    public static ResponseProcessor<StockDailyRecordList> getInstance() {
+    public static ResponseProcessor<List<StockDailyRecordPOJO>> getInstance() {
         if (instance == null) {
             synchronized (DailyPriceProcessor.class) {
                 if (instance == null) {
@@ -46,7 +45,7 @@ public class DailyPriceProcessor implements ResponseProcessor<StockDailyRecordLi
         return stockDailyRecordPOJO;
     }
 
-    public Optional<StockDailyRecordList> process(CloseableHttpResponse response, String url) throws Exception {
+    public Optional<List<StockDailyRecordPOJO>> process(CloseableHttpResponse response, String url) throws Exception {
 
         JsonObject jsonObject = Converter.toJsonObject(response);
 
@@ -63,11 +62,11 @@ public class DailyPriceProcessor implements ResponseProcessor<StockDailyRecordLi
                 JsonObject dailyData = dailyPriceObject.get(dayString).getAsJsonObject();
                 priceDataList.add(toDailyPriceData(dailyData, dayString, symbol));
             }
-            return Optional.of(new StockDailyRecordList(priceDataList));
+            return Optional.of(priceDataList);
         } catch (Exception e) {
             // Return Empty List if encounter error
             System.err.println("Encountered invalid response: " + response);
-            return Optional.of(new StockDailyRecordList());
+            return Optional.of(new ArrayList<>(0));
         } finally {
             response.close();
         }
