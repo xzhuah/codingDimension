@@ -1,6 +1,8 @@
 # codingDimension
 
-I will put a lot of interesting personal project here, they will be maintained using the [codingDimensionTemplate](https://github.com/xzhuah/codingDimensionTemplate)(upgraded to [codingDimensionTemplate_Guice](https://github.com/xzhuah/codingDimensionTemplate_Guice) later), if you are interested in the template, please refer to that [repository](https://github.com/xzhuah/codingDimensionTemplate).
+I will put a lot of interesting personal project here, they will be maintained using the [codingDimensionTemplate](https://github.com/xzhuah/codingDimensionTemplate)(upgraded to [codingDimensionTemplate_Guice](https://github.com/xzhuah/codingDimensionTemplate_Guice)), if you are interested in the template, please refer to that [repository](https://github.com/xzhuah/codingDimensionTemplate).
+
+I believe the code in this repo is of good quality, besides using its function, you can also use it for education, learn Java Design Patterns, Java Generic, Optional and Future, synchronization, Guice Dependency injection framework (I upgrade it from not using Guice to using Guice, you can learn a lot from the upgrading history), and so on. I have experience of working in some of the most famous tech companies in the world and I really demostrate some great software engineering ideas in this project, hope you can find them :). Oh, by the way, some of the test is writtern in those main function, I didn't take the testing very serious which I think is an "won't fix", I am really not a fan to write test lol, espepcailly for these kind of individual project.
 
 I plan to create a video to demo what are those great things in this project, but I just don't have time. I will just summarize them a little bit here
 
