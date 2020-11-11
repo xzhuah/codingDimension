@@ -1,5 +1,7 @@
 package common.io.web.constants;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Created by Xinyu Zhu on 6/29/2020, 7:30 PM
  * common.io.web.constants in AllInOne
@@ -87,7 +89,7 @@ public interface ValueConstant<T> {
     }
 
     enum Encoding implements ValueConstant<String> {
-        UTF_8("UTF-8");
+        UTF_8(StandardCharsets.UTF_8.name());
         private final String encoding;
 
         Encoding(String encoding) {

@@ -1,13 +1,12 @@
 package nodes.stockinfoNode.models;
 
-import common.io.web.models.ResponseProcessResult;
 import org.bson.types.ObjectId;
 
 /**
  * Created by Xinyu Zhu on 2020/11/8, 21:31
  * nodes.stockinfoNode.models in codingDimensionTemplate
  */
-public class StockCompanyPOJO implements ResponseProcessResult {
+public class StockCompanyPOJO {
     // This is POJO indicator: real primary key
     private ObjectId id;
 

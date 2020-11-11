@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,15 +33,15 @@ public class JsonFileClient {
 
     }
 
-    public static List<JsonElement> readFile(String file) {
+    public static List<JsonElement> readFile(String file) throws IOException {
         return readFile(file, System.lineSeparator(), JsonElement.class);
     }
 
-    public static <T> List<T> readFile(String file, Class classOfT) {
+    public static <T> List<T> readFile(String file, Class<T> classOfT) throws IOException {
         return readFile(file, System.lineSeparator(), classOfT);
     }
 
-    public static <T> List<T> readFile(String file, String spliter, Class classOfT) {
+    public static <T> List<T> readFile(String file, String spliter, Class<T> classOfT) throws IOException {
         Gson gson = new GsonBuilder().create();
         List<String> content = PlaintextClient.readFileLines(file, spliter);
         List<T> result = new ArrayList<>();
@@ -48,11 +49,10 @@ public class JsonFileClient {
             if (null != c && c.length() > 0) {
                 try {
                     System.out.println(c);
-                    Object ele = gson.fromJson(c, classOfT);
-                    result.add((T) ele);
+                    T ele = gson.fromJson(c, classOfT);
+                    result.add(ele);
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    continue;
                 }
 
             }

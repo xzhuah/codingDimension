@@ -1,14 +1,12 @@
 package nodes.crawlerNode.models;
 
-import common.io.web.models.ResponseProcessResult;
-
 import java.util.List;
 
 /**
  * Created by Xinyu Zhu on 2020/11/7, 11:45
  * nodes.crawlerNode.models in codingDimensionTemplate
  */
-public class WebpageCommonInfo implements ResponseProcessResult {
+public class WebpageCommonInfo {
     // The url to this page
     private String webPageUrl;
 

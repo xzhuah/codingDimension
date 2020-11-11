@@ -1,7 +1,5 @@
 package nodes.hotinfoNode.crawler.impls;
 
-
-import common.io.web.models.ResponseProcessResult;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
@@ -14,6 +12,7 @@ import nodes.hotinfoNode.utils.EnumUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,10 +24,10 @@ import static common.utils.ConditionChecker.checkStatus;
  */
 public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawlerService {
     private final AtomicInteger counter;
-    private BaseCrawler crawler;
+    private final BaseCrawler<VideoRecordListVO> crawler;
 
     public BilibiliHotRankCrawlerServiceImpl() {
-        crawler = new BaseCrawler(ResponseToRankListProcessor.getInstance());
+        crawler = new BaseCrawler<>(ResponseToRankListProcessor.getInstance());
         counter = new AtomicInteger(0);
     }
 
@@ -55,16 +54,16 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
                 throw e;
             }
         }
-        List<Future<ResponseProcessResult>> rawResult = crawler.getResultFuture(tag);
+        List<Future<Optional<VideoRecordListVO>>> rawResult = crawler.getResultFuture(tag);
 
         // ensure two size are equal
         checkStatus(rawResult.size() == rankingRules.size(), "REQUEST_RESPONSE_MISMATCH_EXCEPTION");
 
         for (int i = 0; i < rawResult.size(); i++) {
-            Future<ResponseProcessResult> future = rawResult.get(i);
+            Future<Optional<VideoRecordListVO>> future = rawResult.get(i);
             VideoRecordListVO records = null;
             try {
-                records = (VideoRecordListVO) future.get();
+                records = future.get().get();
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println("Failed for Request: " + rankingRules + " keep processing remaining");

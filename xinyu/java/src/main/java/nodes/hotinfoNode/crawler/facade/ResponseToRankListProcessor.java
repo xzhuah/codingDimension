@@ -16,19 +16,20 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Xinyu Zhu on 7/1/2020, 12:09 PM
  * xinyu.hotinfo.biz.bilibili.facade in HotInfo
  */
-public class ResponseToRankListProcessor implements ResponseProcessor {
+public class ResponseToRankListProcessor implements ResponseProcessor<VideoRecordListVO> {
 
-    private static ResponseProcessor instance = null;
+    private static ResponseProcessor<VideoRecordListVO> instance = null;
 
     private ResponseToRankListProcessor() {
     }
 
-    public static ResponseProcessor getInstance() {
+    public static ResponseProcessor<VideoRecordListVO> getInstance() {
         if (instance == null) {
             synchronized (ResponseToRankListProcessor.class) {
                 if (instance == null) {
@@ -41,7 +42,7 @@ public class ResponseToRankListProcessor implements ResponseProcessor {
 
 
     @Override
-    public VideoRecordListVO process(CloseableHttpResponse response, String url) throws Exception {
+    public Optional<VideoRecordListVO> process(CloseableHttpResponse response, String url) throws Exception {
         HttpEntity entity = response.getEntity();
         String msg = null;
         try {
@@ -58,7 +59,7 @@ public class ResponseToRankListProcessor implements ResponseProcessor {
         Element rankList = document.selectFirst("ul.rank-list");
 
         if (null == rankList) {
-            return new VideoRecordListVO(result);
+            return Optional.of(new VideoRecordListVO(result));
         }
 
 
@@ -67,6 +68,6 @@ public class ResponseToRankListProcessor implements ResponseProcessor {
             VideoRecordVO record = Converter.toVideoRecordVO(rankRecord);
             result.add(record);
         }
-        return new VideoRecordListVO(result);
+        return Optional.of(new VideoRecordListVO(result));
     }
 }

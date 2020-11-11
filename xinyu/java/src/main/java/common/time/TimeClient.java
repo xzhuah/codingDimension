@@ -13,8 +13,7 @@ public class TimeClient {
 
     // Apply on timestamp
     public static Date timestampToDate(long timestamp) {
-        Date date = new Date(timestamp);
-        return date;
+        return new Date(timestamp);
     }
 
     public static String timestampToString(long timestamp) {
@@ -54,8 +53,7 @@ public class TimeClient {
     }
 
     public static Date stringtoDate(String time, SimpleDateFormat format) throws ParseException {
-        Date date = format.parse(time);
-        return date;
+        return format.parse(time);
     }
 
     // Other handy utils

@@ -3,15 +3,11 @@ package nodes.crawlerNode;
 import common.io.web.PoolingAsyncHttpClient;
 import common.io.web.ResponseProcessor;
 import common.io.web.impl.PoolingAsyncHttpClientImpl;
-import common.io.web.models.ResponseProcessResult;
 import common.io.web.utils.RequestBuilder;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.crawlerNode.constants.CrawlerStatus;
 
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.Future;
 
 import static common.utils.ConditionChecker.checkStatus;
@@ -27,14 +23,16 @@ import static common.utils.ConditionChecker.checkStatus;
  * <p>
  * If you didn't use tag to mark request, the crawler will memorize which result belongs to which
  * url + params combination, so you need to provide url + params to fetch the result
+ *
+ * We only support String type tag currently
  */
-public class BaseCrawler {
-    PoolingAsyncHttpClient poolingAsyncHttpClient;
+public class BaseCrawler<T> {
+    PoolingAsyncHttpClient<T, String> poolingAsyncHttpClient;
     private CrawlerStatus currentStatus;
 
 
-    public BaseCrawler(ResponseProcessor responseProcessor) {
-        poolingAsyncHttpClient = new PoolingAsyncHttpClientImpl(responseProcessor);
+    public BaseCrawler(ResponseProcessor<T> responseProcessor) {
+        poolingAsyncHttpClient = new PoolingAsyncHttpClientImpl<>(responseProcessor);
         currentStatus = CrawlerStatus.RUNNING_JOB_ASYNC;
     }
 
@@ -44,7 +42,7 @@ public class BaseCrawler {
 
         if (null != params) {
             SortedSet<String> keys = new TreeSet<>(params.keySet());
-            keys.stream().forEach(key -> {
+            keys.forEach(key -> {
                 tagBuilder.append(":").append(key).append(":").append(params.get(key));
             });
         }
@@ -81,15 +79,15 @@ public class BaseCrawler {
 
     // To get a result, you must have added it, otherwise you can an empty list.
     // For lazy me :)
-    public List<Future<ResponseProcessResult>> getResultFuture(String tag) {
+    public List<Future<Optional<T>>> getResultFuture(String tag) {
         return getResultFuture(tag, null, null);
     }
 
-    public List<Future<ResponseProcessResult>> getResultFuture(String url, Map<String, String> params) {
+    public List<Future<Optional<T>>> getResultFuture(String url, Map<String, String> params) {
         return getResultFuture(null, url, params);
     }
 
-    private List<Future<ResponseProcessResult>> getResultFuture(String tag, String url, Map<String, String> params) {
+    private List<Future<Optional<T>>> getResultFuture(String tag, String url, Map<String, String> params) {
         checkStatus(canReturnResult(), "Crawler can't return result! crawler status: " + currentStatus);
         if (null == tag) {
             checkStatus(url != null, "Invalid params, tag and url are null!");

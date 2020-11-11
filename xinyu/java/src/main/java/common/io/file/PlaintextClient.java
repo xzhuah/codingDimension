@@ -1,6 +1,7 @@
 package common.io.file;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,8 +10,8 @@ import java.util.List;
  * common.io.file in AllInOne
  */
 public class PlaintextClient {
-    public static String readFile(String filename) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"))) {
+    public static String readFile(String filename) throws IOException {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8))) {
             StringBuilder builder = new StringBuilder();
             String str;
 
@@ -20,12 +21,12 @@ public class PlaintextClient {
             return builder.toString();
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
     }
 
-    public static List<String> readFileLines(String filename) {
+    public static List<String> readFileLines(String filename) throws IOException {
         String content = readFile(filename);
         if (null == content) {
             return null;
@@ -34,7 +35,7 @@ public class PlaintextClient {
     }
 
     // automatically remove prefix and suffix spliter
-    public static List<String> readFileLines(String filename, String spliter) {
+    public static List<String> readFileLines(String filename, String spliter) throws IOException {
         String content = readFile(filename);
 
         // remove prefix spliter
@@ -45,13 +46,8 @@ public class PlaintextClient {
         while (content.endsWith(spliter)) {
             content = content.substring(0, content.length() - spliter.length());
         }
-        if (null == content) {
-            return null;
-        }
 
-        List<String> result = Arrays.asList(content.split(spliter));
-
-        return result;
+        return Arrays.asList(content.split(spliter));
     }
 
     public static void write(String filename, String content) {
@@ -59,7 +55,7 @@ public class PlaintextClient {
     }
 
     private static void write(String filename, String content, boolean append) {
-        try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, append), "UTF-8"))) {
+        try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename, append), StandardCharsets.UTF_8))) {
             out.write(content);
         } catch (IOException e) {
             e.printStackTrace();

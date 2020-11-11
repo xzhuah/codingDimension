@@ -3,6 +3,7 @@ package common.io.file;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -16,14 +17,14 @@ import java.util.*;
 public class CsvFileClient {
     private final String SPLITOR = ",";
     private List<String> header;
-    private String filename;
+    private final String filename;
 
     public CsvFileClient(String filename) {
         this.filename = filename;
 
     }
 
-    public List<JsonObject> readAsJson() {
+    public List<JsonObject> readAsJson() throws IOException {
         List<JsonObject> result = new ArrayList<>();
         List<String> contents = PlaintextClient.readFileLines(filename);
         if (null == contents || contents.isEmpty()) {
@@ -55,13 +56,12 @@ public class CsvFileClient {
         if (null == header) {
             header = parseKeys(content.get(0));
         }
-        StringBuilder builder = new StringBuilder(getHeader());
-        builder.append(System.lineSeparator());
-        builder.append(convertToString(content));
-        PlaintextClient.write(filename, builder.toString());
+        String builder = getHeader() + System.lineSeparator() +
+                convertToString(content);
+        PlaintextClient.write(filename, builder);
     }
 
-    public void appendWithJson(List<JsonObject> content) {
+    public void appendWithJson(List<JsonObject> content) throws IOException {
         if (null == content || content.isEmpty()) {
             return;
         }
@@ -72,7 +72,7 @@ public class CsvFileClient {
         StringBuilder builder = new StringBuilder();
 
         String oldContent = PlaintextClient.readFile(filename);
-        if (null == oldContent || oldContent.length() == 0) {
+        if (oldContent.length() == 0) {
             builder.append(getHeader()).append(System.lineSeparator());
         }
 

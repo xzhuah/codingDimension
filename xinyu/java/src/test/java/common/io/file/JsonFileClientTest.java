@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class JsonFileClientTest {
 
     @Test
-    public void test() {
+    public void test() throws IOException {
         JsonObject obj = new JsonObject();
         obj.addProperty("name", "xinyu");
         obj.addProperty("age", 23);

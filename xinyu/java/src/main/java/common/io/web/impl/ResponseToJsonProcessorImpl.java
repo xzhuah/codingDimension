@@ -4,24 +4,24 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import common.io.web.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
-import common.io.web.models.ResponseProcessResult;
-import common.io.web.models.WebpageJsonDTO;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
+
+import java.util.Optional;
 
 
 /**
  * Created by Xinyu Zhu on 2020/11/1, 20:26
  * common.io.web.impl in AllInOne
  */
-public class ResponseToJsonProcessorImpl implements ResponseProcessor {
-    private static ResponseProcessor instance = null;
+public class ResponseToJsonProcessorImpl implements ResponseProcessor<JsonObject> {
+    private static ResponseProcessor<JsonObject> instance = null;
 
     private ResponseToJsonProcessorImpl() {
     }
 
-    public static ResponseProcessor getInstance() {
+    public static ResponseProcessor<JsonObject> getInstance() {
         if (instance == null) {
             synchronized (ResponseToRawHtmlProcessorImpl.class) {
                 if (instance == null) {
@@ -33,12 +33,12 @@ public class ResponseToJsonProcessorImpl implements ResponseProcessor {
     }
 
     @Override
-    public ResponseProcessResult process(CloseableHttpResponse response, String url) throws Exception {
+    public Optional<JsonObject> process(CloseableHttpResponse response, String url) throws Exception {
         HttpEntity entity = response.getEntity();
-        String msg = "";
+        String msg;
         msg = EntityUtils.toString(entity, ValueConstant.Encoding.UTF_8.getValue());
-        JsonObject jsonObject = new JsonParser().parse(msg).getAsJsonObject();
+        JsonObject jsonObject = JsonParser.parseString(msg).getAsJsonObject();
         response.close();
-        return new WebpageJsonDTO(jsonObject);
+        return Optional.of(jsonObject);
     }
 }

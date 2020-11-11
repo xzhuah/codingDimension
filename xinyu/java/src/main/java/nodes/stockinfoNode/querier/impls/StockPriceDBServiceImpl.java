@@ -2,7 +2,6 @@ package nodes.stockinfoNode.querier.impls;
 
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
-import common.io.database.mongodb.MongoDBClient;
 import common.io.database.mongodb.impl.MongoDBPojoClientImpl;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
@@ -12,7 +11,6 @@ import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 /**

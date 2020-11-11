@@ -1,7 +1,5 @@
 package nodes.stockinfoNode.crawler.impls;
 
-import common.io.file.PlaintextClient;
-import common.io.web.models.ResponseProcessResult;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
@@ -17,17 +15,15 @@ import java.util.concurrent.Future;
  * Created by Xinyu Zhu on 2020/11/6, 23:53
  * nodes.stockinfoNode.crawler.impls in codingDimensionTemplate
  */
-public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.AlphavantageCrawler {
-    private static final String keyFile = "stockinfoKey.pass";
-    private static final String apiKey = getKeyForAlphavantageCrawler();
+public class AlphavantageCrawlerImpl implements AlphavantageCrawler<StockDailyRecordList> {
 
-    private Set<String> acceptedSymbol;
-    private BaseCrawler crawler;
+    private final Set<String> acceptedSymbol;
+    private final BaseCrawler<StockDailyRecordList> crawler;
 
 
     public AlphavantageCrawlerImpl() {
         acceptedSymbol = new HashSet<>();
-        crawler = new BaseCrawler(DailyPriceProcessor.getInstance());
+        crawler = new BaseCrawler<>(DailyPriceProcessor.getInstance());
     }
 
     // Build param for query online
@@ -36,29 +32,16 @@ public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.Alph
         requestparam.put("function", "TIME_SERIES_DAILY_ADJUSTED");
         requestparam.put("symbol", symbol);
         requestparam.put("outputsize", "full");
-        requestparam.put("apikey", apiKey);
+        requestparam.put("apikey", WebsiteConstant.loadKey);
         return requestparam;
     }
 
-    // Load file from a file (avoid sensitive information being upload to public codebase)
-    private static String getKeyForAlphavantageCrawler() {
-        String loadKey = PlaintextClient.readFile(keyFile);
-        if (null == loadKey) {
-            // Default demo key which can be used with a lot of limitation
-            System.out.println("Key file not found, use default demo key");
-            loadKey = "demo";
-        } else {
-            loadKey = loadKey.trim();
-        }
-        return loadKey;
-    }
-
     public static void main(String[] args) throws Exception {
-        AlphavantageCrawler alphavantageCrawler = new AlphavantageCrawlerImpl();
+        AlphavantageCrawler<StockDailyRecordList> alphavantageCrawler = new AlphavantageCrawlerImpl();
         alphavantageCrawler.addSymbolToQueue("IBM");
 
-        Future<ResponseProcessResult> result = alphavantageCrawler.getResultFuture("IBM");
-        StockDailyRecordList stockDailyRecordList = (StockDailyRecordList) result.get();
+        Future<Optional<StockDailyRecordList>> result = alphavantageCrawler.getResultFuture("IBM");
+        StockDailyRecordList stockDailyRecordList = result.get().get();
         List<StockDailyRecordPOJO> finalResult = stockDailyRecordList.getStockDailyRecordPOJOList();
         System.out.println(finalResult.size());
         System.out.println(finalResult.get(0));
@@ -87,11 +70,11 @@ public class AlphavantageCrawlerImpl implements nodes.stockinfoNode.crawler.Alph
     }
 
     @Override
-    public Future<ResponseProcessResult> getResultFuture(String symbol) throws Exception {
+    public Future<Optional<StockDailyRecordList>> getResultFuture(String symbol) throws Exception {
         if (!acceptedSymbol.contains(symbol)) {
             addSymbolToQueue(symbol);
         }
-        List<Future<ResponseProcessResult>> result = crawler.getResultFuture(symbol);
+        List<Future<Optional<StockDailyRecordList>>> result = crawler.getResultFuture(symbol);
         if (!result.isEmpty()) {
             if (result.size() > 1) {
                 System.err.println("Error happend, somehow got two result for the same symbol, returned the first one");

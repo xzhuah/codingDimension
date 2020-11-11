@@ -2,33 +2,25 @@ package nodes.stockinfoNode.crawler.facade;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import common.io.web.ResponseProcessor;
-import common.io.web.constants.ValueConstant;
-import common.io.web.models.ResponseProcessResult;
 import common.time.TimeClient;
 import common.time.TimeConstant;
 import nodes.stockinfoNode.models.StockDailyRecordList;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import nodes.stockinfoNode.utils.Converter;
-import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.util.EntityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class DailyPriceProcessor implements ResponseProcessor {
+public class DailyPriceProcessor implements ResponseProcessor<StockDailyRecordList> {
 
-    private static ResponseProcessor instance = null;
+    private static ResponseProcessor<StockDailyRecordList> instance = null;
 
     private DailyPriceProcessor() {
     }
 
-    public static ResponseProcessor getInstance() {
+    public static ResponseProcessor<StockDailyRecordList> getInstance() {
         if (instance == null) {
             synchronized (DailyPriceProcessor.class) {
                 if (instance == null) {
@@ -54,7 +46,7 @@ public class DailyPriceProcessor implements ResponseProcessor {
         return stockDailyRecordPOJO;
     }
 
-    public ResponseProcessResult process(CloseableHttpResponse response, String url) throws Exception {
+    public Optional<StockDailyRecordList> process(CloseableHttpResponse response, String url) throws Exception {
 
         JsonObject jsonObject = Converter.toJsonObject(response);
 
@@ -71,11 +63,11 @@ public class DailyPriceProcessor implements ResponseProcessor {
                 JsonObject dailyData = dailyPriceObject.get(dayString).getAsJsonObject();
                 priceDataList.add(toDailyPriceData(dailyData, dayString, symbol));
             }
-            return new StockDailyRecordList(priceDataList);
+            return Optional.of(new StockDailyRecordList(priceDataList));
         } catch (Exception e) {
             // Return Empty List if encounter error
             System.err.println("Encountered invalid response: " + response);
-            return new StockDailyRecordList();
+            return Optional.of(new StockDailyRecordList());
         } finally {
             response.close();
         }

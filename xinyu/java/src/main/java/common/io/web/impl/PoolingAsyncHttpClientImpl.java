@@ -5,7 +5,6 @@ import common.io.web.PoolingAsyncHttpClient;
 import common.io.web.ResponseProcessor;
 import common.io.web.SyncHttpClient;
 import common.io.web.constants.ValueConstant;
-import common.io.web.models.ResponseProcessResult;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import java.util.*;
@@ -17,18 +16,14 @@ import java.util.concurrent.*;
  * common.io.web.impl in AllInOne
  * tag -> [request, request, ...]
  */
-public class PoolingAsyncHttpClientImpl implements PoolingAsyncHttpClient {
-    private SyncHttpClient syncHttpClient;
-    private ExecutorService executorService;
-    private Map<String, Deque<HttpUriRequest>> httpRequests;
+public class PoolingAsyncHttpClientImpl<T, E> implements PoolingAsyncHttpClient<T, E> {
+    private final SyncHttpClient<T> syncHttpClient;
+    private final ExecutorService executorService;
+    private final Map<E, Deque<HttpUriRequest>> httpRequests;
 
 
-    public PoolingAsyncHttpClientImpl() {
-        this(ResponseToRawHtmlProcessorImpl.getInstance());
-    }
-
-    public PoolingAsyncHttpClientImpl(ResponseProcessor responseProcessor) {
-        syncHttpClient = new SyncHttpClientImpl(responseProcessor);
+    public PoolingAsyncHttpClientImpl(ResponseProcessor<T> responseProcessor) {
+        syncHttpClient = new SyncHttpClientImpl<T>(responseProcessor);
 
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
                 .setNameFormat(ValueConstant.FormatTemplate.HTTPCLIENT_POOL.getValue()).build();
@@ -37,7 +32,7 @@ public class PoolingAsyncHttpClientImpl implements PoolingAsyncHttpClient {
                 ValueConstant.ThreadPoolParam.MAXIMUM_POOL_SIZE.getValue(),
                 ValueConstant.ThreadPoolParam.KEEP_ALIVE_TIME_SECOND.getValue(),
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>(ValueConstant.ThreadPoolParam.BLOCK_QUEUE_CAPACITY.getValue()),
+                new LinkedBlockingQueue<>(ValueConstant.ThreadPoolParam.BLOCK_QUEUE_CAPACITY.getValue()),
                 namedThreadFactory,
                 new ThreadPoolExecutor.CallerRunsPolicy());
 
@@ -45,7 +40,7 @@ public class PoolingAsyncHttpClientImpl implements PoolingAsyncHttpClient {
     }
 
     @Override
-    public void addRequestToPool(String tag, HttpUriRequest httpRequest) {
+    public void addRequestToPool(E tag, HttpUriRequest httpRequest) {
         if (!httpRequests.containsKey(tag)) {
             httpRequests.putIfAbsent(tag, new LinkedList<>());
         }
@@ -53,13 +48,14 @@ public class PoolingAsyncHttpClientImpl implements PoolingAsyncHttpClient {
     }
 
     @Override
-    public List<Future<ResponseProcessResult>> startProcessing(String tag) {
-        List<Future<ResponseProcessResult>> currentResult = new ArrayList<>();
+    public List<Future<Optional<T>>> startProcessing(E tag) {
+        List<Future<Optional<T>>> currentResult = new ArrayList<>();
         Deque<HttpUriRequest> currentReceivedRequest = httpRequests.get(tag);
         if (null == currentReceivedRequest) {
             return currentResult;
         }
-        synchronized (currentReceivedRequest) {
+        synchronized (httpRequests) {
+            // Other thread can't access to httpRequests to modify the deque while the deque is being read here
             while (!currentReceivedRequest.isEmpty()) {
                 HttpUriRequest nextRequest = currentReceivedRequest.pollFirst();
                 currentResult.add(executorService.submit(new ProcessRequestCallable(nextRequest)));
@@ -73,15 +69,15 @@ public class PoolingAsyncHttpClientImpl implements PoolingAsyncHttpClient {
         this.executorService.shutdown();
     }
 
-    private class ProcessRequestCallable implements Callable {
-        private HttpUriRequest httpUriRequest;
+    private class ProcessRequestCallable implements Callable<Optional<T>> {
+        private final HttpUriRequest httpUriRequest;
 
         public ProcessRequestCallable(HttpUriRequest httpUriRequest) {
             this.httpUriRequest = httpUriRequest;
         }
 
         @Override
-        public ResponseProcessResult call() throws Exception {
+        public Optional<T> call() throws Exception {
             return PoolingAsyncHttpClientImpl.this.syncHttpClient.processRequest(this.httpUriRequest);
         }
     }

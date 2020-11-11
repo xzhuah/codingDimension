@@ -2,23 +2,24 @@ package nodes.stockinfoNode.crawler.facade;
 
 import com.google.gson.JsonObject;
 import common.io.web.ResponseProcessor;
-import common.io.web.models.ResponseProcessResult;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.utils.Converter;
 import org.apache.http.client.methods.CloseableHttpResponse;
+
+import java.util.Optional;
 
 /**
  * Created by Xinyu Zhu on 2020/11/8, 22:04
  * nodes.stockinfoNode.crawler.facade in codingDimensionTemplate
  */
-public class CompanyInfoProcessor implements ResponseProcessor {
+public class CompanyInfoProcessor implements ResponseProcessor<StockCompanyPOJO> {
 
-    private static ResponseProcessor instance = null;
+    private static ResponseProcessor<StockCompanyPOJO> instance = null;
 
     private CompanyInfoProcessor() {
     }
 
-    public static ResponseProcessor getInstance() {
+    public static ResponseProcessor<StockCompanyPOJO> getInstance() {
         if (instance == null) {
             synchronized (DailyPriceProcessor.class) {
                 if (instance == null) {
@@ -62,8 +63,8 @@ public class CompanyInfoProcessor implements ResponseProcessor {
 
 
     @Override
-    public ResponseProcessResult process(CloseableHttpResponse response, String url) throws Exception {
+    public Optional<StockCompanyPOJO> process(CloseableHttpResponse response, String url) throws Exception {
         JsonObject jsonObject = Converter.toJsonObject(response);
-        return toStockCompanyPOJO(jsonObject);
+        return Optional.of(toStockCompanyPOJO(jsonObject));
     }
 }

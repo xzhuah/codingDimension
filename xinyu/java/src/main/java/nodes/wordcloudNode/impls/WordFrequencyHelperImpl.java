@@ -6,7 +6,6 @@ import com.kennycason.kumo.nlp.tokenizers.ChineseWordTokenizer;
 import nodes.wordcloudNode.WordFrequencyHelper;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

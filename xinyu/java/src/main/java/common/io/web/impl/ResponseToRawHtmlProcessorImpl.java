@@ -2,10 +2,11 @@ package common.io.web.impl;
 
 import common.io.web.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
-import common.io.web.models.WebpageRawHtmlDTO;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
+
+import java.util.Optional;
 
 
 /**
@@ -13,14 +14,14 @@ import org.apache.http.util.EntityUtils;
  * common.io.web.impl in AllInOne
  * Read out raw html content from the response
  */
-public class ResponseToRawHtmlProcessorImpl implements ResponseProcessor {
+public class ResponseToRawHtmlProcessorImpl implements ResponseProcessor<String> {
 
-    private static ResponseProcessor instance = null;
+    private static ResponseProcessor<String> instance = null;
 
     private ResponseToRawHtmlProcessorImpl() {
     }
 
-    public static ResponseProcessor getInstance() {
+    public static ResponseProcessor<String> getInstance() {
         if (instance == null) {
             synchronized (ResponseToRawHtmlProcessorImpl.class) {
                 if (instance == null) {
@@ -33,11 +34,11 @@ public class ResponseToRawHtmlProcessorImpl implements ResponseProcessor {
 
 
     @Override
-    public WebpageRawHtmlDTO process(CloseableHttpResponse response, String url) throws Exception {
+    public Optional<String> process(CloseableHttpResponse response, String url) throws Exception {
         HttpEntity entity = response.getEntity();
         String msg = "";
         msg = EntityUtils.toString(entity, ValueConstant.Encoding.UTF_8.getValue());
         response.close();
-        return new WebpageRawHtmlDTO(msg);
+        return Optional.of(msg);
     }
 }

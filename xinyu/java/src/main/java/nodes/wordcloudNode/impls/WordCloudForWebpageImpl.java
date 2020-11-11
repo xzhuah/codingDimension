@@ -6,7 +6,6 @@ import nodes.wordcloudNode.WordCloudForWebpage;
 import nodes.wordcloudNode.WordCloudGenerator;
 import nodes.wordcloudNode.constants.StyleConstant;
 
-import java.awt.*;
 import java.util.List;
 
 import static common.utils.ConditionChecker.checkStatus;
@@ -45,11 +44,11 @@ public class WordCloudForWebpageImpl implements WordCloudForWebpage {
         checkStatus(weightOnHeader >= 0 && weightOnHeader <= 10,
                 "Your weight on header," + weightOnHeader + " exceeds the range 0~10");
         webpageCommonInfoCrawler.addJobToQueue(url);
-        WebpageCommonInfo commonInfo = (WebpageCommonInfo) webpageCommonInfoCrawler.getResultFuture(url, null).get(0).get();
+        WebpageCommonInfo commonInfo = webpageCommonInfoCrawler.getResultFuture(url, null).get(0).get().get();
         StringBuilder webpageContent = new StringBuilder(commonInfo.getWebpageContent());
         wordCloudGenerator.setOutputFile(outputFile);
 
-        commonInfo.getWebpageTitles().stream().forEach(title -> {
+        commonInfo.getWebpageTitles().forEach(title -> {
             for (int i = 0; i < weightOnHeader - 1; i++) {
                 webpageContent.append(" ").append(title);
             }

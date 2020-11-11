@@ -4,7 +4,6 @@ package common.io.web.impl;
 import common.io.web.ResponseProcessor;
 import common.io.web.SyncHttpClient;
 import common.io.web.constants.ValueConstant;
-import common.io.web.models.ResponseProcessResult;
 import common.io.web.utils.HttpRequestRetryHandlerBuilder;
 import org.apache.http.ParseException;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -18,23 +17,19 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Created by Xinyu Zhu on 11/3/2020, 8:42 AM
  * common.io.web.impl in AllInOne
  */
-public class SyncHttpClientImpl implements SyncHttpClient {
+public class SyncHttpClientImpl<T> implements SyncHttpClient<T> {
 
-    private PoolingHttpClientConnectionManager connManager;
-    private CloseableHttpClient httpclient;
-    private ResponseProcessor responseProcessor;
+    private final CloseableHttpClient httpclient;
+    private final ResponseProcessor<T> responseProcessor;
 
-    public SyncHttpClientImpl() {
-        this(ResponseToRawHtmlProcessorImpl.getInstance());
-    }
-
-    public SyncHttpClientImpl(ResponseProcessor responseProcessor) {
-        this.connManager = new PoolingHttpClientConnectionManager();
+    public SyncHttpClientImpl(ResponseProcessor<T> responseProcessor) {
+        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
         // Set max connection number
         connManager.setMaxTotal(ValueConstant.ConnectionNumber.MAX_TOTAL_CONNECTION.getValue());
         // Set max connection number per route
@@ -62,7 +57,7 @@ public class SyncHttpClientImpl implements SyncHttpClient {
     }
 
     @Override
-    public ResponseProcessResult processRequest(HttpUriRequest request) throws Exception {
+    public Optional<T> processRequest(HttpUriRequest request) throws Exception {
         CloseableHttpResponse response = null;
         try {
             response = this.httpclient.execute(request);
