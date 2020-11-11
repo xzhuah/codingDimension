@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class PriceAutoUpdaterImpl {
     private static PriceAutoUpdaterImpl instance = null;
-    StockPriceDBServiceImpl stockPriceDBService;
+    private StockPriceDBServiceImpl stockPriceDBService;
 
     private PriceAutoUpdaterImpl() {
         stockPriceDBService = StockPriceDBServiceImpl.getInstance();

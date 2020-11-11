@@ -1,10 +1,12 @@
 package nodes.stockinfoNode.crawler.impls;
 
+import com.google.inject.Inject;
+import com.google.inject.Key;
+import nodes.NodeModule;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
-import nodes.stockinfoNode.crawler.facade.CompanyInfoProcessor;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 
 import java.util.*;
@@ -15,10 +17,10 @@ public class AlphavantageSymbolCrawlerImpl implements AlphavantageCrawler<StockC
     private final Set<String> acceptedSymbol;
     private final BaseCrawler<StockCompanyPOJO> crawler;
 
-
-    public AlphavantageSymbolCrawlerImpl() {
+    @Inject
+    public AlphavantageSymbolCrawlerImpl(BaseCrawler<StockCompanyPOJO> crawler) {
+        this.crawler = crawler;
         acceptedSymbol = new HashSet<>();
-        crawler = new BaseCrawler<>(CompanyInfoProcessor.getInstance());
     }
 
     // Build param for query online
@@ -31,7 +33,7 @@ public class AlphavantageSymbolCrawlerImpl implements AlphavantageCrawler<StockC
     }
 
     public static void main(String[] args) throws Exception {
-        AlphavantageCrawler<StockCompanyPOJO> alphavantageCrawler = new AlphavantageSymbolCrawlerImpl();
+        AlphavantageCrawler<StockCompanyPOJO> alphavantageCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>(){});
         alphavantageCrawler.addSymbolToQueue("IBM");
 
         Future<Optional<StockCompanyPOJO>> result = alphavantageCrawler.getResultFuture("IBM");

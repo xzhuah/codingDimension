@@ -1,5 +1,8 @@
 package nodes.stockinfoNode.crawler.impls;
 
+import com.google.inject.Inject;
+import com.google.inject.Key;
+import nodes.NodeModule;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
@@ -19,10 +22,10 @@ public class AlphavantageCrawlerImpl implements AlphavantageCrawler<List<StockDa
     private final Set<String> acceptedSymbol;
     private final BaseCrawler<List<StockDailyRecordPOJO>> crawler;
 
-
-    public AlphavantageCrawlerImpl() {
+    @Inject
+    public AlphavantageCrawlerImpl(BaseCrawler<List<StockDailyRecordPOJO>> crawler) {
+        this.crawler = crawler;
         acceptedSymbol = new HashSet<>();
-        crawler = new BaseCrawler<>(DailyPriceProcessor.getInstance());
     }
 
     // Build param for query online
@@ -36,7 +39,7 @@ public class AlphavantageCrawlerImpl implements AlphavantageCrawler<List<StockDa
     }
 
     public static void main(String[] args) throws Exception {
-        AlphavantageCrawler<List<StockDailyRecordPOJO>> alphavantageCrawler = new AlphavantageCrawlerImpl();
+        AlphavantageCrawler<List<StockDailyRecordPOJO>> alphavantageCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>(){});
         alphavantageCrawler.addSymbolToQueue("IBM");
 
         Future<Optional<List<StockDailyRecordPOJO>>> result = alphavantageCrawler.getResultFuture("IBM");

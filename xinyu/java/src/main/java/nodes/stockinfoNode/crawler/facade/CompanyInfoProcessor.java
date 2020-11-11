@@ -1,6 +1,7 @@
 package nodes.stockinfoNode.crawler.facade;
 
 import com.google.gson.JsonObject;
+import com.google.inject.Singleton;
 import common.io.web.ResponseProcessor;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.utils.Converter;
@@ -12,23 +13,8 @@ import java.util.Optional;
  * Created by Xinyu Zhu on 2020/11/8, 22:04
  * nodes.stockinfoNode.crawler.facade in codingDimensionTemplate
  */
+@Singleton
 public class CompanyInfoProcessor implements ResponseProcessor<StockCompanyPOJO> {
-
-    private static ResponseProcessor<StockCompanyPOJO> instance = null;
-
-    private CompanyInfoProcessor() {
-    }
-
-    public static ResponseProcessor<StockCompanyPOJO> getInstance() {
-        if (instance == null) {
-            synchronized (DailyPriceProcessor.class) {
-                if (instance == null) {
-                    instance = new CompanyInfoProcessor();
-                }
-            }
-        }
-        return instance;
-    }
 
     private static StockCompanyPOJO toStockCompanyPOJO(JsonObject jsonObject) {
         StockCompanyPOJO stockCompanyPOJO = new StockCompanyPOJO();

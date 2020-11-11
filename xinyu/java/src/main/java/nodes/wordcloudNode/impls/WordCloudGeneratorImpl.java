@@ -22,7 +22,7 @@ import java.util.List;
  * nodes.wordcloudNode.impls in codingDimensionTemplate
  */
 public class WordCloudGeneratorImpl implements WordCloudGenerator {
-    WordFrequencyHelper wordFrequencyHelper;
+    private WordFrequencyHelper wordFrequencyHelper;
     private WordCloud wordCloud;
     private String outputFile;
 

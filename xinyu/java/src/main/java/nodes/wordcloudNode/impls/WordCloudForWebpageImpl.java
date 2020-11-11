@@ -27,14 +27,6 @@ public class WordCloudForWebpageImpl implements WordCloudForWebpage {
     public WordCloudForWebpageImpl(WordCloudGenerator wordCloudGenerator, WebpageCommonInfoCrawler webpageCommonInfoCrawler) {
         this.wordCloudGenerator = wordCloudGenerator;
         this.webpageCommonInfoCrawler = webpageCommonInfoCrawler;
-
-//        this.wordCloudGenerator.setMaxWordToDraw(400);
-//        this.wordCloudGenerator.setPadding(4);
-//        this.wordCloudGenerator.setWordColor(StyleConstant.BLUE_FAMILY);
-//        this.wordCloudGenerator.setWordScalar(StyleConstant.DEFAULT_LINEAR_FONT_SCALAR);
-//        this.wordCloudGenerator.setWordStartStrategy(StyleConstant.CENTER_WORD);
-//        this.wordCloudGenerator.setStopword(StyleConstant.DEFAULT_STOP_WORDS);
-
     }
 
     public static void main(String[] args) throws Exception {

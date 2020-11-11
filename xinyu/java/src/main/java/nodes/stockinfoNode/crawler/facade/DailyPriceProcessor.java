@@ -2,6 +2,7 @@ package nodes.stockinfoNode.crawler.facade;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.inject.Singleton;
 import common.io.web.ResponseProcessor;
 import common.time.TimeClient;
 import common.time.TimeConstant;
@@ -12,23 +13,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.util.*;
 
+@Singleton
 public class DailyPriceProcessor implements ResponseProcessor<List<StockDailyRecordPOJO>> {
-
-    private static ResponseProcessor<List<StockDailyRecordPOJO>> instance = null;
-
-    private DailyPriceProcessor() {
-    }
-
-    public static ResponseProcessor<List<StockDailyRecordPOJO>> getInstance() {
-        if (instance == null) {
-            synchronized (DailyPriceProcessor.class) {
-                if (instance == null) {
-                    instance = new DailyPriceProcessor();
-                }
-            }
-        }
-        return instance;
-    }
 
     private static StockDailyRecordPOJO toDailyPriceData(JsonObject dailyData, String dayString, String symbol) throws ParseException, java.text.ParseException {
         StockDailyRecordPOJO stockDailyRecordPOJO = new StockDailyRecordPOJO();

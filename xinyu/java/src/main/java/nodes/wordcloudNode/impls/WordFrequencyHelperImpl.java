@@ -1,6 +1,5 @@
 package nodes.wordcloudNode.impls;
 
-import com.google.inject.Singleton;
 import com.kennycason.kumo.WordFrequency;
 import com.kennycason.kumo.nlp.FrequencyAnalyzer;
 import com.kennycason.kumo.nlp.tokenizers.ChineseWordTokenizer;
@@ -15,7 +14,7 @@ import java.util.List;
  * nodes.wordcloudNode.impls in codingDimensionTemplate
  */
 public class WordFrequencyHelperImpl implements WordFrequencyHelper {
-    FrequencyAnalyzer frequencyAnalyzer;
+    private FrequencyAnalyzer frequencyAnalyzer;
 
     public WordFrequencyHelperImpl() {
         frequencyAnalyzer = new FrequencyAnalyzer();

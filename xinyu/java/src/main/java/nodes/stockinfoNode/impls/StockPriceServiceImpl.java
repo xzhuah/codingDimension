@@ -8,8 +8,8 @@ import nodes.stockinfoNode.querier.impls.StockPriceDBServiceImpl;
  */
 public class StockPriceServiceImpl {
     private static StockPriceServiceImpl instance = null;
-    PriceAutoUpdaterImpl priceAutoUpdater;
-    StockPriceDBServiceImpl stockPriceDBService;
+    private PriceAutoUpdaterImpl priceAutoUpdater;
+    private StockPriceDBServiceImpl stockPriceDBService;
 
     private StockPriceServiceImpl() {
         priceAutoUpdater = PriceAutoUpdaterImpl.getInstance();
