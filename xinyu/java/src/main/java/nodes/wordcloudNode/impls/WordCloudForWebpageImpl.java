@@ -1,5 +1,6 @@
 package nodes.wordcloudNode.impls;
 
+import nodes.crawlerNode.facade.WebpageCommonProcessor;
 import nodes.crawlerNode.impl.WebpageCommonInfoCrawler;
 import nodes.crawlerNode.models.WebpageCommonInfo;
 import nodes.wordcloudNode.WordCloudForWebpage;
@@ -31,7 +32,7 @@ public class WordCloudForWebpageImpl implements WordCloudForWebpage {
 
     public WordCloudForWebpageImpl(WordCloudGenerator wordCloudGenerator) {
         this.wordCloudGenerator = wordCloudGenerator;
-        this.webpageCommonInfoCrawler = new WebpageCommonInfoCrawler();
+        this.webpageCommonInfoCrawler = new WebpageCommonInfoCrawler(new WebpageCommonProcessor());
     }
 
     public static void main(String[] args) throws Exception {

@@ -1,5 +1,6 @@
 package nodes.hotinfoNode.crawler.impls;
 
+import nodes.NodeModule;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
 import nodes.hotinfoNode.models.RankingRuleVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
@@ -18,7 +19,7 @@ public class BilibiliHotRankCrawlerServiceImplTest {
 
     @Test
     public void test() throws Exception {
-        bilibiliHotRankCrawlerService = new BilibiliHotRankCrawlerServiceImpl();
+        bilibiliHotRankCrawlerService = NodeModule.getGlobalInjector().getInstance(BilibiliHotRankCrawlerService.class); //new BilibiliHotRankCrawlerServiceImpl();
         Map<RankingRuleVO, List<VideoRecordVO>> result = bilibiliHotRankCrawlerService.achieveRecords(
                 EnumUtils.getAllPossibleRankingRule().subList(0, 1)
         );

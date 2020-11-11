@@ -1,7 +1,9 @@
 package nodes.hotinfoNode.impls;
 
 import com.mongodb.client.MongoCollection;
+import common.io.database.mongodb.MongoDBPojoClient;
 import common.io.database.mongodb.impl.MongoDBPojoClientImpl;
+import nodes.NodeModule;
 import nodes.hotinfoNode.BilibiliInfoManager;
 import nodes.hotinfoNode.constants.ValueConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
@@ -17,12 +19,12 @@ import java.util.Map;
 
 public class BilibiliInfoManagerImpl implements BilibiliInfoManager {
     private BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService;
-    private MongoDBPojoClientImpl mongoDBPojoClient;
+    private MongoDBPojoClient mongoDBPojoClient;
     private MongoCollection<BilibiliAnalyzableVideoRecord> mongoCollection;
 
 
     public BilibiliInfoManagerImpl() {
-        bilibiliHotRankCrawlerService = new BilibiliHotRankCrawlerServiceImpl();
+        bilibiliHotRankCrawlerService = NodeModule.getGlobalInjector().getInstance(BilibiliHotRankCrawlerService.class);
         mongoDBPojoClient = new MongoDBPojoClientImpl();
         mongoDBPojoClient.setCurrentDatabase(ValueConstant.Path.DATABASE_NAME.getValue());
         mongoCollection = mongoDBPojoClient.setAndGetCurrentCollection(ValueConstant.Path.COLLECTION_NAME.getValue(), BilibiliAnalyzableVideoRecord.class);

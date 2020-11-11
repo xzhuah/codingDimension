@@ -89,6 +89,7 @@ public class MongoDBPojoClientImpl implements MongoDBPojoClient {
     @Override
     public MongoDBPojoClient setCurrentDatabase(String databaseName) {
         this.currentDatabase = mongoClient.getDatabase(databaseName);
+        this.currentCollection = null;
         return this;
     }
 

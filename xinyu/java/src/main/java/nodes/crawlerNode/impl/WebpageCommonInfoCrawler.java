@@ -1,7 +1,10 @@
 package nodes.crawlerNode.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.Key;
+import common.io.web.ResponseProcessor;
+import nodes.NodeModule;
 import nodes.crawlerNode.BaseCrawler;
-import nodes.crawlerNode.facade.WebpageCommonProcessor;
 import nodes.crawlerNode.models.WebpageCommonInfo;
 
 import java.util.List;
@@ -13,12 +16,17 @@ import java.util.concurrent.Future;
  * nodes.crawlerNode.impl in codingDimensionTemplate
  */
 public class WebpageCommonInfoCrawler extends BaseCrawler<WebpageCommonInfo> {
-    public WebpageCommonInfoCrawler() {
-        super(WebpageCommonProcessor.getInstance());
+
+    @Inject
+    public WebpageCommonInfoCrawler(ResponseProcessor<WebpageCommonInfo> webpageCommonProcessor) {
+        super(webpageCommonProcessor);
     }
 
     public static void main(String[] args) throws Exception {
-        WebpageCommonInfoCrawler WebpageCommonInfoCrawler = new WebpageCommonInfoCrawler();
+
+        BaseCrawler<WebpageCommonInfo> WebpageCommonInfoCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>() {
+        });
+
         String url = "https://www.bilibili.com/";
         WebpageCommonInfoCrawler.addJobToQueue(url);
         List<Future<Optional<WebpageCommonInfo>>> resultFuture = WebpageCommonInfoCrawler.getResultFuture(url, null);

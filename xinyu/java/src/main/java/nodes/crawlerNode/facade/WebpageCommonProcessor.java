@@ -1,5 +1,6 @@
 package nodes.crawlerNode.facade;
 
+import com.google.inject.Singleton;
 import common.io.web.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
 import nodes.crawlerNode.models.WebpageCommonInfo;
@@ -17,23 +18,8 @@ import java.util.Optional;
  * Created by Xinyu Zhu on 2020/11/7, 12:11
  * nodes.crawlerNode.facade in codingDimensionTemplate
  */
+@Singleton
 public class WebpageCommonProcessor implements ResponseProcessor<WebpageCommonInfo> {
-
-    private static WebpageCommonProcessor instance = null;
-
-    private WebpageCommonProcessor() {
-    }
-
-    public static ResponseProcessor<WebpageCommonInfo> getInstance() {
-        if (instance == null) {
-            synchronized (WebpageCommonProcessor.class) {
-                if (instance == null) {
-                    instance = new WebpageCommonProcessor();
-                }
-            }
-        }
-        return instance;
-    }
 
     @Override
     public Optional<WebpageCommonInfo> process(CloseableHttpResponse response, String url) throws Exception {

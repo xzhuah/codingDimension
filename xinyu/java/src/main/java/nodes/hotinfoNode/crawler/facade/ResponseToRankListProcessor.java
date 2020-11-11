@@ -1,5 +1,6 @@
 package nodes.hotinfoNode.crawler.facade;
 
+import com.google.inject.Singleton;
 import common.io.web.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
 import nodes.hotinfoNode.models.VideoRecordVO;
@@ -21,24 +22,8 @@ import java.util.Optional;
  * Created by Xinyu Zhu on 7/1/2020, 12:09 PM
  * xinyu.hotinfo.biz.bilibili.facade in HotInfo
  */
+@Singleton
 public class ResponseToRankListProcessor implements ResponseProcessor<List<VideoRecordVO>> {
-
-    private static ResponseProcessor<List<VideoRecordVO>> instance = null;
-
-    private ResponseToRankListProcessor() {
-    }
-
-    public static ResponseProcessor<List<VideoRecordVO>> getInstance() {
-        if (instance == null) {
-            synchronized (ResponseToRankListProcessor.class) {
-                if (instance == null) {
-                    instance = new ResponseToRankListProcessor();
-                }
-            }
-        }
-        return instance;
-    }
-
 
     @Override
     public Optional<List<VideoRecordVO>> process(CloseableHttpResponse response, String url) throws Exception {

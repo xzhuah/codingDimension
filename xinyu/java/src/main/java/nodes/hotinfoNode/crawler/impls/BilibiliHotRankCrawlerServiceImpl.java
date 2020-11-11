@@ -1,5 +1,7 @@
 package nodes.hotinfoNode.crawler.impls;
 
+import com.google.inject.Inject;
+import nodes.NodeModule;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
@@ -25,13 +27,16 @@ public class BilibiliHotRankCrawlerServiceImpl implements BilibiliHotRankCrawler
     private final AtomicInteger counter;
     private final BaseCrawler<List<VideoRecordVO>> crawler;
 
-    public BilibiliHotRankCrawlerServiceImpl() {
-        crawler = new BaseCrawler<>(ResponseToRankListProcessor.getInstance());
-        counter = new AtomicInteger(0);
+    @Inject
+    public BilibiliHotRankCrawlerServiceImpl(BaseCrawler<List<VideoRecordVO>> crawler) {
+        this.crawler = crawler;
+        this.counter = new AtomicInteger(0);
     }
 
     public static void main(String[] args) throws Exception {
-        BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService = new BilibiliHotRankCrawlerServiceImpl();
+        BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService = NodeModule.getGlobalInjector().getInstance(BilibiliHotRankCrawlerService.class);
+
+        // BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService = new BilibiliHotRankCrawlerServiceImpl();
         Map<RankingRuleVO, List<VideoRecordVO>> result = bilibiliHotRankCrawlerService.achieveRecords(
                 EnumUtils.getAllPossibleRankingRule().subList(0, 1)
         );

@@ -1,5 +1,6 @@
 package common.io.web.impl.processors;
 
+import com.google.inject.Singleton;
 import common.io.web.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
 import org.apache.http.HttpEntity;
@@ -14,24 +15,8 @@ import java.util.Optional;
  * common.io.web.impl in AllInOne
  * Read out raw html content from the response
  */
+@Singleton
 public class ResponseToRawHtmlProcessorImpl implements ResponseProcessor<String> {
-
-    private static ResponseProcessor<String> instance = null;
-
-    private ResponseToRawHtmlProcessorImpl() {
-    }
-
-    public static ResponseProcessor<String> getInstance() {
-        if (instance == null) {
-            synchronized (ResponseToRawHtmlProcessorImpl.class) {
-                if (instance == null) {
-                    instance = new ResponseToRawHtmlProcessorImpl();
-                }
-            }
-        }
-        return instance;
-    }
-
 
     @Override
     public Optional<String> process(CloseableHttpResponse response, String url) throws Exception {
