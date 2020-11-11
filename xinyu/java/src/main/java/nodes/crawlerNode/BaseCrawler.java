@@ -23,7 +23,7 @@ import static common.utils.ConditionChecker.checkStatus;
  * <p>
  * If you didn't use tag to mark request, the crawler will memorize which result belongs to which
  * url + params combination, so you need to provide url + params to fetch the result
- *
+ * <p>
  * We only support String type tag currently
  */
 public class BaseCrawler<T> {
