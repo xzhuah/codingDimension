@@ -8,7 +8,7 @@ I plan to create a video to demo what are those great things in this project, bu
 
 * A common libaray provides some highly reusable functions
 * A framework for mongodb IO, I used mongodb for most of the projects currently
-* A Crawler framework, easy to use, can easily be adopted to do any kind of crawler tasks. Future is used
+* A Crawler framework, easy to use, can easily be adopted to do any kind of crawler tasks.(That's why my crawler classes in this project looks so simple) Future is used
 * A WordCloud generator, supper easy to use, support English and Chinese, can draw personalized wordCloud easily
 * A Crawler program which can fetch those most popular videos information on bilibili, I will add some analyze logic in the future
 * A crawler program which can help you collect stock informatio, I will add some stock analyze logic in the future
