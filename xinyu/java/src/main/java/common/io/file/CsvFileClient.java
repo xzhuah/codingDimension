@@ -16,8 +16,8 @@ import java.util.*;
  */
 public class CsvFileClient {
     private final String SPLITOR = ",";
-    private List<String> header;
     private final String filename;
+    private List<String> header;
 
     public CsvFileClient(String filename) {
         this.filename = filename;

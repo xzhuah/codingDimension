@@ -21,23 +21,23 @@ public interface MongoDBPojoClient {
 
     List<String> getAllCollection();
 
+    MongoDatabase getCurrentDatabase();
+
     /*
             This method will create database if the database does not exist
          */
     MongoDBPojoClient setCurrentDatabase(String databaseName);
 
-    MongoDatabase getCurrentDatabase();
-
     MongoDatabase setAndGetDatabase(String databaseName);
+
+    MongoDBPojoClient setCurrentCollection(String collectionName, Class cls);
+
+    MongoCollection getCurrentCollection();
 
     /*
             This method will create collection if the collection does not exist in current database
          */
     MongoDBPojoClient setCurrentCollection(String collectionName);
-
-    MongoDBPojoClient setCurrentCollection(String collectionName, Class cls);
-
-    MongoCollection getCurrentCollection();
 
     MongoCollection setAndGetCurrentCollection(String collectionName);
 

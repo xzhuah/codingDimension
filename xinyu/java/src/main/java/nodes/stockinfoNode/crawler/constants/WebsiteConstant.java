@@ -15,6 +15,7 @@ public class WebsiteConstant {
     private static final String keyFile = "stockinfoKey.pass";
 
     public static String loadKey;
+
     static {
         try {
             loadKey = PlaintextClient.readFile(keyFile);

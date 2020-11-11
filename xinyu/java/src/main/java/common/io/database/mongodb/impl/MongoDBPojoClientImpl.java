@@ -5,11 +5,9 @@ import com.mongodb.MongoClientOptions;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
-import common.io.database.mongodb.MongoDBClient;
 import common.io.database.mongodb.MongoDBPojoClient;
 import common.io.database.mongodb.constants.DBConstant;
 import common.io.database.mongodb.utils.Converter;
-import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 

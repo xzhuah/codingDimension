@@ -1,4 +1,4 @@
-package common.io.web.impl;
+package common.io.web.impl.processors;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

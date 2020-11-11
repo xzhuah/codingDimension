@@ -3,11 +3,17 @@ package nodes.hotinfoNode.models;
 import com.google.gson.JsonObject;
 import common.time.TimeClient;
 import common.time.TimeConstant;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import nodes.hotinfoNode.utils.Converter;
 import org.bson.types.ObjectId;
 
 import java.text.ParseException;
 
+@Data
+@ToString(exclude = "id")
+@NoArgsConstructor
 public class BilibiliAnalyzableVideoRecord {
 
     private ObjectId id;
@@ -28,10 +34,6 @@ public class BilibiliAnalyzableVideoRecord {
     private Integer comment;
 
     private Long recordTime;
-
-    public BilibiliAnalyzableVideoRecord() {
-
-    }
 
     public BilibiliAnalyzableVideoRecord(final JsonObject jsonObject) {
 
@@ -74,116 +76,4 @@ public class BilibiliAnalyzableVideoRecord {
         }
     }
 
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
-    public String getVideoAddress() {
-        return videoAddress;
-    }
-
-    public void setVideoAddress(String videoAddress) {
-        this.videoAddress = videoAddress;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getRankType() {
-        return rankType;
-    }
-
-    public void setRankType(String rankType) {
-        this.rankType = rankType;
-    }
-
-    public Integer getRank() {
-        return rank;
-    }
-
-    public void setRank(Integer rank) {
-        this.rank = rank;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public Integer getLike() {
-        return like;
-    }
-
-    public void setLike(Integer like) {
-        this.like = like;
-    }
-
-    public Integer getPlay() {
-        return play;
-    }
-
-    public void setPlay(Integer play) {
-        this.play = play;
-    }
-
-    public Integer getComment() {
-        return comment;
-    }
-
-    public void setComment(Integer comment) {
-        this.comment = comment;
-    }
-
-    public Long getRecordTime() {
-        return recordTime;
-    }
-
-    public void setRecordTime(Long recordTime) {
-        this.recordTime = recordTime;
-    }
-
-    @Override
-    public String toString() {
-        return "BilibiliAnalyzableVideoRecord{" +
-                "videoAddress='" + videoAddress + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", author='" + author + '\'' +
-                ", rankType='" + rankType + '\'' +
-                ", rank=" + rank +
-                ", score=" + score +
-                ", like=" + like +
-                ", play=" + play +
-                ", comment=" + comment +
-                ", recordTime=" + recordTime +
-                '}';
-    }
 }

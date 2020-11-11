@@ -23,21 +23,21 @@ public interface MongoDBClient {
 
     List<String> getAllCollection();
 
+    MongoDatabase getCurrentDatabase();
+
     /*
             This method will create database if the database does not exist
          */
     MongoDBClient setCurrentDatabase(String databaseName);
 
-    MongoDatabase getCurrentDatabase();
-
     MongoDatabase setAndGetDatabase(String databaseName);
+
+    MongoCollection getCurrentCollection();
 
     /*
             This method will create collection if the collection does not exist in current database
          */
     MongoDBClient setCurrentCollection(String collectionName);
-
-    MongoCollection getCurrentCollection();
 
     MongoCollection setAndGetCurrentCollection(String collectionName);
 
