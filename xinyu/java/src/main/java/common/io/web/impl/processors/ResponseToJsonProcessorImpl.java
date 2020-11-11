@@ -23,7 +23,7 @@ public class ResponseToJsonProcessorImpl implements ResponseProcessor<JsonObject
 
     public static ResponseProcessor<JsonObject> getInstance() {
         if (instance == null) {
-            synchronized (ResponseToRawHtmlProcessorImpl.class) {
+            synchronized (ResponseToJsonProcessorImpl.class) {
                 if (instance == null) {
                     instance = new ResponseToJsonProcessorImpl();
                 }
