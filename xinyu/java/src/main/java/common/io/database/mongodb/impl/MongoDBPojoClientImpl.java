@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import common.io.database.mongodb.MongoDBClient;
+import common.io.database.mongodb.MongoDBPojoClient;
 import common.io.database.mongodb.constants.DBConstant;
 import common.io.database.mongodb.utils.Converter;
 import org.bson.Document;
@@ -24,7 +25,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
  * The PojoClient support POJO object: https://mongodb.github.io/mongo-java-driver/3.5/driver/getting-started/quick-start-pojo/
  * Start the local mongoDB instance first before using this client
  */
-public class MongoDBPojoClientImpl implements MongoDBClient {
+public class MongoDBPojoClientImpl implements MongoDBPojoClient {
     MongoClient mongoClient;
     MongoDatabase currentDatabase;
     MongoCollection currentCollection;
@@ -60,14 +61,17 @@ public class MongoDBPojoClientImpl implements MongoDBClient {
     }
 
     // Info about database
+    @Override
     public MongoIterable<String> getAllDatabaseNameAsMongoIterable() {
         return mongoClient.listDatabaseNames();
     }
 
+    @Override
     public List<String> getAllDatabaseName() {
         return Converter.toList(getAllDatabaseNameAsMongoIterable());
     }
 
+    @Override
     public MongoIterable<String> getAllCollectionNameAsMongoIterable() {
         if (null != currentDatabase) {
             return currentDatabase.listCollectionNames();
@@ -76,6 +80,7 @@ public class MongoDBPojoClientImpl implements MongoDBClient {
         }
     }
 
+    @Override
     public List<String> getAllCollection() {
         return Converter.toList(getAllCollectionNameAsMongoIterable());
     }
@@ -83,15 +88,18 @@ public class MongoDBPojoClientImpl implements MongoDBClient {
     /*
         This method will create database if the database does not exist
      */
-    public MongoDBClient setCurrentDatabase(String databaseName) {
+    @Override
+    public MongoDBPojoClient setCurrentDatabase(String databaseName) {
         this.currentDatabase = mongoClient.getDatabase(databaseName);
         return this;
     }
 
+    @Override
     public MongoDatabase getCurrentDatabase() {
         return this.currentDatabase;
     }
 
+    @Override
     public MongoDatabase setAndGetDatabase(String databaseName) {
         setCurrentDatabase(databaseName);
         return getCurrentDatabase();
@@ -100,25 +108,30 @@ public class MongoDBPojoClientImpl implements MongoDBClient {
     /*
         This method will create collection if the collection does not exist in current database
      */
-    public MongoDBClient setCurrentCollection(String collectionName) {
+    @Override
+    public MongoDBPojoClient setCurrentCollection(String collectionName) {
         this.currentCollection = currentDatabase.getCollection(collectionName);
         return this;
     }
 
-    public MongoDBClient setCurrentCollection(String collectionName, Class cls) {
+    @Override
+    public MongoDBPojoClient setCurrentCollection(String collectionName, Class cls) {
         this.currentCollection = currentDatabase.getCollection(collectionName, cls);
         return this;
     }
 
+    @Override
     public MongoCollection getCurrentCollection() {
         return currentCollection;
     }
 
+    @Override
     public MongoCollection setAndGetCurrentCollection(String collectionName) {
         setCurrentCollection(collectionName);
         return currentCollection;
     }
 
+    @Override
     public MongoCollection setAndGetCurrentCollection(String collectionName, Class cls) {
         setCurrentCollection(collectionName, cls);
         return currentCollection;
@@ -130,16 +143,25 @@ public class MongoDBPojoClientImpl implements MongoDBClient {
     // TODO I don't provide Query/Update API since this process requires complex Query logic which is a part of business
     // Logic
 
-    public MongoDBClient insert(Document document) {
-        currentCollection.insertOne(document);
+    @Override
+    public MongoDBPojoClient insert(Object pojoObject, Class cls) {
+        synchronized (this) {
+            currentCollection = currentCollection.withDocumentClass(cls);
+            currentCollection.insertOne(pojoObject);
+        }
         return this;
     }
 
-    public MongoDBClient insert(List<Document> documents) {
-        currentCollection.insertMany(documents);
+    @Override
+    public MongoDBPojoClient insert(List<Object> pojoObjects, Class cls) {
+        synchronized (this) {
+            currentCollection = currentCollection.withDocumentClass(cls);
+            currentCollection.insertMany(pojoObjects);
+        }
         return this;
     }
 
+    @Override
     public void close() {
         mongoClient.close();
     }

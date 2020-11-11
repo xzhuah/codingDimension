@@ -51,14 +51,17 @@ public class MongoDBClientImpl implements MongoDBClient {
     }
 
     // Info about database
+    @Override
     public MongoIterable<String> getAllDatabaseNameAsMongoIterable() {
         return mongoClient.listDatabaseNames();
     }
 
+    @Override
     public List<String> getAllDatabaseName() {
         return Converter.toList(getAllDatabaseNameAsMongoIterable());
     }
 
+    @Override
     public MongoIterable<String> getAllCollectionNameAsMongoIterable() {
         if (null != currentDatabase) {
             return currentDatabase.listCollectionNames();
@@ -67,6 +70,7 @@ public class MongoDBClientImpl implements MongoDBClient {
         }
     }
 
+    @Override
     public List<String> getAllCollection() {
         return Converter.toList(getAllCollectionNameAsMongoIterable());
     }
@@ -74,15 +78,18 @@ public class MongoDBClientImpl implements MongoDBClient {
     /*
         This method will create database if the database does not exist
      */
+    @Override
     public MongoDBClient setCurrentDatabase(String databaseName) {
         this.currentDatabase = mongoClient.getDatabase(databaseName);
         return this;
     }
 
+    @Override
     public MongoDatabase getCurrentDatabase() {
         return this.currentDatabase;
     }
 
+    @Override
     public MongoDatabase setAndGetDatabase(String databaseName) {
         setCurrentDatabase(databaseName);
         return getCurrentDatabase();
@@ -91,15 +98,18 @@ public class MongoDBClientImpl implements MongoDBClient {
     /*
         This method will create collection if the collection does not exist in current database
      */
+    @Override
     public MongoDBClient setCurrentCollection(String collectionName) {
         this.currentCollection = currentDatabase.getCollection(collectionName);
         return this;
     }
 
+    @Override
     public MongoCollection getCurrentCollection() {
         return currentCollection;
     }
 
+    @Override
     public MongoCollection setAndGetCurrentCollection(String collectionName) {
         setCurrentCollection(collectionName);
         return currentCollection;
@@ -111,16 +121,19 @@ public class MongoDBClientImpl implements MongoDBClient {
     // TODO I don't provide Query/Update API since this process requires complex Query logic which is a part of business
     // Logic
 
+    @Override
     public MongoDBClient insert(Document document) {
         currentCollection.insertOne(document);
         return this;
     }
 
+    @Override
     public MongoDBClient insert(List<Document> documents) {
         currentCollection.insertMany(documents);
         return this;
     }
 
+    @Override
     public void close() {
         mongoClient.close();
     }

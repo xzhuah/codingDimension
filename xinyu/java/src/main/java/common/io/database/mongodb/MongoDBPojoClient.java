@@ -8,12 +8,10 @@ import org.bson.Document;
 import java.util.List;
 
 /**
- * Created by Xinyu Zhu on 2020/11/3, 19:38
- * common.io.database.mongodb in AllInOne
- * <p>
- * This interface aims at providing handy and basic database operation
+ * Created by Xinyu Zhu on 2020/11/10, 22:10
+ * common.io.database.mongodb in codingDimensionTemplate
  */
-public interface MongoDBClient {
+public interface MongoDBPojoClient {
     // Info about database
     MongoIterable<String> getAllDatabaseNameAsMongoIterable();
 
@@ -26,7 +24,7 @@ public interface MongoDBClient {
     /*
             This method will create database if the database does not exist
          */
-    MongoDBClient setCurrentDatabase(String databaseName);
+    MongoDBPojoClient setCurrentDatabase(String databaseName);
 
     MongoDatabase getCurrentDatabase();
 
@@ -35,15 +33,27 @@ public interface MongoDBClient {
     /*
             This method will create collection if the collection does not exist in current database
          */
-    MongoDBClient setCurrentCollection(String collectionName);
+    MongoDBPojoClient setCurrentCollection(String collectionName);
+
+    MongoDBPojoClient setCurrentCollection(String collectionName, Class cls);
 
     MongoCollection getCurrentCollection();
 
     MongoCollection setAndGetCurrentCollection(String collectionName);
 
-    MongoDBClient insert(Document document);
+    MongoCollection setAndGetCurrentCollection(String collectionName, Class cls);
 
-    MongoDBClient insert(List<Document> documents);
+    default MongoDBPojoClient insert(Document document) {
+        return insert(document, Document.class);
+    }
+
+    default MongoDBPojoClient insert(List<Document> documents) {
+        return insert(documents, Document.class);
+    }
+
+    MongoDBPojoClient insert(Object pojoObject, Class cls);
+
+    MongoDBPojoClient insert(List<Object> pojoObjects, Class cls);
 
     void close();
 }
