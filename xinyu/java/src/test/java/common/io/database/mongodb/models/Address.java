@@ -1,4 +1,4 @@
-package common.io.database.mongodb.impl;
+package common.io.database.mongodb.models;
 
 public final class Address {
     private String street;

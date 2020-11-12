@@ -3,6 +3,7 @@ package common.io.database.mongodb;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
+import common.io.database.mongodb.utils.Converter;
 import org.bson.Document;
 
 import java.util.List;
@@ -15,45 +16,23 @@ public interface MongoDBPojoClient {
     // Info about database
     MongoIterable<String> getAllDatabaseNameAsMongoIterable();
 
-    List<String> getAllDatabaseName();
-
-    MongoIterable<String> getAllCollectionNameAsMongoIterable();
-
-    List<String> getAllCollection();
-
-    MongoDatabase getCurrentDatabase();
-
-    /*
-            This method will create database if the database does not exist
-         */
-    MongoDBPojoClient setCurrentDatabase(String databaseName);
-
-    MongoDatabase setAndGetDatabase(String databaseName);
-
-    MongoDBPojoClient setCurrentCollection(String collectionName, Class cls);
-
-    MongoCollection getCurrentCollection();
-
-    /*
-            This method will create collection if the collection does not exist in current database
-         */
-    MongoDBPojoClient setCurrentCollection(String collectionName);
-
-    MongoCollection setAndGetCurrentCollection(String collectionName);
-
-    MongoCollection setAndGetCurrentCollection(String collectionName, Class cls);
-
-    default MongoDBPojoClient insert(Document document) {
-        return insert(document, Document.class);
+    default List<String> getAllDatabaseName() {
+        return Converter.toList(getAllDatabaseNameAsMongoIterable());
     }
 
-    default MongoDBPojoClient insert(List<Document> documents) {
-        return insert(documents, Document.class);
+    MongoIterable<String> getAllCollectionNameAsMongoIterable(String databaseName);
+
+    default List<String> getAllCollection(String databaseName) {
+        return Converter.toList(getAllCollectionNameAsMongoIterable(databaseName));
     }
 
-    MongoDBPojoClient insert(Object pojoObject, Class cls);
+    MongoDatabase getDatabase(String databaseName);
 
-    MongoDBPojoClient insert(List<Object> pojoObjects, Class cls);
+    default MongoCollection<Document> getCollection(String databaseName, String collectionName) {
+        return getCollection(databaseName, collectionName, Document.class);
+    }
+
+    <T> MongoCollection<T> getCollection(String databaseName, String collectionName, Class<T> cls);
 
     void close();
 }

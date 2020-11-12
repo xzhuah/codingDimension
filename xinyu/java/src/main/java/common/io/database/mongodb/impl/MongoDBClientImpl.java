@@ -19,9 +19,7 @@ import java.util.List;
  * Start the local mongoDB instance first before using this client
  */
 public class MongoDBClientImpl implements MongoDBClient {
-    MongoClient mongoClient;
-    MongoDatabase currentDatabase;
-    MongoCollection currentCollection;
+    private final MongoClient mongoClient;
 
     /**
      * Set up connection with the default setting
@@ -62,80 +60,23 @@ public class MongoDBClientImpl implements MongoDBClient {
     }
 
     @Override
-    public MongoIterable<String> getAllCollectionNameAsMongoIterable() {
-        if (null != currentDatabase) {
-            return currentDatabase.listCollectionNames();
-        } else {
-            return null;
-        }
+    public MongoIterable<String> getAllCollectionNameAsMongoIterable(String databaseName) {
+        return mongoClient.getDatabase(databaseName).listCollectionNames();
     }
 
     @Override
-    public List<String> getAllCollection() {
-        return Converter.toList(getAllCollectionNameAsMongoIterable());
-    }
-
-    /*
-        This method will create database if the database does not exist
-     */
-    @Override
-    public MongoDBClient setCurrentDatabase(String databaseName) {
-        this.currentDatabase = mongoClient.getDatabase(databaseName);
-        this.currentCollection = null;
-        return this;
+    public MongoDatabase getDatabase(String databaseName) {
+        return mongoClient.getDatabase(databaseName);
     }
 
     @Override
-    public MongoDatabase getCurrentDatabase() {
-        return this.currentDatabase;
-    }
-
-    @Override
-    public MongoDatabase setAndGetDatabase(String databaseName) {
-        setCurrentDatabase(databaseName);
-        return getCurrentDatabase();
-    }
-
-    /*
-        This method will create collection if the collection does not exist in current database
-     */
-    @Override
-    public MongoDBClient setCurrentCollection(String collectionName) {
-        this.currentCollection = currentDatabase.getCollection(collectionName);
-        return this;
-    }
-
-    @Override
-    public MongoCollection getCurrentCollection() {
-        return currentCollection;
-    }
-
-    @Override
-    public MongoCollection setAndGetCurrentCollection(String collectionName) {
-        setCurrentCollection(collectionName);
-        return currentCollection;
-    }
-
-    // TODO provide index API: I don't want to implement those index related API since I think it would be better to
-    // manage index manually from UI. The program seldom know when is the best time to create index
-
-    // TODO I don't provide Query/Update API since this process requires complex Query logic which is a part of business
-    // Logic
-
-    @Override
-    public MongoDBClient insert(Document document) {
-        currentCollection.insertOne(document);
-        return this;
-    }
-
-    @Override
-    public MongoDBClient insert(List<Document> documents) {
-        currentCollection.insertMany(documents);
-        return this;
+    public MongoCollection<Document> getCollection(String databaseName, String collectionName) {
+        return mongoClient.getDatabase(databaseName).getCollection(collectionName);
     }
 
     @Override
     public void close() {
         mongoClient.close();
     }
+
 }

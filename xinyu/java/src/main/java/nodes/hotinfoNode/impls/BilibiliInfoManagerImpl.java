@@ -3,7 +3,6 @@ package nodes.hotinfoNode.impls;
 import com.google.inject.Inject;
 import com.mongodb.client.MongoCollection;
 import common.io.database.mongodb.MongoDBPojoClient;
-import nodes.NodeModule;
 import nodes.hotinfoNode.BilibiliInfoManager;
 import nodes.hotinfoNode.constants.ValueConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
@@ -17,27 +16,19 @@ import java.util.List;
 import java.util.Map;
 
 public class BilibiliInfoManagerImpl implements BilibiliInfoManager {
-    private BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService;
-    private MongoDBPojoClient mongoDBPojoClient;
+    private final BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService;
+    private final MongoDBPojoClient mongoDBPojoClient;
 
 
-    private MongoCollection<BilibiliAnalyzableVideoRecord> mongoCollection;
+    private final MongoCollection<BilibiliAnalyzableVideoRecord> mongoCollection;
 
     @Inject
     public BilibiliInfoManagerImpl(BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService, MongoDBPojoClient mongoDBPojoClient) {
         this.bilibiliHotRankCrawlerService = bilibiliHotRankCrawlerService;
         this.mongoDBPojoClient = mongoDBPojoClient;
 
-        this.mongoDBPojoClient.setCurrentDatabase(ValueConstant.Path.DATABASE_NAME.getValue());
-        this.mongoCollection = mongoDBPojoClient.setAndGetCurrentCollection(ValueConstant.Path.COLLECTION_NAME.getValue(), BilibiliAnalyzableVideoRecord.class);
-    }
-
-    public static void main(String[] args) {
-        BilibiliInfoManager bilibiliInfoManager = NodeModule.getGlobalInjector().getInstance(BilibiliInfoManager.class);
-        long start = System.currentTimeMillis();
-        bilibiliInfoManager.collectLatestHotRanking();
-        System.out.println("Used " + (System.currentTimeMillis() - start) / 1000 + " seconds");
-        bilibiliInfoManager.exit();
+        this.mongoCollection = mongoDBPojoClient.getCollection(ValueConstant.Path.DATABASE_NAME.getValue(),
+                ValueConstant.Path.COLLECTION_NAME.getValue(), BilibiliAnalyzableVideoRecord.class);
     }
 
     public void collectLatestHotRanking() {

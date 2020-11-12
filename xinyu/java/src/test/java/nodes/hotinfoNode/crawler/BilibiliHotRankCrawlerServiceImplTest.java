@@ -1,4 +1,4 @@
-package nodes.hotinfoNode.crawler.impls;
+package nodes.hotinfoNode.crawler;
 
 import nodes.NodeModule;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
@@ -15,11 +15,10 @@ import java.util.Map;
  * nodes.hotinfoNode.crawler.impls in AllInOne
  */
 public class BilibiliHotRankCrawlerServiceImplTest {
-    BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService;
+    BilibiliHotRankCrawlerService bilibiliHotRankCrawlerService = NodeModule.getGlobalInjector().getInstance(BilibiliHotRankCrawlerService.class);
 
     @Test
     public void test() throws Exception {
-        bilibiliHotRankCrawlerService = NodeModule.getGlobalInjector().getInstance(BilibiliHotRankCrawlerService.class); //new BilibiliHotRankCrawlerServiceImpl();
         Map<RankingRuleVO, List<VideoRecordVO>> result = bilibiliHotRankCrawlerService.achieveRecords(
                 EnumUtils.getAllPossibleRankingRule().subList(0, 1)
         );

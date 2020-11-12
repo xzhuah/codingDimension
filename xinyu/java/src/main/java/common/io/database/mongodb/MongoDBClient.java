@@ -3,6 +3,7 @@ package common.io.database.mongodb;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
+import common.io.database.mongodb.utils.Converter;
 import org.bson.Document;
 
 import java.util.List;
@@ -17,33 +18,19 @@ public interface MongoDBClient {
     // Info about database
     MongoIterable<String> getAllDatabaseNameAsMongoIterable();
 
-    List<String> getAllDatabaseName();
+    default List<String> getAllDatabaseName() {
+        return Converter.toList(getAllDatabaseNameAsMongoIterable());
+    }
 
-    MongoIterable<String> getAllCollectionNameAsMongoIterable();
+    MongoIterable<String> getAllCollectionNameAsMongoIterable(String databaseName);
 
-    List<String> getAllCollection();
+    default List<String> getAllCollection(String databaseName) {
+        return Converter.toList(getAllCollectionNameAsMongoIterable(databaseName));
+    }
 
-    MongoDatabase getCurrentDatabase();
+    MongoDatabase getDatabase(String databaseName);
 
-    /*
-            This method will create database if the database does not exist
-         */
-    MongoDBClient setCurrentDatabase(String databaseName);
-
-    MongoDatabase setAndGetDatabase(String databaseName);
-
-    MongoCollection getCurrentCollection();
-
-    /*
-            This method will create collection if the collection does not exist in current database
-         */
-    MongoDBClient setCurrentCollection(String collectionName);
-
-    MongoCollection setAndGetCurrentCollection(String collectionName);
-
-    MongoDBClient insert(Document document);
-
-    MongoDBClient insert(List<Document> documents);
+    MongoCollection<Document> getCollection(String databaseName, String collectionName);
 
     void close();
 }

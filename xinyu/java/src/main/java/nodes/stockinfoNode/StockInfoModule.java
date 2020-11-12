@@ -9,8 +9,12 @@ import nodes.stockinfoNode.crawler.facade.CompanyInfoProcessor;
 import nodes.stockinfoNode.crawler.facade.DailyPriceProcessor;
 import nodes.stockinfoNode.crawler.impls.AlphavantageCrawlerImpl;
 import nodes.stockinfoNode.crawler.impls.AlphavantageSymbolCrawlerImpl;
+import nodes.stockinfoNode.impls.PriceAutoUpdaterImpl;
+import nodes.stockinfoNode.impls.StockPriceServiceImpl;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
+import nodes.stockinfoNode.querier.StockPriceDBService;
+import nodes.stockinfoNode.querier.impls.StockPriceDBServiceImpl;
 
 import java.util.List;
 
@@ -35,5 +39,9 @@ public class StockInfoModule extends AbstractModule {
 
         bind(new TypeLiteral<AlphavantageCrawler<StockCompanyPOJO>>(){}).to(AlphavantageSymbolCrawlerImpl.class);
         bind(new TypeLiteral<AlphavantageCrawler<List<StockDailyRecordPOJO>>>(){}).to(AlphavantageCrawlerImpl.class);
+
+        bind(StockPriceDBService.class).to(StockPriceDBServiceImpl.class);
+        bind(PriceAutoUpdater.class).to(PriceAutoUpdaterImpl.class);
+        bind(StockPriceService.class).to(StockPriceServiceImpl.class);
     }
 }

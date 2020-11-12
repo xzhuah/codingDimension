@@ -1,6 +1,8 @@
 package nodes.stockinfoNode.impls;
 
-import nodes.stockinfoNode.querier.impls.StockPriceDBServiceImpl;
+import com.google.inject.Inject;
+import nodes.stockinfoNode.PriceAutoUpdater;
+import nodes.stockinfoNode.querier.StockPriceDBService;
 
 import java.util.List;
 import java.util.Map;
@@ -9,23 +11,13 @@ import java.util.Map;
  * Created by Xinyu Zhu on 2020/11/6, 23:50
  * nodes.stockinfoNode.impls in codingDimensionTemplate
  */
-public class PriceAutoUpdaterImpl {
-    private static PriceAutoUpdaterImpl instance = null;
-    private StockPriceDBServiceImpl stockPriceDBService;
+public class PriceAutoUpdaterImpl implements PriceAutoUpdater {
 
-    private PriceAutoUpdaterImpl() {
-        stockPriceDBService = StockPriceDBServiceImpl.getInstance();
-    }
+    private final StockPriceDBService stockPriceDBService;
 
-    public static PriceAutoUpdaterImpl getInstance() {
-        if (instance == null) {
-            synchronized (PriceAutoUpdaterImpl.class) {
-                if (instance == null) {
-                    instance = new PriceAutoUpdaterImpl();
-                }
-            }
-        }
-        return instance;
+    @Inject
+    private PriceAutoUpdaterImpl(StockPriceDBService stockPriceDBService) {
+        this.stockPriceDBService = stockPriceDBService;
     }
 
 
