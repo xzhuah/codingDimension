@@ -52,18 +52,6 @@ public class AlphavantageSymbolCrawlerImpl implements AlphavantageCrawler<StockC
     }
 
     @Override
-    public void addSymbolsToQueue(Collection<String> symbols) {
-        for (String symbol : symbols) {
-            try {
-                this.addSymbolToQueue(symbol);
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Skipped " + symbol);
-            }
-        }
-    }
-
-    @Override
     public Future<Optional<StockCompanyPOJO>> getResultFuture(String symbol) throws Exception {
         if (!acceptedSymbol.contains(symbol)) {
             addSymbolToQueue(symbol);

@@ -1,6 +1,7 @@
 package nodes.stockinfoNode.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.bson.types.ObjectId;
@@ -15,19 +16,19 @@ import org.bson.types.ObjectId;
 public class StockDailyRecordPOJO {
 
     // This is POJO indicator: real primary key
-    private ObjectId id;
+    @EqualsAndHashCode.Exclude private ObjectId id;
 
     // These two are primary key
     private String stockSymbol;
     private long time;
 
     // These are other data
-    private double open;
-    private double high;
-    private double low;
-    private double close;
-    private double volume;
-    private double adjustedClose;
-    private double dividend;
-    private double splitCoefficient;
+    @EqualsAndHashCode.Exclude private double open;
+    @EqualsAndHashCode.Exclude private double high;
+    @EqualsAndHashCode.Exclude private double low;
+    @EqualsAndHashCode.Exclude private double close;
+    @EqualsAndHashCode.Exclude private double volume;
+    @EqualsAndHashCode.Exclude private double adjustedClose;
+    @EqualsAndHashCode.Exclude private double dividend;
+    @EqualsAndHashCode.Exclude private double splitCoefficient;
 }

@@ -9,8 +9,10 @@ import nodes.stockinfoNode.crawler.facade.CompanyInfoProcessor;
 import nodes.stockinfoNode.crawler.facade.DailyPriceProcessor;
 import nodes.stockinfoNode.crawler.impls.AlphavantageCrawlerImpl;
 import nodes.stockinfoNode.crawler.impls.AlphavantageSymbolCrawlerImpl;
-import nodes.stockinfoNode.impls.PriceAutoUpdaterImpl;
+import nodes.stockinfoNode.impls.DeltaDelayPriceAutoUpdaterImpl;
 import nodes.stockinfoNode.impls.StockPriceServiceImpl;
+import nodes.stockinfoNode.impls.ZeroDelayPriceAutoUpdaterImpl;
+import nodes.stockinfoNode.impls.annota.ZeroDelay;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import nodes.stockinfoNode.querier.StockPriceDBService;
@@ -41,7 +43,8 @@ public class StockInfoModule extends AbstractModule {
         bind(new TypeLiteral<AlphavantageCrawler<List<StockDailyRecordPOJO>>>(){}).to(AlphavantageCrawlerImpl.class);
 
         bind(StockPriceDBService.class).to(StockPriceDBServiceImpl.class);
-        bind(PriceAutoUpdater.class).to(PriceAutoUpdaterImpl.class);
+        bind(PriceAutoUpdater.class).to(DeltaDelayPriceAutoUpdaterImpl.class);
+        bind(PriceAutoUpdater.class).annotatedWith(ZeroDelay.class).to(ZeroDelayPriceAutoUpdaterImpl.class);
         bind(StockPriceService.class).to(StockPriceServiceImpl.class);
     }
 }

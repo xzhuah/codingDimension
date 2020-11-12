@@ -1,6 +1,7 @@
 package nodes.stockinfoNode.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.bson.types.ObjectId;
@@ -14,12 +15,14 @@ import org.bson.types.ObjectId;
 @NoArgsConstructor
 public class StockCompanyPOJO {
     // This is POJO indicator: real primary key
-    private ObjectId id;
+    @EqualsAndHashCode.Exclude private ObjectId id;
 
+    // Primary key
     private String symbol;
-    private String name;
-    private String exchange;
-    private String sector;
-    private String industry;
-    private String country;
+
+    @EqualsAndHashCode.Exclude private String name;
+    @EqualsAndHashCode.Exclude private String exchange;
+    @EqualsAndHashCode.Exclude private String sector;
+    @EqualsAndHashCode.Exclude private String industry;
+    @EqualsAndHashCode.Exclude private String country;
 }
