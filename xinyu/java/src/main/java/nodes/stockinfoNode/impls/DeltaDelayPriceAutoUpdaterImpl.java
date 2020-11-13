@@ -58,7 +58,10 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
             try {
                 allCompanyResult.add(priceInfoCrawler.getResultFuture(company.getSymbol()));
                 // API need cool down
-                Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
+                if (companies.size() > 5) {
+                    // Only need cool down if more than 5
+                    Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(company + ": is skipped during fetch result due to some error");

@@ -79,7 +79,9 @@ public class StockSymbolUpdaterImpl implements nodes.stockinfoNode.StockSymbolUp
             try {
                 Future<Optional<StockCompanyPOJO>> resultFuture = companyInfoCrawler.getResultFuture(symbol);
                 // Sleep some time
-                Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
+                if (symbols.size() > 5) {
+                    Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
+                }
 
                 Optional<StockCompanyPOJO> optionalResult = resultFuture.get();
                 if (optionalResult.isPresent()) {
@@ -103,7 +105,9 @@ public class StockSymbolUpdaterImpl implements nodes.stockinfoNode.StockSymbolUp
                     companyInfoCrawler.addSymbolToQueue(newSymbol);
                     Future<Optional<StockCompanyPOJO>> resultFuture = companyInfoCrawler.getResultFuture(symbol);
                     // Sleep some time
-                    Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
+                    if (symbols.size() > 5) {
+                        Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
+                    }
                     Optional<StockCompanyPOJO> optionalResult = resultFuture.get();
                     optionalResult.ifPresent(validResult::add);
                 } catch (Exception e) {
