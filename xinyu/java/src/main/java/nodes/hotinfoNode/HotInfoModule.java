@@ -3,7 +3,8 @@ package nodes.hotinfoNode;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import common.io.web.ResponseProcessor;
-import nodes.crawlerNode.BaseCrawler;
+import nodes.crawlerNode.AutoCoolDownCrawler;
+import nodes.hotinfoNode.constants.ValueConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
 import nodes.hotinfoNode.crawler.facade.ResponseToRankListProcessor;
 import nodes.hotinfoNode.crawler.impls.BilibiliHotRankCrawlerServiceImpl;
@@ -21,8 +22,8 @@ public class HotInfoModule extends AbstractModule {
         bind(new TypeLiteral<ResponseProcessor<List<VideoRecordVO>>>() {
         }).toInstance(responseToRankListProcessor);
 
-        bind(new TypeLiteral<BaseCrawler<List<VideoRecordVO>>>() {
-        }).toInstance(new BaseCrawler<>(responseToRankListProcessor));
+        bind(new TypeLiteral<AutoCoolDownCrawler<List<VideoRecordVO>>>() {
+        }).toInstance(new AutoCoolDownCrawler<>(responseToRankListProcessor, ValueConstant.CrawlerParameter.MINMUM_WAIT_TIME.getValue(), ValueConstant.CrawlerParameter.MAXIMUM_WAIT_TIME.getValue(), 0));
 
         bind(BilibiliHotRankCrawlerService.class).to(BilibiliHotRankCrawlerServiceImpl.class);
 

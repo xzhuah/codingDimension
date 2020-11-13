@@ -1,6 +1,7 @@
 package nodes.crawlerNode;
 
 import common.io.web.ResponseProcessor;
+import nodes.crawlerNode.constants.CrawlerConstant;
 
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class AutoCoolDownCrawler<T> extends BaseCrawler<T> {
     }
 
     public AutoCoolDownCrawler(ResponseProcessor<T> responseProcessor) {
-        this(responseProcessor, 1000, 5000, 0);
+        this(responseProcessor, CrawlerConstant.DEFAULT_COOL_DOWN_MIN_TIME, CrawlerConstant.DEFAULT_COOL_DOWN_MAX_TIME, CrawlerConstant.DEFAULT_COOL_DOWN_INTERVAL);
     }
 
     @Override

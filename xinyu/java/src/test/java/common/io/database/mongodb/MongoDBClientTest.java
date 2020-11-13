@@ -1,9 +1,7 @@
 package common.io.database.mongodb;
 
-import com.google.inject.Inject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import common.io.database.mongodb.MongoDBClient;
 import common.io.database.mongodb.utils.Converter;
 import nodes.NodeModule;
 import org.bson.Document;
@@ -14,7 +12,6 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Xinyu Zhu on 2020/11/3, 19:59

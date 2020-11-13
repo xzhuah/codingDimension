@@ -1,7 +1,6 @@
 package nodes.hotinfoNode.crawler;
 
 import nodes.NodeModule;
-import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
 import nodes.hotinfoNode.models.RankingRuleVO;
 import nodes.hotinfoNode.models.VideoRecordVO;
 import nodes.hotinfoNode.utils.EnumUtils;

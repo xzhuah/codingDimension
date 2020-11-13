@@ -37,10 +37,6 @@ public class EnumUtils {
         return rankingRules;
     }
 
-    public static int getRandomCrawlerWaitTime() {
-        return ThreadLocalRandom.current().nextInt(ValueConstant.CrawlerParameter.MINMUM_WAIT_TIME.getValue(), ValueConstant.CrawlerParameter.MAXIMUM_WAIT_TIME.getValue() + 1);
-    }
-
     public static int getRandomCrawlerProcessRequest() {
         return ThreadLocalRandom.current().nextInt(ValueConstant.CrawlerParameter.MINIMUM_CONCURRENT_REQUEST.getValue(), ValueConstant.CrawlerParameter.MAXIMUM_CONCURRENT_REQUEST.getValue() + 1);
     }

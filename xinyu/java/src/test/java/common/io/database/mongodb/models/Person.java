@@ -1,6 +1,5 @@
 package common.io.database.mongodb.models;
 
-import common.io.database.mongodb.models.Address;
 import org.bson.types.ObjectId;
 
 public final class Person {

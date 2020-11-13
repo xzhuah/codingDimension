@@ -72,12 +72,6 @@ public class BilibiliInfoManagerImpl implements BilibiliInfoManager {
             start = end;
 
             System.out.println("Processed: " + end + "/" + allRankingRules.size() + " Time elapsed: " + (System.currentTimeMillis() - collectTime) / 1000 + " seconds");
-
-            try {
-                Thread.sleep(EnumUtils.getRandomCrawlerWaitTime());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
 

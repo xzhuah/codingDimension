@@ -2,7 +2,6 @@ package common.io.database.mongodb;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import common.io.database.mongodb.MongoDBPojoClient;
 import common.io.database.mongodb.models.Address;
 import common.io.database.mongodb.models.Person;
 import common.io.database.mongodb.utils.Converter;
@@ -15,7 +14,6 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Xinyu Zhu on 2020/11/4, 22:08

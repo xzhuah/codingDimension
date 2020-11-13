@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
 import common.io.database.mongodb.MongoDBPojoClient;
-import common.io.database.mongodb.impl.MongoDBPojoClientImpl;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
