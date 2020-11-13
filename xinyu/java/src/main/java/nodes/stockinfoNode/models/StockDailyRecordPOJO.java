@@ -19,7 +19,7 @@ public class StockDailyRecordPOJO {
     @EqualsAndHashCode.Exclude private ObjectId id;
 
     // These two are primary key
-    private String stockSymbol;
+    private String symbol;
     private long time;
 
     // These are other data

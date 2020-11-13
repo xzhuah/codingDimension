@@ -58,11 +58,13 @@ public class StockPriceDBServiceImpl implements StockPriceDBService {
             try {
                 symbolCollection.insertOne(stockCompanyPOJO);
             } catch (Exception duplicateException) {
-                try {
-                    symbolCollection.findOneAndDelete(Converter.toPrimaryFilter(stockCompanyPOJO));
-                    symbolCollection.insertOne(stockCompanyPOJO);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (StockConstant.OVERRIDE_WHEN_UPDATE) {
+                    try {
+                        symbolCollection.findOneAndDelete(Converter.toPrimaryFilter(stockCompanyPOJO));
+                        symbolCollection.insertOne(stockCompanyPOJO);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -74,12 +76,14 @@ public class StockPriceDBServiceImpl implements StockPriceDBService {
             try {
                 priceCollection.insertOne(stockDailyRecordPOJO);
             } catch (Exception duplicateException) {
-                try {
-                    priceCollection.findOneAndDelete(Converter.toPrimaryFilter(stockDailyRecordPOJO));
-                    priceCollection.insertOne(stockDailyRecordPOJO);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    continue;
+                if (StockConstant.OVERRIDE_WHEN_UPDATE) {
+                    try {
+                        priceCollection.findOneAndDelete(Converter.toPrimaryFilter(stockDailyRecordPOJO));
+                        priceCollection.insertOne(stockDailyRecordPOJO);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        continue;
+                    }
                 }
             }
         }

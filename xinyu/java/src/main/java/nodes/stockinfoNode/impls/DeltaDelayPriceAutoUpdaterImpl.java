@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.nin;
 import static common.utils.ConditionChecker.checkStatus;
 import static nodes.stockinfoNode.utils.Converter.getTimeFilterForStockDailyRecord;
 
@@ -105,15 +106,10 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
         List<StockDailyRecordPOJO> recentRecord = stockPriceDBService.queryPrice(timeFilter);
 
         // create a set of them, set based on primary key (Symbol) only
-        Set<String> outOfDateCompanySymbols= new HashSet<>(recentRecord.size());
-        recentRecord.forEach(record -> outOfDateCompanySymbols.add(record.getStockSymbol()));
+        Set<String> upToDateCompanySymbols= new HashSet<>(recentRecord.size());
+        recentRecord.forEach(record -> upToDateCompanySymbols.add(record.getSymbol()));
 
-        List<StockCompanyPOJO> outOfDateCompanies = new ArrayList<>(outOfDateCompanySymbols.size());
-        outOfDateCompanySymbols.forEach(symbol -> {
-            StockCompanyPOJO toAddStorckCompany = new StockCompanyPOJO();
-            toAddStorckCompany.setSymbol(symbol);
-            outOfDateCompanies.add(toAddStorckCompany);
-        });
+        List<StockCompanyPOJO> outOfDateCompanies = stockPriceDBService.queryCompany(nin("symbol", upToDateCompanySymbols));
 
         return outOfDateCompanies;
     }

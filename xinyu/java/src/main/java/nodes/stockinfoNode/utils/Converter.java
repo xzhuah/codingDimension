@@ -26,8 +26,14 @@ public class Converter {
 
     }
 
+    public static StockCompanyPOJO toStockCompanyPOJO(String symbol) {
+        StockCompanyPOJO stockCompanyPOJO = new StockCompanyPOJO();
+        stockCompanyPOJO.setSymbol(symbol);
+        return stockCompanyPOJO;
+    }
+
     public static Bson toPrimaryFilter(StockDailyRecordPOJO stockCompanyPOJO) {
-        return new Document("stockSymbol", stockCompanyPOJO.getStockSymbol())
+        return new Document("symbol", stockCompanyPOJO.getSymbol())
                 .append("time", stockCompanyPOJO.getTime());
     }
 

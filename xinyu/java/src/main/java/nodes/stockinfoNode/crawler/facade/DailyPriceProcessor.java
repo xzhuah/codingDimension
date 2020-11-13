@@ -27,7 +27,7 @@ public class DailyPriceProcessor implements ResponseProcessor<List<StockDailyRec
         stockDailyRecordPOJO.setDividend(dailyData.get("7. dividend amount").getAsDouble());
         stockDailyRecordPOJO.setSplitCoefficient(dailyData.get("8. split coefficient").getAsDouble());
         stockDailyRecordPOJO.setTime(TimeClient.stringToTimestamp(dayString, TimeConstant.dateOnlyFormat));
-        stockDailyRecordPOJO.setStockSymbol(symbol);
+        stockDailyRecordPOJO.setSymbol(symbol);
         return stockDailyRecordPOJO;
     }
 

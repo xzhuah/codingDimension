@@ -12,6 +12,8 @@ public class WebsiteConstant {
 
     public static final String ALPHAVANTAGE_API_ENDPOINT = "https://www.alphavantage.co/query";
 
+    public static final String SYMBOL_QUERY_ENDPOINT = "https://api.iextrading.com/1.0/ref-data/symbols";
+
     private static final String keyFile = "stockinfoKey.pass";
 
     public static String loadKey;

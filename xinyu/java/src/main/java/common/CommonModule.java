@@ -1,5 +1,6 @@
 package common;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
@@ -8,6 +9,7 @@ import common.io.database.mongodb.MongoDBPojoClient;
 import common.io.database.mongodb.impl.MongoDBClientImpl;
 import common.io.database.mongodb.impl.MongoDBPojoClientImpl;
 import common.io.web.ResponseProcessor;
+import common.io.web.impl.processors.ResponseToJsonArrayProcessorImpl;
 import common.io.web.impl.processors.ResponseToJsonProcessorImpl;
 import common.io.web.impl.processors.ResponseToRawHtmlProcessorImpl;
 
@@ -26,6 +28,10 @@ public class CommonModule extends AbstractModule {
 
         bind(new TypeLiteral<ResponseProcessor<JsonObject>>() {
         }).to(new TypeLiteral<ResponseToJsonProcessorImpl>() {
+        });
+
+        bind(new TypeLiteral<ResponseProcessor<JsonArray>>() {
+        }).to(new TypeLiteral<ResponseToJsonArrayProcessorImpl>() {
         });
 
         try {
