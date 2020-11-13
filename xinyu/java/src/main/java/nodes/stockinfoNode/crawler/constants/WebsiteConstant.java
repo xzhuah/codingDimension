@@ -14,6 +14,8 @@ public class WebsiteConstant {
 
     public static final String SYMBOL_QUERY_ENDPOINT = "https://api.iextrading.com/1.0/ref-data/symbols";
 
+    public static final long COOL_DOWN_TIME = 15000;
+
     private static final String keyFile = "stockinfoKey.pass";
 
     public static String loadKey;

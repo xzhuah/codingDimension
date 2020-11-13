@@ -18,7 +18,12 @@ public class CompanyInfoProcessor implements ResponseProcessor<StockCompanyPOJO>
 
     private static StockCompanyPOJO toStockCompanyPOJO(JsonObject jsonObject) {
         StockCompanyPOJO stockCompanyPOJO = new StockCompanyPOJO();
-        stockCompanyPOJO.setSymbol(jsonObject.get("Symbol").getAsString());
+        try {
+            stockCompanyPOJO.setSymbol(jsonObject.get("Symbol").getAsString());
+        } catch (Exception e) {
+            // return null when parsing failed
+            return null;
+        }
         try {
             stockCompanyPOJO.setExchange(jsonObject.get("Exchange").getAsString());
         } catch (Exception e) {
@@ -51,6 +56,6 @@ public class CompanyInfoProcessor implements ResponseProcessor<StockCompanyPOJO>
     @Override
     public Optional<StockCompanyPOJO> process(CloseableHttpResponse response, String url) throws Exception {
         JsonObject jsonObject = Converter.toJsonObject(response);
-        return Optional.of(toStockCompanyPOJO(jsonObject));
+        return Optional.ofNullable(toStockCompanyPOJO(jsonObject));
     }
 }

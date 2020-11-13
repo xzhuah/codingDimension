@@ -34,11 +34,16 @@ public class AlphavantageSymbolCrawlerImpl implements AlphavantageCrawler<StockC
 
     public static void main(String[] args) throws Exception {
         AlphavantageCrawler<StockCompanyPOJO> alphavantageCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>(){});
-        alphavantageCrawler.addSymbolToQueue("IBM");
+        alphavantageCrawler.addSymbolToQueue("IBMCS");
 
-        Future<Optional<StockCompanyPOJO>> result = alphavantageCrawler.getResultFuture("IBM");
-        StockCompanyPOJO stockDailyRecordList = result.get().get();
-        System.out.println(stockDailyRecordList);
+        Future<Optional<StockCompanyPOJO>> result = alphavantageCrawler.getResultFuture("IBMCS");
+        Optional<StockCompanyPOJO> stockDailyRecordList = result.get();
+        if (stockDailyRecordList.isPresent()) {
+            System.out.println(stockDailyRecordList.get());
+
+        } else {
+            System.out.println("Invalid symbol");
+        }
         alphavantageCrawler.shutDown();
     }
 
@@ -59,7 +64,7 @@ public class AlphavantageSymbolCrawlerImpl implements AlphavantageCrawler<StockC
         List<Future<Optional<StockCompanyPOJO>>> result = crawler.getResultFuture(symbol);
         if (!result.isEmpty()) {
             if (result.size() > 1) {
-                System.err.println("Error happend, somehow got two result for the same symbol, returned the first one");
+                System.err.println("Error happened, somehow got two result for the same symbol, returned the first one");
             }
             return result.get(0);
         } else {

@@ -5,6 +5,7 @@ import common.time.TimeClient;
 import nodes.stockinfoNode.PriceAutoUpdater;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
+import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import nodes.stockinfoNode.querier.StockPriceDBService;
@@ -56,6 +57,8 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
         for (StockCompanyPOJO company : companies) {
             try {
                 allCompanyResult.add(priceInfoCrawler.getResultFuture(company.getSymbol()));
+                // API need cool down
+                Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
             } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println(company + ": is skipped during fetch result due to some error");
