@@ -14,6 +14,8 @@ import org.bson.conversions.Bson;
 
 import java.io.IOException;
 
+import static com.mongodb.client.model.Filters.*;
+
 /**
  * Created by Xinyu Zhu on 2020/11/8, 21:45
  * nodes.stockinfoNode.utils in codingDimensionTemplate
@@ -27,6 +29,10 @@ public class Converter {
     public static Bson toPrimaryFilter(StockDailyRecordPOJO stockCompanyPOJO) {
         return new Document("stockSymbol", stockCompanyPOJO.getStockSymbol())
                 .append("time", stockCompanyPOJO.getTime());
+    }
+
+    public static Bson getTimeFilterForStockDailyRecord(long startTime, long endTime) {
+        return and(gte("time", startTime), lt("time", endTime));
     }
 
     public static JsonObject toJsonObject(CloseableHttpResponse closeableHttpResponse) throws IOException {

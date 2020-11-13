@@ -87,7 +87,7 @@ public class BaseCrawler<T> {
         return getResultFuture(null, url, params);
     }
 
-    private List<Future<Optional<T>>> getResultFuture(String tag, String url, Map<String, String> params) {
+    protected List<Future<Optional<T>>> getResultFuture(String tag, String url, Map<String, String> params) {
         checkStatus(canReturnResult(), "Crawler can't return result! crawler status: " + currentStatus);
         if (null == tag) {
             checkStatus(url != null, "Invalid params, tag and url are null!");

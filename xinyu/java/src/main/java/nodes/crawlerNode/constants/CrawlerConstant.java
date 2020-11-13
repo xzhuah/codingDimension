@@ -12,4 +12,8 @@ public class CrawlerConstant {
             put(KeyValueConstant.StringAttribute.DEFAULT_USER_AGENT.getKey(), KeyValueConstant.StringAttribute.DEFAULT_USER_AGENT.getValue());
         }
     };
+
+    public static final long DEFAULT_COOL_DOWN_MIN_TIME = 1000;
+    public static final long DEFAULT_COOL_DOWN_MAX_TIME = 5000;
+    public static final int DEFAULT_COOL_DOWN_INTERVAL = 0;
 }

@@ -1,17 +1,23 @@
 package nodes.stockinfoNode.impls;
 
 import com.google.inject.Inject;
+import common.time.TimeClient;
 import nodes.stockinfoNode.PriceAutoUpdater;
+import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import nodes.stockinfoNode.querier.StockPriceDBService;
+import nodes.stockinfoNode.utils.Converter;
+import org.bson.conversions.Bson;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+
+import static com.mongodb.client.model.Filters.and;
+import static common.utils.ConditionChecker.checkStatus;
+import static nodes.stockinfoNode.utils.Converter.getTimeFilterForStockDailyRecord;
 
 /**
  * With DeltaDelayPriceAutoUpdaterImpl, you can specify how many days (delta) you are allowed in out of date.
@@ -74,34 +80,52 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
             // Insert to database
             stockPriceDBService.insertPrice(companyPriceRecord.get());
         });
-
-
     }
 
     @Override
     public boolean isOutOfDate(StockCompanyPOJO company) {
+        String companySymbol = company.getSymbol();
+        checkStatus(null != companySymbol && companySymbol.length() > 0, "Can't process StockCompanyPOJO with no valid primary key: " + company);
         // get the current timestamp, -1 day if it is sunday
-
-        // pivot timestamp = current timestamp - 24 * 3600,000 * delta
-
+        long pivotTimestamp = getOutOfDateTime();
         // query for that company's record with  timestamp: current timestamp > timestamp > pivot timestamp (some dirty record may have wrong timestamp and this can help filter some error)
-
+        Bson timeFilter = getTimeFilterForStockDailyRecord(pivotTimestamp, System.currentTimeMillis());
+        Bson primaryKeyFilter = Converter.toPrimaryFilter(company);
+        List<StockDailyRecordPOJO> recentRecord = stockPriceDBService.queryPrice(and(timeFilter, primaryKeyFilter));
         // if exist --> false
-
-        // else true
-        return false;
+        return recentRecord.isEmpty();
     }
 
     @Override
     public List<StockCompanyPOJO> getOutOfDateCompany() {
-        // get the current timestamp, -1 day if it is sunday
-
-        // pivot timestamp = current timestamp - 24 * 3600,000 * delta
+        long pivotTimestamp = getOutOfDateTime();
 
         // query for all company record with timestamp: has current timestamp > timestamp > pivot timestamp
+        Bson timeFilter = getTimeFilterForStockDailyRecord(pivotTimestamp, System.currentTimeMillis());
+        List<StockDailyRecordPOJO> recentRecord = stockPriceDBService.queryPrice(timeFilter);
 
         // create a set of them, set based on primary key (Symbol) only
+        Set<String> outOfDateCompanySymbols= new HashSet<>(recentRecord.size());
+        recentRecord.forEach(record -> outOfDateCompanySymbols.add(record.getStockSymbol()));
 
-        return null;
+        List<StockCompanyPOJO> outOfDateCompanies = new ArrayList<>(outOfDateCompanySymbols.size());
+        outOfDateCompanySymbols.forEach(symbol -> {
+            StockCompanyPOJO toAddStorckCompany = new StockCompanyPOJO();
+            toAddStorckCompany.setSymbol(symbol);
+            outOfDateCompanies.add(toAddStorckCompany);
+        });
+
+        return outOfDateCompanies;
+    }
+
+    // Return a timestamp for out of date judgement, and record with time less or equal to pivot time will be considered as out of date
+    private long getOutOfDateTime() {
+        long currentTimestamp = System.currentTimeMillis();
+        long offsetTimestamp = currentTimestamp;
+        if (TimeClient.getWeekday(currentTimestamp) == 0) {
+            offsetTimestamp -= 3600 * 1000 * 24;
+        }
+        // pivot timestamp = current timestamp - 24 * 3600,000 * delta
+        return offsetTimestamp - 24 * 3600 * 1000 * StockConstant.DEFAULT_DELTA_IN_DAY_FOR_UPDATE;
     }
 }
