@@ -66,6 +66,7 @@ public class CompanyInfoProcessor implements ResponseProcessor<StockCompanyPOJO>
     @Override
     public Optional<StockCompanyPOJO> process(CloseableHttpResponse response, String url) throws Exception {
         JsonObject jsonObject = Converter.toJsonObject(response);
+        response.close();
         return Optional.ofNullable(toStockCompanyPOJO(jsonObject));
     }
 }
