@@ -49,6 +49,16 @@ public class CompanyInfoProcessor implements ResponseProcessor<StockCompanyPOJO>
         } catch (Exception e) {
             // It may not have this field;
         }
+        try {
+            stockCompanyPOJO.setEmployee(jsonObject.get("FullTimeEmployees").getAsInt());
+        } catch (Exception e) {
+            // It may not have this field;
+        }
+        try {
+            stockCompanyPOJO.setMarket(jsonObject.get("MarketCapitalization").getAsLong());
+        } catch (Exception e) {
+            // It may not have this field;
+        }
         return stockCompanyPOJO;
     }
 

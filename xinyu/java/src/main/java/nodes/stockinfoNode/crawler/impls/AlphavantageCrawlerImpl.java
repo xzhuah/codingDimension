@@ -33,7 +33,7 @@ public class AlphavantageCrawlerImpl implements AlphavantageCrawler<List<StockDa
         requestparam.put("function", "TIME_SERIES_DAILY_ADJUSTED");
         requestparam.put("symbol", symbol);
         requestparam.put("outputsize", "full");
-        requestparam.put("apikey", WebsiteConstant.loadKey);
+        requestparam.put("apikey", WebsiteConstant.LOAD_KEY);
         return requestparam;
     }
 

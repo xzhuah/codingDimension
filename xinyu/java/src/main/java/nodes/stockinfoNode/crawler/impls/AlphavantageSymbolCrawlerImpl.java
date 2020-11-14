@@ -28,7 +28,7 @@ public class AlphavantageSymbolCrawlerImpl implements AlphavantageCrawler<StockC
         Map<String, String> requestparam = new HashMap<>();
         requestparam.put("function", "OVERVIEW");
         requestparam.put("symbol", symbol);
-        requestparam.put("apikey", WebsiteConstant.loadKey);
+        requestparam.put("apikey", WebsiteConstant.LOAD_KEY);
         return requestparam;
     }
 

@@ -25,4 +25,8 @@ public class StockCompanyPOJO {
     @EqualsAndHashCode.Exclude private String sector;
     @EqualsAndHashCode.Exclude private String industry;
     @EqualsAndHashCode.Exclude private String country;
+
+    @EqualsAndHashCode.Exclude private int employee;
+    @EqualsAndHashCode.Exclude private long market;
+
 }

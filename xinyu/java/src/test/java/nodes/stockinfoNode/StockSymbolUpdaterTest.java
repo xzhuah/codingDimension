@@ -3,6 +3,8 @@ package nodes.stockinfoNode;
 import nodes.NodeModule;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,5 +18,10 @@ public class StockSymbolUpdaterTest {
     @Test
     public void update() {
         stockSymbolUpdater.update();
+    }
+
+    @Test
+    public void updateOne() {
+        stockSymbolUpdater.update(List.of("IBM"));
     }
 }

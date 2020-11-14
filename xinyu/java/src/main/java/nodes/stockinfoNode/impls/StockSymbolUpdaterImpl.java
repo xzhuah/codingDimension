@@ -12,6 +12,8 @@ import java.util.*;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
+import static nodes.stockinfoNode.crawler.constants.WebsiteConstant.SP_500_SYMBOL;
+
 /**
  * Created by Xinyu Zhu on 2020/11/13, 2:06
  * nodes.stockinfoNode.impls in codingDimensionTemplate
@@ -35,7 +37,13 @@ public class StockSymbolUpdaterImpl implements nodes.stockinfoNode.StockSymbolUp
     @Override
     public void update() {
         try {
-            update(stockSymbolCrawler.getAllStockSymbols());
+            if (SP_500_SYMBOL.isEmpty()) {
+                System.out.println("Using All Symbols to update");
+                update(stockSymbolCrawler.getAllStockSymbols());
+            } else {
+                System.out.println("Using SP 500 Symbols to update");
+                update(SP_500_SYMBOL);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Update failed since can't get all stock symbols");
@@ -85,8 +93,10 @@ public class StockSymbolUpdaterImpl implements nodes.stockinfoNode.StockSymbolUp
 
                 Optional<StockCompanyPOJO> optionalResult = resultFuture.get();
                 if (optionalResult.isPresent()) {
+                    System.out.println("Successfully got data for " + symbol);
                     firstProcessSuccess = true;
                     validResult.add(optionalResult.get());
+                    dbService.insertCompany(optionalResult.get());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -109,15 +119,18 @@ public class StockSymbolUpdaterImpl implements nodes.stockinfoNode.StockSymbolUp
                         Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
                     }
                     Optional<StockCompanyPOJO> optionalResult = resultFuture.get();
-                    optionalResult.ifPresent(validResult::add);
+                    optionalResult.ifPresent(result -> {
+                        System.out.println("Successfully got data for " + newSymbol + " at second try");
+                        validResult.add(result);
+                        dbService.insertCompany(result);
+                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
 
-        // save these valid result to database
-        dbService.insertCompany(validResult);
         // Print out what new symbol is added
 
         List<String> symbolAdded = new ArrayList<>(validResult.size());

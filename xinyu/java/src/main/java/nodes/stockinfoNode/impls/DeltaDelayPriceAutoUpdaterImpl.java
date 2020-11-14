@@ -52,11 +52,17 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
             }
         }
 
-        // Fetch future results
-        List<Future<Optional<List<StockDailyRecordPOJO>>>> allCompanyResult = new ArrayList<>();
         for (StockCompanyPOJO company : companies) {
             try {
-                allCompanyResult.add(priceInfoCrawler.getResultFuture(company.getSymbol()));
+                Future<Optional<List<StockDailyRecordPOJO>>> futureCompanyPriceRecord = priceInfoCrawler.getResultFuture(company.getSymbol());
+                Optional<List<StockDailyRecordPOJO>> companyPriceRecord = futureCompanyPriceRecord.get();
+                if (companyPriceRecord.isPresent()) {
+                    // Insert on the fly
+                    stockPriceDBService.insertPrice(companyPriceRecord.get());
+                    System.out.println("Successfully updated price for " + company.getSymbol());
+                } else {
+                    System.err.println(futureCompanyPriceRecord + ": is skipped during processing due to some error");
+                }
                 // API need cool down
                 if (companies.size() > 5) {
                     // Only need cool down if more than 5
@@ -67,26 +73,6 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
                 System.err.println(company + ": is skipped during fetch result due to some error");
             }
         }
-
-        // Process future results
-        allCompanyResult.stream().forEach(futureCompanyPriceRecord -> {
-            Optional<List<StockDailyRecordPOJO>> companyPriceRecord;
-            try {
-                companyPriceRecord = futureCompanyPriceRecord.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                companyPriceRecord = Optional.empty();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-                companyPriceRecord = Optional.empty();
-            }
-            if (!companyPriceRecord.isPresent()) {
-                System.err.println(futureCompanyPriceRecord + ": is skipped during processing due to some error");
-                return;
-            }
-            // Insert to database
-            stockPriceDBService.insertPrice(companyPriceRecord.get());
-        });
     }
 
     @Override

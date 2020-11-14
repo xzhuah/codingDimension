@@ -20,7 +20,7 @@ public class PriceAutoUpdaterTest {
     public void test() {
         System.out.println(autoUpdater.isOutOfDate(Converter.toStockCompanyPOJO("IBM")));
         List<StockCompanyPOJO> outOfDateCompany = autoUpdater.getOutOfDateCompany();
-        System.out.println(outOfDateCompany);
+        System.out.println(outOfDateCompany.size());
     }
 
     @Test
