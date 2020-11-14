@@ -1,4 +1,4 @@
-package nodes.stockinfoNode.querier.impls;
+package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
 import com.mongodb.Block;
@@ -7,7 +7,7 @@ import common.io.database.mongodb.MongoDBPojoClient;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import nodes.stockinfoNode.querier.StockInfoDBService;
+import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.utils.Converter;
 import org.bson.conversions.Bson;
 

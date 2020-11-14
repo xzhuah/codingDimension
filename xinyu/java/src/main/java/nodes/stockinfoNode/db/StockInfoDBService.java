@@ -1,4 +1,4 @@
-package nodes.stockinfoNode.querier;
+package nodes.stockinfoNode.db;
 
 import com.mongodb.client.MongoCollection;
 import nodes.stockinfoNode.models.StockCompanyPOJO;

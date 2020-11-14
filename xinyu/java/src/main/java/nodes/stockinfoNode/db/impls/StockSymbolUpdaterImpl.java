@@ -1,12 +1,13 @@
-package nodes.stockinfoNode.impls;
+package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.StockSymbolCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
+import nodes.stockinfoNode.db.StockSymbolUpdater;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
-import nodes.stockinfoNode.querier.StockInfoDBService;
+import nodes.stockinfoNode.db.StockInfoDBService;
 
 import java.util.*;
 import java.util.concurrent.Future;
@@ -21,7 +22,7 @@ import static nodes.stockinfoNode.crawler.constants.WebsiteConstant.SP_500_SYMBO
  * Better to select < 500 stocks, since the API has a daily limit
  * Auto skip those invalid symbol
  */
-public class StockSymbolUpdaterImpl implements nodes.stockinfoNode.StockSymbolUpdater {
+public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
     private final AlphavantageCrawler<StockCompanyPOJO> companyInfoCrawler;
     private final StockSymbolCrawler stockSymbolCrawler;
     private final StockInfoDBService dbService;

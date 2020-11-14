@@ -1,6 +1,7 @@
 package nodes.stockinfoNode;
 
 import nodes.NodeModule;
+import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.utils.Converter;
 import org.junit.Test;

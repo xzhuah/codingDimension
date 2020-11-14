@@ -1,14 +1,14 @@
-package nodes.stockinfoNode.impls;
+package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
 import common.time.TimeClient;
-import nodes.stockinfoNode.PriceAutoUpdater;
+import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import nodes.stockinfoNode.querier.StockInfoDBService;
+import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.utils.Converter;
 import org.bson.conversions.Bson;
 

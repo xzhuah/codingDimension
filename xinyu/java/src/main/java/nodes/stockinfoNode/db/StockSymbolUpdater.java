@@ -1,4 +1,4 @@
-package nodes.stockinfoNode;
+package nodes.stockinfoNode.db;
 
 import java.util.List;
 

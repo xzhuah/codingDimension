@@ -1,11 +1,10 @@
 package nodes.stockinfoNode;
 
 import nodes.NodeModule;
+import nodes.stockinfoNode.db.StockSymbolUpdater;
 import org.junit.Test;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Xinyu Zhu on 2020/11/13, 3:04

@@ -1,9 +1,9 @@
 package nodes.stockinfoNode.impls;
 
 import com.google.inject.Inject;
-import nodes.stockinfoNode.PriceAutoUpdater;
+import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.StockInfoService;
-import nodes.stockinfoNode.querier.StockInfoDBService;
+import nodes.stockinfoNode.db.StockInfoDBService;
 
 /**
  * Created by Xinyu Zhu on 2020/11/6, 23:51

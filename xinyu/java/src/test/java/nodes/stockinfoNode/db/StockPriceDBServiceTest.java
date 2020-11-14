@@ -1,4 +1,4 @@
-package nodes.stockinfoNode.querier;
+package nodes.stockinfoNode.db;
 
 import com.google.inject.Key;
 import nodes.NodeModule;
