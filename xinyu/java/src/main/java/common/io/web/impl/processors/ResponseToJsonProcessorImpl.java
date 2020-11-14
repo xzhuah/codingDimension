@@ -3,7 +3,7 @@ package common.io.web.impl.processors;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.inject.Singleton;
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;

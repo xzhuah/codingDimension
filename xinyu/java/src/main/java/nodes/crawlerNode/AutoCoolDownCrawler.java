@@ -1,6 +1,6 @@
 package nodes.crawlerNode;
 
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import nodes.crawlerNode.constants.CrawlerConstant;
 
 import java.util.List;

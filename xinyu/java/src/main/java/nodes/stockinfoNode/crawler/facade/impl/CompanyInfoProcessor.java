@@ -1,8 +1,8 @@
-package nodes.stockinfoNode.crawler.facade;
+package nodes.stockinfoNode.crawler.facade.impl;
 
 import com.google.gson.JsonObject;
 import com.google.inject.Singleton;
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.utils.Converter;
 import org.apache.http.client.methods.CloseableHttpResponse;

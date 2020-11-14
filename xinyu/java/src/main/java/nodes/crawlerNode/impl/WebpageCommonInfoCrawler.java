@@ -2,7 +2,7 @@ package nodes.crawlerNode.impl;
 
 import com.google.inject.Inject;
 import com.google.inject.Key;
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import nodes.NodeModule;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.models.WebpageCommonInfo;

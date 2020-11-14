@@ -2,11 +2,11 @@ package nodes.hotinfoNode;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import nodes.crawlerNode.AutoCoolDownCrawler;
 import nodes.hotinfoNode.constants.ValueConstant;
 import nodes.hotinfoNode.crawler.BilibiliHotRankCrawlerService;
-import nodes.hotinfoNode.crawler.facade.ResponseToRankListProcessor;
+import nodes.hotinfoNode.crawler.facade.impl.ResponseToRankListProcessor;
 import nodes.hotinfoNode.crawler.impls.BilibiliHotRankCrawlerServiceImpl;
 import nodes.hotinfoNode.impls.BilibiliInfoManagerImpl;
 import nodes.hotinfoNode.models.VideoRecordVO;

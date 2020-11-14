@@ -1,9 +1,9 @@
-package nodes.stockinfoNode.crawler.facade;
+package nodes.stockinfoNode.crawler.facade.impl;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.inject.Singleton;
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import common.time.TimeClient;
 import common.time.TimeConstant;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;

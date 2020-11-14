@@ -1,7 +1,7 @@
-package nodes.hotinfoNode.crawler.facade;
+package nodes.hotinfoNode.crawler.facade.impl;
 
 import com.google.inject.Singleton;
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
 import nodes.hotinfoNode.models.VideoRecordVO;
 import nodes.hotinfoNode.utils.Converter;

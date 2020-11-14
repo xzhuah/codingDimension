@@ -8,7 +8,7 @@ import common.io.database.mongodb.MongoDBClient;
 import common.io.database.mongodb.MongoDBPojoClient;
 import common.io.database.mongodb.impl.MongoDBClientImpl;
 import common.io.database.mongodb.impl.MongoDBPojoClientImpl;
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import common.io.web.impl.processors.ResponseToJsonArrayProcessorImpl;
 import common.io.web.impl.processors.ResponseToJsonProcessorImpl;
 import common.io.web.impl.processors.ResponseToRawHtmlProcessorImpl;

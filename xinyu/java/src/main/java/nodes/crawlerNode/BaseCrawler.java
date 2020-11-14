@@ -1,7 +1,7 @@
 package nodes.crawlerNode;
 
 import common.io.web.PoolingAsyncHttpClient;
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import common.io.web.impl.PoolingAsyncHttpClientImpl;
 import common.io.web.utils.RequestBuilder;
 import nodes.crawlerNode.constants.CrawlerConstant;

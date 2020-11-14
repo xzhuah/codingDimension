@@ -1,7 +1,7 @@
 package common.io.web.impl;
 
 
-import common.io.web.ResponseProcessor;
+import common.io.web.facade.ResponseProcessor;
 import common.io.web.SyncHttpClient;
 import common.io.web.constants.ValueConstant;
 import common.io.web.utils.HttpRequestRetryHandlerBuilder;
