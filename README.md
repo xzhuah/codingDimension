@@ -16,3 +16,6 @@ I plan to create a video to demo what are those great things in this project, bu
 One amazing thing about this is: under the organization of codingDimensionTemplate, Every part of the coding is modulized and connected. You can use easily access and adopt the functionality of other modulas from one modulas. Which greatly improved the code reusability.
 
 Things are under active development, a lot of thinsg will come in the future. The framework and template may also be improved. I won't formally release this project and template in short term. This would be a long term project. 
+
+
+Some of the program need to talk with database, whose schema is not included in the code, so sadlly you may not be able to run those program directly, but you will be able set up a database service and build the schema according to the code. It is very easy to modify the connection parameters so that the program can find your database.
