@@ -8,6 +8,6 @@ package nodes.stockinfoNode;
  * It will do update in a on-demand manner to optimize online API usage, when an update is not required, price
  * information will be retrieved from database instead of online API
  */
-public interface StockPriceService {
+public interface StockInfoService {
 
 }

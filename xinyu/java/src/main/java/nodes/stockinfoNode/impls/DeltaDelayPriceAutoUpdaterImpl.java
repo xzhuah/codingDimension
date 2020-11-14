@@ -8,12 +8,11 @@ import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import nodes.stockinfoNode.querier.StockPriceDBService;
+import nodes.stockinfoNode.querier.StockInfoDBService;
 import nodes.stockinfoNode.utils.Converter;
 import org.bson.conversions.Bson;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.mongodb.client.model.Filters.and;
@@ -29,12 +28,12 @@ import static nodes.stockinfoNode.utils.Converter.getTimeFilterForStockDailyReco
  */
 public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
 
-    private final StockPriceDBService stockPriceDBService;
+    private final StockInfoDBService stockInfoDBService;
     private final AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler;
 
     @Inject
-    private DeltaDelayPriceAutoUpdaterImpl(StockPriceDBService stockPriceDBService, AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler) {
-        this.stockPriceDBService = stockPriceDBService;
+    private DeltaDelayPriceAutoUpdaterImpl(StockInfoDBService stockInfoDBService, AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler) {
+        this.stockInfoDBService = stockInfoDBService;
         this.priceInfoCrawler = priceInfoCrawler;
     }
 
@@ -58,7 +57,7 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
                 Optional<List<StockDailyRecordPOJO>> companyPriceRecord = futureCompanyPriceRecord.get();
                 if (companyPriceRecord.isPresent()) {
                     // Insert on the fly
-                    stockPriceDBService.insertPrice(companyPriceRecord.get());
+                    stockInfoDBService.insertPrice(companyPriceRecord.get());
                     System.out.println("Successfully updated price for " + company.getSymbol());
                 } else {
                     System.err.println(futureCompanyPriceRecord + ": is skipped during processing due to some error");
@@ -84,7 +83,7 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
         // query for that company's record with  timestamp: current timestamp > timestamp > pivot timestamp (some dirty record may have wrong timestamp and this can help filter some error)
         Bson timeFilter = getTimeFilterForStockDailyRecord(pivotTimestamp, System.currentTimeMillis());
         Bson primaryKeyFilter = Converter.toPrimaryFilter(company);
-        List<StockDailyRecordPOJO> recentRecord = stockPriceDBService.queryPrice(and(timeFilter, primaryKeyFilter));
+        List<StockDailyRecordPOJO> recentRecord = stockInfoDBService.queryPrice(and(timeFilter, primaryKeyFilter));
         // if exist --> false
         return recentRecord.isEmpty();
     }
@@ -95,13 +94,13 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
 
         // query for all company record with timestamp: has current timestamp > timestamp > pivot timestamp
         Bson timeFilter = getTimeFilterForStockDailyRecord(pivotTimestamp, System.currentTimeMillis());
-        List<StockDailyRecordPOJO> recentRecord = stockPriceDBService.queryPrice(timeFilter);
+        List<StockDailyRecordPOJO> recentRecord = stockInfoDBService.queryPrice(timeFilter);
 
         // create a set of them, set based on primary key (Symbol) only
         Set<String> upToDateCompanySymbols= new HashSet<>(recentRecord.size());
         recentRecord.forEach(record -> upToDateCompanySymbols.add(record.getSymbol()));
 
-        List<StockCompanyPOJO> outOfDateCompanies = stockPriceDBService.queryCompany(nin("symbol", upToDateCompanySymbols));
+        List<StockCompanyPOJO> outOfDateCompanies = stockInfoDBService.queryCompany(nin("symbol", upToDateCompanySymbols));
 
         return outOfDateCompanies;
     }

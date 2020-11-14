@@ -7,7 +7,7 @@ import common.io.database.mongodb.MongoDBPojoClient;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import nodes.stockinfoNode.querier.StockPriceDBService;
+import nodes.stockinfoNode.querier.StockInfoDBService;
 import nodes.stockinfoNode.utils.Converter;
 import org.bson.conversions.Bson;
 
@@ -19,14 +19,14 @@ import java.util.List;
  * Created by Xinyu Zhu on 2020/11/7, 2:10
  * nodes.stockinfoNode.querier.impls in codingDimensionTemplate
  */
-public class StockPriceDBServiceImpl implements StockPriceDBService {
+public class StockInfoDBServiceImpl implements StockInfoDBService {
     private final MongoDBPojoClient mongoDBClient;
 
     private final MongoCollection<StockCompanyPOJO> symbolCollection;
     private final MongoCollection<StockDailyRecordPOJO> priceCollection;
 
     @Inject
-    private StockPriceDBServiceImpl(MongoDBPojoClient mongoDBClient) {
+    private StockInfoDBServiceImpl(MongoDBPojoClient mongoDBClient) {
         this.mongoDBClient = mongoDBClient;
 
         symbolCollection =  this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE,

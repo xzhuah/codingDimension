@@ -4,20 +4,17 @@ import com.google.inject.Key;
 import nodes.NodeModule;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
-import nodes.stockinfoNode.utils.Converter;
 import org.junit.Test;
 
 import java.util.Optional;
 import java.util.concurrent.Future;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Xinyu Zhu on 2020/11/13, 0:30
  * nodes.stockinfoNode.querier in codingDimensionTemplate
  */
 public class StockPriceDBServiceTest {
-    StockPriceDBService stockPriceDBService = NodeModule.getGlobalInjector().getInstance(StockPriceDBService.class);
+    StockInfoDBService stockInfoDBService = NodeModule.getGlobalInjector().getInstance(StockInfoDBService.class);
     AlphavantageCrawler<StockCompanyPOJO> crawler = NodeModule.getGlobalInjector().getInstance(new Key<>(){});
 
 
@@ -29,7 +26,7 @@ public class StockPriceDBServiceTest {
         System.out.println(stockDailyRecordList);
 
 
-        stockPriceDBService.insertCompany(stockDailyRecordList);
+        stockInfoDBService.insertCompany(stockDailyRecordList);
 
         crawler.shutDown();
     }

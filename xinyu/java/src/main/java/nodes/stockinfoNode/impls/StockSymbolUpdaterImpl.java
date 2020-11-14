@@ -6,7 +6,7 @@ import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.StockSymbolCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
-import nodes.stockinfoNode.querier.StockPriceDBService;
+import nodes.stockinfoNode.querier.StockInfoDBService;
 
 import java.util.*;
 import java.util.concurrent.Future;
@@ -24,10 +24,10 @@ import static nodes.stockinfoNode.crawler.constants.WebsiteConstant.SP_500_SYMBO
 public class StockSymbolUpdaterImpl implements nodes.stockinfoNode.StockSymbolUpdater {
     private final AlphavantageCrawler<StockCompanyPOJO> companyInfoCrawler;
     private final StockSymbolCrawler stockSymbolCrawler;
-    private final StockPriceDBService dbService;
+    private final StockInfoDBService dbService;
 
     @Inject
-    public StockSymbolUpdaterImpl(AlphavantageCrawler<StockCompanyPOJO> companyInfoCrawler, StockSymbolCrawler stockSymbolCrawler, StockPriceDBService dbService) {
+    public StockSymbolUpdaterImpl(AlphavantageCrawler<StockCompanyPOJO> companyInfoCrawler, StockSymbolCrawler stockSymbolCrawler, StockInfoDBService dbService) {
         this.companyInfoCrawler = companyInfoCrawler;
         this.stockSymbolCrawler = stockSymbolCrawler;
         this.dbService = dbService;

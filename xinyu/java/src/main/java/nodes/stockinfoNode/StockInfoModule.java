@@ -14,12 +14,12 @@ import nodes.stockinfoNode.crawler.impls.AlphavantageCrawlerImpl;
 import nodes.stockinfoNode.crawler.impls.AlphavantageSymbolCrawlerImpl;
 import nodes.stockinfoNode.crawler.impls.StockSymbolCrawlerImpl;
 import nodes.stockinfoNode.impls.DeltaDelayPriceAutoUpdaterImpl;
-import nodes.stockinfoNode.impls.StockPriceServiceImpl;
+import nodes.stockinfoNode.impls.StockInfoServiceImpl;
 import nodes.stockinfoNode.impls.StockSymbolUpdaterImpl;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import nodes.stockinfoNode.querier.StockPriceDBService;
-import nodes.stockinfoNode.querier.impls.StockPriceDBServiceImpl;
+import nodes.stockinfoNode.querier.StockInfoDBService;
+import nodes.stockinfoNode.querier.impls.StockInfoDBServiceImpl;
 
 import java.util.List;
 
@@ -50,9 +50,9 @@ public class StockInfoModule extends AbstractModule {
         bind(new TypeLiteral<AlphavantageCrawler<List<StockDailyRecordPOJO>>>(){}).to(AlphavantageCrawlerImpl.class);
         bind(StockSymbolCrawler.class).to(StockSymbolCrawlerImpl.class);
 
-        bind(StockPriceDBService.class).to(StockPriceDBServiceImpl.class);
+        bind(StockInfoDBService.class).to(StockInfoDBServiceImpl.class);
         bind(PriceAutoUpdater.class).to(DeltaDelayPriceAutoUpdaterImpl.class);
         bind(StockSymbolUpdater.class).to(StockSymbolUpdaterImpl.class);
-        bind(StockPriceService.class).to(StockPriceServiceImpl.class);
+        bind(StockInfoService.class).to(StockInfoServiceImpl.class);
     }
 }

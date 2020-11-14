@@ -13,7 +13,7 @@ import java.util.List;
  *
  * This Interface provides the basic operations needed to interact with the database in stock price business
  */
-public interface StockPriceDBService {
+public interface StockInfoDBService {
     // Query company info
     List<StockCompanyPOJO> queryCompany(Bson bsonFilter);
 
