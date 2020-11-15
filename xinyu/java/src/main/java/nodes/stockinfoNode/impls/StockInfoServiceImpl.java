@@ -48,6 +48,18 @@ public class StockInfoServiceImpl implements StockInfoService {
     }
 
     @Override
+    public List<String> filterSymbols(Collection<String> symbols) {
+        ensureUpdated(symbols);
+        List<String> filteredSymbol = new ArrayList<>(symbols.size());
+        symbols.forEach(symbol -> {
+            if (symbolUpdater.isExistingSymbol(symbol)) {
+                filteredSymbol.add(symbol);
+            }
+        });
+        return filteredSymbol;
+    }
+
+    @Override
     public List<StockCompanyPOJO> sortCompanyByMarket(Collection<String> symbols) {
         ensureUpdated(symbols);
         return queryCompanies(in("symbol", symbols), Sorts.descending("market"));

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Xinyu Zhu on 2020/11/14, 22:53
  * nodes.featureEngineeringNode in codingDimensionTemplate
- *
+ * <p>
  * This Group class just simplified the process of manage a group of feature,
  * make it easy to get their value together, to generate a report on them
  * It does not provide the ability to analyse one feature, you still need to use
@@ -35,6 +35,11 @@ public class BaseFeatureGroup<T> implements FeatureGroup<T> {
     @Override
     public void addFeature(Feature<T, ?> feature) {
         allFeatures.add(feature);
+    }
+
+    @Override
+    public void clearFeature() {
+        allFeatures.clear();
     }
 
     @Override

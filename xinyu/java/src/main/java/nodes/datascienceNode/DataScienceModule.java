@@ -2,10 +2,8 @@ package nodes.datascienceNode;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import nodes.datascienceNode.stockInfo.StockAnalysis;
-import nodes.datascienceNode.stockInfo.facade.impl.StockCompanyFeatureGroup;
-import nodes.datascienceNode.stockInfo.facade.impl.StockPriceFeatureGroup;
-import nodes.featureEngineeringNode.BaseFeatureGroup;
+import nodes.datascienceNode.stockInfo.impl.StockCompanyAnalysisImpl;
+import nodes.datascienceNode.stockInfo.impl.StockPriceAnalysisImpl;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
@@ -22,10 +20,7 @@ public class DataScienceModule extends AbstractModule {
         super.configure();
 
         // For stockInfo
-        bind(StockAnalysis.class);
-        bind(new TypeLiteral<BaseFeatureGroup<StockCompanyPOJO>>(){}).to(StockCompanyFeatureGroup.class);
-        bind(new TypeLiteral<BaseFeatureGroup<List<StockDailyRecordPOJO>>>(){}).to(StockPriceFeatureGroup.class);
-
-
+        bind(new TypeLiteral<FeatureAnalysis<StockCompanyPOJO, String>>(){}).to(StockCompanyAnalysisImpl.class);
+        bind(new TypeLiteral<FeatureAnalysis<List<StockDailyRecordPOJO>, String>>(){}).to(StockPriceAnalysisImpl.class);
     }
 }

@@ -12,6 +12,8 @@ public interface FeatureGroup<T> {
 
     void addFeature(Feature<T, ?> feature);
 
+    void clearFeature();
+
     List<String> getFeatureNameAsList();
     List<String> getFeatureValueAsString(T target);
 

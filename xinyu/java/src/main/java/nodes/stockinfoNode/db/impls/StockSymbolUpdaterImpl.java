@@ -1,6 +1,7 @@
 package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
+import com.mongodb.Block;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.StockSymbolCrawler;
@@ -18,7 +19,7 @@ import static nodes.stockinfoNode.crawler.constants.WebsiteConstant.SP_500_SYMBO
 /**
  * Created by Xinyu Zhu on 2020/11/13, 2:06
  * nodes.stockinfoNode.impls in codingDimensionTemplate
- *
+ * <p>
  * Better to select < 500 stocks, since the API has a daily limit
  * Auto skip those invalid symbol
  */
@@ -41,24 +42,36 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
     // Try to update with the result from stockSymbolCrawler or a pre defined list
     @Override
     public void update() {
+        // First priority is to update existing symbol
+        Set<String> existingSymbols = new HashSet<>();
         try {
-            if (SP_500_SYMBOL.isEmpty()) {
-                System.out.println("Using All Symbols to update");
-                update(stockSymbolCrawler.getAllStockSymbols());
-            } else {
-                System.out.println("Using SP 500 Symbols to update");
-                update(SP_500_SYMBOL);
-            }
+            this.dbService.getCompanyInfoCollection().find().forEach((Consumer<? super StockCompanyPOJO>) companyPOJO -> existingSymbols.add(companyPOJO.getSymbol()));
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Update failed since can't get all stock symbols");
+            System.err.println("Can't get existing symbols from database");
+        }
+        if (existingSymbols.isEmpty()) {
+            try {
+                if (SP_500_SYMBOL.isEmpty()) {
+                    System.out.println("Using All Symbols to update");
+                    update(stockSymbolCrawler.getAllStockSymbols());
+                } else {
+                    System.out.println("Using SP 500 Symbols to update");
+                    update(SP_500_SYMBOL);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Update failed since can't get all stock symbols");
+            }
+        } else {
+            System.err.println("Updating all existing symbol");
+            update(new ArrayList<>(existingSymbols));
         }
     }
 
     private Set<String> getAllSymbolInDatabase() {
         Set<String> allSymbol = new HashSet<>();
         dbService.getCompanyInfoCollection().find().forEach((Consumer<? super StockCompanyPOJO>) record ->
-            allSymbol.add(record.getSymbol()));
+                allSymbol.add(record.getSymbol()));
         return allSymbol;
     }
 
@@ -86,7 +99,7 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
 
         List<StockCompanyPOJO> validResult = new ArrayList<>(symbols.size());
 
-        for(String symbol : symbols) {
+        for (String symbol : symbols) {
             boolean firstProcessSuccess = false;
             try {
                 Future<Optional<StockCompanyPOJO>> resultFuture = companyInfoCrawler.getResultFuture(symbol);
@@ -110,7 +123,7 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
                 String newSymbol = removeLastCharacter(symbol);
                 if (deduplicatedSymbol.contains(newSymbol)) {
                     continue;
-                } else if (!StockConstant.OVERRIDE_WHEN_UPDATE && symbolAlreadyHave.contains(newSymbol)){
+                } else if (!StockConstant.OVERRIDE_WHEN_UPDATE && symbolAlreadyHave.contains(newSymbol)) {
                     continue;
                 } else {
                     deduplicatedSymbol.add(newSymbol);
@@ -155,7 +168,7 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
 
     private List<String> preProcessSymbol(List<String> symbols) {
         List<String> processedSymbols = new ArrayList<>(symbols.size());
-        symbols.forEach( symbol -> {
+        symbols.forEach(symbol -> {
             symbol = preProcessSymbol(symbol);
             if (symbol.length() >= 1) {
                 processedSymbols.add(symbol);

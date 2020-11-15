@@ -18,6 +18,8 @@ public interface StockInfoService {
 
     List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol);
 
+    List<String> filterSymbols(Collection<String> symbols);
+
     List<StockCompanyPOJO> sortCompanyByMarket(Collection<String> symbols);
 
     List<StockCompanyPOJO> sortCompanyByEmployee(Collection<String> symbols);
