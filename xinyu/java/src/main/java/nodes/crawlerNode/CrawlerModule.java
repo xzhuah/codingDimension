@@ -16,11 +16,9 @@ public class CrawlerModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(new TypeLiteral<ResponseProcessor<WebpageCommonInfo>>() {
-        }).to(new TypeLiteral<WebpageCommonProcessor>() {
-        });
+        }).to(WebpageCommonProcessor.class);
 
         bind(new TypeLiteral<BaseCrawler<WebpageCommonInfo>>() {
-        }).to(new TypeLiteral<WebpageCommonInfoCrawler>() {
-        });
+        }).to(WebpageCommonInfoCrawler.class);
     }
 }

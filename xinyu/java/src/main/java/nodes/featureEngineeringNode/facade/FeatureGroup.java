@@ -8,6 +8,8 @@ import java.util.List;
  * nodes.featureEngineeringNode.facade in codingDimensionTemplate
  */
 public interface FeatureGroup<T> {
+    void addFeature(List<Feature<T, ?>> features);
+
     void addFeature(Feature<T, ?> feature);
 
     List<String> getFeatureNameAsList();

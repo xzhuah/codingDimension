@@ -18,6 +18,15 @@ public class BaseFeatureGroup<T> implements FeatureGroup<T> {
         allFeatures = new ArrayList<>();
     }
 
+    public BaseFeatureGroup(List<Feature<T, ?>> features) {
+        allFeatures = new ArrayList<>(features);
+    }
+
+    @Override
+    public void addFeature(List<Feature<T, ?>> features) {
+        allFeatures.addAll(features);
+    }
+
     @Override
     public void addFeature(Feature<T, ?> feature) {
         allFeatures.add(feature);
