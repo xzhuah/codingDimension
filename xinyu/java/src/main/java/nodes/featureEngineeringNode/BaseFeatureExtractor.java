@@ -75,7 +75,7 @@ public class BaseFeatureExtractor<T> {
         featureNames = filterFeatureNames(featureNames);
         Map<String, List<?>> result = new HashMap<>();
         for (String featureName : featureNames) {
-            result.put(featureName, allFeatures.get(featureName).extractForInstance(targets));
+            result.put(featureName, allFeatures.get(featureName).extractForInstances(targets));
         }
         return result;
     }

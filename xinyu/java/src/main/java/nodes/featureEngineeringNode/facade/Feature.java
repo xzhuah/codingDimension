@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public interface Feature<T, E> {
     E extractForInstance(T target);
 
-    default List<E> extractForInstance(List<T> targets) {
+    default List<E> extractForInstances(List<T> targets) {
         List<E> result = new ArrayList<>();
         targets.forEach(target -> result.add(extractForInstance(target)));
         return result;

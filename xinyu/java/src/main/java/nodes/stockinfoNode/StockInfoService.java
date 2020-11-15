@@ -3,6 +3,7 @@ package nodes.stockinfoNode;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -16,6 +17,10 @@ import java.util.List;
 public interface StockInfoService {
 
     List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol);
+
+    List<StockCompanyPOJO> sortCompanyByMarket(Collection<String> symbols);
+
+    List<StockCompanyPOJO> sortCompanyByEmployee(Collection<String> symbols);
 
     List<StockCompanyPOJO> sortCompanyByMarket();
 

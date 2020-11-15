@@ -11,12 +11,10 @@ import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import org.bson.conversions.Bson;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.in;
 import static common.utils.ConditionChecker.checkStatus;
 
 /**
@@ -48,6 +46,19 @@ public class StockInfoServiceImpl implements StockInfoService {
         ensureUpdated(symbol);
         return queryPrice(eq("symbol", symbol), Sorts.ascending("time"));
     }
+
+    @Override
+    public List<StockCompanyPOJO> sortCompanyByMarket(Collection<String> symbols) {
+        ensureUpdated(symbols);
+        return queryCompanies(in("symbol", symbols), Sorts.descending("market"));
+    }
+
+    @Override
+    public List<StockCompanyPOJO> sortCompanyByEmployee(Collection<String> symbols) {
+        ensureUpdated(symbols);
+        return queryCompanies(in("symbol", symbols), Sorts.descending("employee"));
+    }
+
 
     @Override
     public List<StockCompanyPOJO> sortCompanyByMarket() {
@@ -129,6 +140,24 @@ public class StockInfoServiceImpl implements StockInfoService {
         }
         // Errors may happen during the updating process, but we consider it has an invalid symbol if error happens
         // return empty result for in valid symbol instead of keep trying to update it.
+    }
+
+    private void ensureUpdated(Collection<String> symbols) {
+        if (autoUpdate) {
+            symbols = new HashSet<>(symbols);
+            for (String symbol : symbols) {
+                if (symbolUpdater.isExistingSymbol(symbol)) {
+                    if (isOutOfDate(symbol)) {
+                        priceAutoUpdater.update(symbol);
+                        outOfDateSymbol.remove(symbol);
+                    }
+                } else {
+                    checkStatus(!outOfDateSymbol.contains(symbol), "Data inconsistant! outOfDateSymbol contains symbol that does not exist:" + symbol);
+                    symbolUpdater.update(symbol);
+                    priceAutoUpdater.update(symbol);
+                }
+            }
+        }
     }
 
 

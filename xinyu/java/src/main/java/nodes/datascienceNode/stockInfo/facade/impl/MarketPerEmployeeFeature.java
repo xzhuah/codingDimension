@@ -18,4 +18,9 @@ public class MarketPerEmployeeFeature implements ComparableFeature<StockCompanyP
         }
         return companyPOJO.getMarket() * 1.0 / (companyPOJO.getEmployee() * 1.0);
     }
+
+    @Override
+    public String getFeatureName() {
+        return "MarketPerEmployee";
+    }
 }
