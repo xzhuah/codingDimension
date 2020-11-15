@@ -1,4 +1,4 @@
-package nodes.stockinfoNode;
+package nodes.stockinfoNode.db;
 
 import nodes.NodeModule;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
