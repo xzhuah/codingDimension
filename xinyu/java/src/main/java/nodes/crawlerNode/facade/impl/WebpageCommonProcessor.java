@@ -1,8 +1,8 @@
 package nodes.crawlerNode.facade.impl;
 
 import com.google.inject.Singleton;
-import common.io.web.facade.ResponseProcessor;
 import common.io.web.constants.ValueConstant;
+import common.io.web.facade.ResponseProcessor;
 import nodes.crawlerNode.models.WebpageCommonInfo;
 import nodes.crawlerNode.utils.Converter;
 import org.apache.http.HttpEntity;

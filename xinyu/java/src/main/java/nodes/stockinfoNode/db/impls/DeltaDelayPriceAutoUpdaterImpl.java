@@ -2,17 +2,20 @@ package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
 import common.time.TimeClient;
-import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
+import nodes.stockinfoNode.db.PriceAutoUpdater;
+import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.utils.Converter;
 import org.bson.conversions.Bson;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 import static com.mongodb.client.model.Filters.and;

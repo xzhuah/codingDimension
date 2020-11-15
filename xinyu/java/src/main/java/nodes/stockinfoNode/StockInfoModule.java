@@ -14,14 +14,14 @@ import nodes.stockinfoNode.crawler.impls.AlphavantageCrawlerImpl;
 import nodes.stockinfoNode.crawler.impls.AlphavantageSymbolCrawlerImpl;
 import nodes.stockinfoNode.crawler.impls.StockSymbolCrawlerImpl;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
+import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.db.StockSymbolUpdater;
 import nodes.stockinfoNode.db.impls.DeltaDelayPriceAutoUpdaterImpl;
-import nodes.stockinfoNode.impls.StockInfoServiceImpl;
+import nodes.stockinfoNode.db.impls.StockInfoDBServiceImpl;
 import nodes.stockinfoNode.db.impls.StockSymbolUpdaterImpl;
+import nodes.stockinfoNode.impls.StockInfoServiceImpl;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import nodes.stockinfoNode.db.StockInfoDBService;
-import nodes.stockinfoNode.db.impls.StockInfoDBServiceImpl;
 
 import java.util.List;
 

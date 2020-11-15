@@ -5,9 +5,9 @@ import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.StockSymbolCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
+import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.db.StockSymbolUpdater;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
-import nodes.stockinfoNode.db.StockInfoDBService;
 
 import java.util.*;
 import java.util.concurrent.Future;

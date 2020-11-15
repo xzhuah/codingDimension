@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by Xinyu Zhu on 2020/11/13, 1:53

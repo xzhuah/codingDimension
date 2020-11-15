@@ -1,7 +1,6 @@
 package nodes.stockinfoNode.db;
 
 import nodes.NodeModule;
-import nodes.stockinfoNode.db.StockSymbolUpdater;
 import org.junit.Test;
 
 import java.util.List;

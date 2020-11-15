@@ -2,9 +2,9 @@ package common.io.web.impl;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import common.io.web.PoolingAsyncHttpClient;
-import common.io.web.facade.ResponseProcessor;
 import common.io.web.SyncHttpClient;
 import common.io.web.constants.ValueConstant;
+import common.io.web.facade.ResponseProcessor;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import java.util.*;

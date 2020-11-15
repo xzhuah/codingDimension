@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Xinyu Zhu on 2020/11/14, 18:14
  * nodes.stockinfoNode in codingDimensionTemplate
