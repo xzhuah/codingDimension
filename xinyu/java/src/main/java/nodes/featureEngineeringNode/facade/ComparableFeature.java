@@ -8,12 +8,19 @@ import java.util.List;
  * nodes.datascienceNode.facade in codingDimensionTemplate
  */
 public interface ComparableFeature<T, E extends Comparable<E>> extends Feature<T, E>{
-    default List<T> sortInstanceWithFeature(List<T> targets) {
+    default List<T> sortInstanceWithFeature(List<T> targets, boolean reverse) {
         List<T> sortedResult = new java.util.ArrayList<>(targets);
+        sortedResult.sort((target1, target2) -> {
+            if (!reverse) {
+                return extractForInstance(target1).compareTo(extractForInstance(target2));
+            } else {
+                return extractForInstance(target2).compareTo(extractForInstance(target1));
+            }
+        });
+
         sortedResult.sort(Comparator.comparing(this::extractForInstance));
         return sortedResult;
     }
-
     default boolean isComparable() {
         return true;
     }

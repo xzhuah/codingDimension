@@ -1,14 +1,14 @@
 package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Sorts;
 import common.io.database.mongodb.MongoDBPojoClient;
 import nodes.stockinfoNode.constants.StockConstant;
+import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.utils.Converter;
 import org.bson.conversions.Bson;
 
@@ -20,6 +20,7 @@ import java.util.List;
  * Created by Xinyu Zhu on 2020/11/7, 2:10
  * nodes.stockinfoNode.querier.impls in codingDimensionTemplate
  */
+@Singleton
 public class StockInfoDBServiceImpl implements StockInfoDBService {
     private final MongoDBPojoClient mongoDBClient;
 

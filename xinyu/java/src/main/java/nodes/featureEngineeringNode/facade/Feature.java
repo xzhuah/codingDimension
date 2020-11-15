@@ -30,6 +30,10 @@ public interface Feature<T, E> {
     }
 
     default List<T> sortInstanceWithFeature(List<T> targets) {
+        return sortInstanceWithFeature(targets, false);
+    }
+
+    default List<T> sortInstanceWithFeature(List<T> targets, boolean reverse) {
         return new ArrayList<>(targets);
     }
 }
