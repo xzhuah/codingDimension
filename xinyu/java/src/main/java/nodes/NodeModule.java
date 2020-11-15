@@ -5,6 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import common.CommonModule;
 import nodes.crawlerNode.CrawlerModule;
+import nodes.datascienceNode.DataScienceModule;
 import nodes.hotinfoNode.HotInfoModule;
 import nodes.stockinfoNode.StockInfoModule;
 import nodes.wordcloudNode.WordCloudModule;
@@ -52,6 +53,7 @@ public class NodeModule extends AbstractModule {
         install(new HotInfoModule());
         install(new StockInfoModule());
         install(new WordCloudModule());
+        install(new DataScienceModule());
 
 
     }
