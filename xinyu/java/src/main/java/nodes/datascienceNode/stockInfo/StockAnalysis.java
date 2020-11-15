@@ -3,13 +3,11 @@ package nodes.datascienceNode.stockInfo;
 import com.google.inject.Inject;
 import nodes.NodeModule;
 import nodes.datascienceNode.stockInfo.facade.impl.annota.MarketPerEmployee;
-import nodes.featureEngineeringNode.BaseFeatureExtractor;
 import nodes.featureEngineeringNode.facade.Feature;
 import nodes.stockinfoNode.StockInfoService;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Xinyu Zhu on 2020/11/14, 19:19
@@ -37,7 +35,7 @@ public class StockAnalysis {
         List<Double> featureValue = marketPerEmployeeFeature.extractForInstance(sortedCompany);
 
         for (int i = featureValue.size() - 1; i >= 0; i--) {
-            System.out.println(featureValue.get(i));
+            System.out.println(marketPerEmployeeFeature.getFeatureName() + ": " + featureValue.get(i));
             System.out.println(sortedCompany.get(i));
         }
     }
