@@ -10,3 +10,4 @@ java/target
 *.pass
 *.txt
 *.png
+private/*
