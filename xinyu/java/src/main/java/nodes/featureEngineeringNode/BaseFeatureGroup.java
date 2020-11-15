@@ -10,9 +10,14 @@ import java.util.stream.Collectors;
 /**
  * Created by Xinyu Zhu on 2020/11/14, 22:53
  * nodes.featureEngineeringNode in codingDimensionTemplate
+ *
+ * This Group class just simplified the process of manage a group of feature,
+ * make it easy to get their value together, to generate a report on them
+ * It does not provide the ability to analyse one feature, you still need to use
+ * Feature class for that kind of purpose
  */
 public class BaseFeatureGroup<T> implements FeatureGroup<T> {
-    private List<Feature<T, ?>> allFeatures;
+    private final List<Feature<T, ?>> allFeatures;
 
     public BaseFeatureGroup() {
         allFeatures = new ArrayList<>();

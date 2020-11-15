@@ -17,8 +17,6 @@ public interface ComparableFeature<T, E extends Comparable<E>> extends Feature<T
                 return extractForInstance(target2).compareTo(extractForInstance(target1));
             }
         });
-
-        sortedResult.sort(Comparator.comparing(this::extractForInstance));
         return sortedResult;
     }
     default boolean isComparable() {
