@@ -1,6 +1,7 @@
 package nodes.stockinfoNode.db;
 
 import nodes.stockinfoNode.models.StockCompanyPOJO;
+import nodes.stockinfoNode.utils.Converter;
 
 import java.util.List;
 
@@ -21,6 +22,14 @@ public interface PriceAutoUpdater {
 
     default void update(StockCompanyPOJO company) {
         update(List.of(company));
+    }
+
+    default void update(String symbol) {
+        update(Converter.toStockCompanyPOJO(symbol));
+    }
+
+    default boolean isOutOfDate(String symbol) {
+        return isOutOfDate(Converter.toStockCompanyPOJO(symbol));
     }
 
     // force update a list company, don't check out of date

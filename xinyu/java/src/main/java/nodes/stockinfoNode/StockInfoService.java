@@ -1,5 +1,10 @@
 package nodes.stockinfoNode;
 
+import nodes.stockinfoNode.models.StockCompanyPOJO;
+import nodes.stockinfoNode.models.StockDailyRecordPOJO;
+
+import java.util.List;
+
 /**
  * Created by Xinyu Zhu on 2020/11/11, 20:48
  * nodes.stockinfoNode in codingDimensionTemplate
@@ -10,4 +15,13 @@ package nodes.stockinfoNode;
  */
 public interface StockInfoService {
 
+    List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol);
+
+    List<StockCompanyPOJO> sortCompanyByMarket();
+
+    List<StockCompanyPOJO> sortCompanyByEmployee();
+
+    List<String> getAllSymbols();
+
+    void setAutoUpdate(boolean autoUpdate);
 }

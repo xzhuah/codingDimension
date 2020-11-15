@@ -27,11 +27,15 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
     private final StockSymbolCrawler stockSymbolCrawler;
     private final StockInfoDBService dbService;
 
+    private Set<String> symbolAlreadyHave;
+
     @Inject
     public StockSymbolUpdaterImpl(AlphavantageCrawler<StockCompanyPOJO> companyInfoCrawler, StockSymbolCrawler stockSymbolCrawler, StockInfoDBService dbService) {
         this.companyInfoCrawler = companyInfoCrawler;
         this.stockSymbolCrawler = stockSymbolCrawler;
         this.dbService = dbService;
+
+        symbolAlreadyHave = getAllSymbolInDatabase();
     }
 
     // Try to update with the result from stockSymbolCrawler or a pre defined list
@@ -68,7 +72,6 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
 
         symbols = new ArrayList<>(deduplicatedSymbol.size());
 
-        Set<String> symbolAlreadyHave = getAllSymbolInDatabase();
         // remove those already have
         if (!StockConstant.OVERRIDE_WHEN_UPDATE) {
             deduplicatedSymbol.stream().filter(symbol -> !symbolAlreadyHave.contains(symbol)).forEach(symbols::add);
@@ -140,8 +143,14 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
         });
         System.out.println("These symbol are successfully added:" + symbolAdded);
 
+        // update  symbolAlreadyHave;
+        symbolAlreadyHave = getAllSymbolInDatabase();
 
+    }
 
+    @Override
+    public boolean isExistingSymbol(String symbol) {
+        return symbolAlreadyHave.contains(symbol);
     }
 
     private List<String> preProcessSymbol(List<String> symbols) {
