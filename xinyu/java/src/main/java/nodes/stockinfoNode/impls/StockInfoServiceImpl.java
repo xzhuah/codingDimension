@@ -3,6 +3,7 @@ package nodes.stockinfoNode.impls;
 import com.google.inject.Inject;
 import com.mongodb.Block;
 import com.mongodb.client.model.Sorts;
+import common.time.TimeInterval;
 import nodes.stockinfoNode.StockInfoService;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.db.StockInfoDBService;
@@ -13,8 +14,7 @@ import org.bson.conversions.Bson;
 
 import java.util.*;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.in;
+import static com.mongodb.client.model.Filters.*;
 import static common.utils.ConditionChecker.checkStatus;
 
 /**
@@ -42,9 +42,11 @@ public class StockInfoServiceImpl implements StockInfoService {
     }
 
     @Override
-    public List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol) {
+    public List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol, TimeInterval timeInterval) {
         ensureUpdated(symbol);
-        return queryPrice(eq("symbol", symbol), Sorts.ascending("time"));
+        return queryPrice(and(eq("symbol", symbol),
+                gte("time", timeInterval.getStartTimeInMillis()),
+                lt("time", timeInterval.getEndTimeInMillis())), Sorts.ascending("time"));
     }
 
     @Override
@@ -171,7 +173,6 @@ public class StockInfoServiceImpl implements StockInfoService {
             }
         }
     }
-
 
 
 }

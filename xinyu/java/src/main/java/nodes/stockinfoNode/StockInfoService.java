@@ -1,5 +1,6 @@
 package nodes.stockinfoNode;
 
+import common.time.TimeInterval;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
@@ -16,7 +17,11 @@ import java.util.List;
  */
 public interface StockInfoService {
 
-    List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol);
+    List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol, TimeInterval timeInterval);
+
+    default List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol) {
+        return getSortedPriceForSymbol(symbol, TimeInterval.getUpToNowInterval());
+    }
 
     List<String> filterSymbols(Collection<String> symbols);
 

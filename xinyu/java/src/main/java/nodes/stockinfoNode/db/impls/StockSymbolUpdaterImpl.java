@@ -104,7 +104,7 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
             try {
                 Future<Optional<StockCompanyPOJO>> resultFuture = companyInfoCrawler.getResultFuture(symbol);
                 // Sleep some time
-                if (symbols.size() > 5) {
+                if (symbols.size() > WebsiteConstant.REQUEST_LIMIT_PER_MINUTE) {
                     Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
                 }
 

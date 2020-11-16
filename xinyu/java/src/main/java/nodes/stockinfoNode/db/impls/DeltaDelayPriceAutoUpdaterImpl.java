@@ -2,6 +2,7 @@ package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
 import common.time.TimeClient;
+import common.time.TimeInterval;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
@@ -66,7 +67,7 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
                     System.err.println(futureCompanyPriceRecord + ": is skipped during processing due to some error");
                 }
                 // API need cool down
-                if (companies.size() > 5) {
+                if (companies.size() > WebsiteConstant.REQUEST_LIMIT_PER_MINUTE) {
                     // Only need cool down if more than 5
                     Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
                 }
@@ -84,7 +85,7 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
         // get the current timestamp, -1 day if it is sunday
         long pivotTimestamp = getOutOfDateTime();
         // query for that company's record with  timestamp: current timestamp > timestamp > pivot timestamp (some dirty record may have wrong timestamp and this can help filter some error)
-        Bson timeFilter = getTimeFilterForStockDailyRecord(pivotTimestamp, System.currentTimeMillis());
+        Bson timeFilter = getTimeFilterForStockDailyRecord(TimeInterval.getUpToNowInterval(pivotTimestamp));
         Bson primaryKeyFilter = Converter.toPrimaryFilter(company);
         List<StockDailyRecordPOJO> recentRecord = stockInfoDBService.queryPrice(and(timeFilter, primaryKeyFilter));
         // if exist --> false
@@ -96,7 +97,7 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
         long pivotTimestamp = getOutOfDateTime();
 
         // query for all company record with timestamp: has current timestamp > timestamp > pivot timestamp
-        Bson timeFilter = getTimeFilterForStockDailyRecord(pivotTimestamp, System.currentTimeMillis());
+        Bson timeFilter = getTimeFilterForStockDailyRecord(TimeInterval.getUpToNowInterval(pivotTimestamp));
         List<StockDailyRecordPOJO> recentRecord = stockInfoDBService.queryPrice(timeFilter);
 
         // create a set of them, set based on primary key (Symbol) only

@@ -19,6 +19,8 @@ public class WebsiteConstant {
 
     public static final long COOL_DOWN_TIME = 15000;
 
+    public static final int REQUEST_LIMIT_PER_MINUTE = 5;
+
     private static final String keyFile = "stockinfoKey.pass";
     private static final String stockFile = "SP500.pass";
 

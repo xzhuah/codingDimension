@@ -1,8 +1,10 @@
 package nodes.datascienceNode.stockInfo.impl;
 
 import com.google.inject.Inject;
+import common.time.TimeInterval;
 import nodes.NodeModule;
 import nodes.datascienceNode.stockInfo.StockFeatureAnalysis;
+import nodes.datascienceNode.stockInfo.StockTimeSeriesFeatureAnalysis;
 import nodes.datascienceNode.stockInfo.constants.Config;
 import nodes.datascienceNode.stockInfo.facade.impl.StockExpectedReturnFeature;
 import nodes.datascienceNode.stockInfo.facade.impl.StockPriceFeatureGroup;
@@ -19,7 +21,7 @@ import java.util.List;
  * Created by Xinyu Zhu on 2020/11/15, 3:58
  * nodes.datascienceNode.stockInfo in codingDimensionTemplate
  */
-public class StockPriceAnalysisImpl implements StockFeatureAnalysis<List<StockDailyRecordPOJO>> {
+public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<List<StockDailyRecordPOJO>> {
     private final StockInfoService stockInfoService;
 
     // Used to sort price report
@@ -54,13 +56,17 @@ public class StockPriceAnalysisImpl implements StockFeatureAnalysis<List<StockDa
         printReportForTarget(this.stockInfoService.getAllSymbols(), sortByPrimaryFeature);
     }
 
-    @Override
-    public void printReportForTarget(List<String> companySymbol, boolean sortByPrimaryFeature) {
+    public void printReportForTarget(TimeInterval timeInterval) {
+        printReportForTarget(this.stockInfoService.getAllSymbols(), timeInterval, true);
+    }
+
+
+    public void printReportForTarget(List<String> companySymbol, TimeInterval timeInterval, boolean sortByPrimaryFeature) {
         // Convert to real data
         companySymbol = this.stockInfoService.filterSymbols(companySymbol);
         List<List<StockDailyRecordPOJO>> dailyPriceData = new ArrayList<>();
         for (String company : companySymbol) {
-            dailyPriceData.add(stockInfoService.getSortedPriceForSymbol(company));
+            dailyPriceData.add(stockInfoService.getSortedPriceForSymbol(company, timeInterval));
         }
         if (sortByPrimaryFeature) {
             // sort by feature value

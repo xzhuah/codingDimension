@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import common.io.web.constants.ValueConstant;
+import common.time.TimeInterval;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import org.apache.http.HttpEntity;
@@ -37,8 +38,8 @@ public class Converter {
                 .append("time", stockCompanyPOJO.getTime());
     }
 
-    public static Bson getTimeFilterForStockDailyRecord(long startTime, long endTime) {
-        return and(gte("time", startTime), lt("time", endTime));
+    public static Bson getTimeFilterForStockDailyRecord(TimeInterval timeInterval) {
+        return and(gte("time", timeInterval.getStartTimeInMillis()), lt("time", timeInterval.getEndTimeInMillis()));
     }
 
     public static JsonObject toJsonObject(CloseableHttpResponse closeableHttpResponse) throws IOException {
