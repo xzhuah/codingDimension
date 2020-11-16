@@ -8,6 +8,7 @@ import nodes.datascienceNode.stockInfo.StockTimeSeriesFeatureAnalysis;
 import nodes.datascienceNode.stockInfo.constants.Config;
 import nodes.datascienceNode.stockInfo.facade.impl.StockExpectedReturnFeature;
 import nodes.datascienceNode.stockInfo.facade.impl.StockPriceFeatureGroup;
+import nodes.datascienceNode.stockInfo.utils.ReportPrinter;
 import nodes.featureEngineeringNode.BaseFeatureGroup;
 import nodes.featureEngineeringNode.facade.ComparableFeature;
 import nodes.featureEngineeringNode.facade.Feature;
@@ -16,6 +17,7 @@ import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Xinyu Zhu on 2020/11/15, 3:58
@@ -76,10 +78,10 @@ public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<Li
         // Generate report based on sorted feature
         List<String> fields = featureGroup.getFeatureNameAsList();
         List<List<String>> values = featureGroup.getFeatureValueAsString(dailyPriceData);
-        System.out.println("Symbol\t" + String.join("\t", fields));
-        for (int i = 0; i < values.size(); i++) {
-            System.out.println(dailyPriceData.get(i).get(0).getSymbol() + "\t" + String.join("\t", values.get(i)));
-        }
+        ReportPrinter.printReport(fields,
+                dailyPriceData.stream().map(dailyData -> dailyData.get(0).getSymbol()).collect(Collectors.toList()),
+                values, "Symbol", true);
+
     }
 
     public static void main(String[] args) {

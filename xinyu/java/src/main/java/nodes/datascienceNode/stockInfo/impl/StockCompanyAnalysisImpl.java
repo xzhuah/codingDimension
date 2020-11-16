@@ -5,6 +5,7 @@ import nodes.NodeModule;
 import nodes.datascienceNode.stockInfo.StockFeatureAnalysis;
 import nodes.datascienceNode.stockInfo.constants.Config;
 import nodes.datascienceNode.stockInfo.facade.impl.*;
+import nodes.datascienceNode.stockInfo.utils.ReportPrinter;
 import nodes.featureEngineeringNode.BaseFeatureGroup;
 import nodes.featureEngineeringNode.facade.ComparableFeature;
 import nodes.featureEngineeringNode.facade.Feature;
@@ -12,6 +13,7 @@ import nodes.stockinfoNode.StockInfoService;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Xinyu Zhu on 2020/11/14, 19:19
@@ -67,10 +69,11 @@ public class StockCompanyAnalysisImpl implements StockFeatureAnalysis<StockCompa
         // Generate report based on sorted feature
         List<String> fields = featureGroup.getFeatureNameAsList();
         List<List<String>> values = featureGroup.getFeatureValueAsString(companyPOJOS);
-        System.out.println("Symbol\t" + String.join("\t", fields));
-        for (int i = 0; i < companyPOJOS.size(); i++) {
-            System.out.println(companyPOJOS.get(i).getSymbol() + "\t" + String.join("\t", values.get(i)));
-        }
+
+        ReportPrinter.printReport(fields,
+                companyPOJOS.stream().map(companyPOJO -> companyPOJO.getSymbol()).collect(Collectors.toList()),
+                values, "Symbol", true);
+
     }
 
 
