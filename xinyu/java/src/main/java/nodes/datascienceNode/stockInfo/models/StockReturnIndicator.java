@@ -1,13 +1,16 @@
 package nodes.datascienceNode.stockInfo.models;
 
 
+import com.google.common.math.Stats;
 import com.google.common.primitives.Ints;
 import lombok.Getter;
 import nodes.datascienceNode.stockInfo.utils.AlgorithmUtils;
 import nodes.datascienceNode.stockInfo.utils.Converter;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static common.utils.ConditionChecker.checkStatus;
 
@@ -26,6 +29,7 @@ public class StockReturnIndicator implements Comparable<StockReturnIndicator>{
     private List<Integer> returnDays;
     private double avgReturnDays;
     private double avgReturnProbability;
+    private double stdReturnDays;
 
     private StockReturnIndicator() {
 
@@ -33,7 +37,7 @@ public class StockReturnIndicator implements Comparable<StockReturnIndicator>{
 
     @Override
     public String toString() {
-        return String.format("(Prob=%.3f, Duration=%.2f)", avgReturnProbability, avgReturnDays);
+        return String.format("(Prob=%.3f, Duration=%.2f, Std=%.2f)", avgReturnProbability, avgReturnDays, stdReturnDays);
     }
 
     public static StockReturnIndicator getInstance(List<StockDailyRecordPOJO> sortedDailyPrice, double returnRatio, int daysFromEnd) {
@@ -51,19 +55,17 @@ public class StockReturnIndicator implements Comparable<StockReturnIndicator>{
         int[] expectedDays = AlgorithmUtils.returnExpectedDays(sortedDailyAvgPrice, returnRatio);
         stockReturnIndicator.returnDays = Ints.asList(expectedDays);
 
-        int totalDayWaited = 0;
-        int totalReturnedDay = 0;
-        for (int days : expectedDays) {
-            if (days != 0) {
-                totalDayWaited += days;
-                totalReturnedDay += 1;
-            }
-        }
-        stockReturnIndicator.avgReturnProbability = (totalReturnedDay * 1.0) / (stockReturnIndicator.sampleDays * 1.0);
-        if (totalReturnedDay == 0) {
+        List<Integer> allReturnDays = stockReturnIndicator.returnDays.stream().filter(day -> day > 0).collect(Collectors.toList());
+        Stats statistics = Stats.of(allReturnDays);
+
+
+        stockReturnIndicator.avgReturnProbability = (statistics.count() * 1.0) / (stockReturnIndicator.sampleDays * 1.0);
+        if (statistics.count() == 0) {
             stockReturnIndicator.avgReturnDays = stockReturnIndicator.sampleDays;
+            stockReturnIndicator.stdReturnDays = 0;
         } else {
-            stockReturnIndicator.avgReturnDays = (totalDayWaited * 1.0) / (totalReturnedDay * 1.0);
+            stockReturnIndicator.avgReturnDays = statistics.mean();
+            stockReturnIndicator.stdReturnDays = statistics.populationStandardDeviation();
         }
         return stockReturnIndicator;
     }
