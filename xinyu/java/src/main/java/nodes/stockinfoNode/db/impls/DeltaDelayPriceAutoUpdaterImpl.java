@@ -101,7 +101,7 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
         List<StockDailyRecordPOJO> recentRecord = stockInfoDBService.queryPrice(timeFilter);
 
         // create a set of them, set based on primary key (Symbol) only
-        Set<String> upToDateCompanySymbols= new HashSet<>(recentRecord.size());
+        Set<String> upToDateCompanySymbols = new HashSet<>(recentRecord.size());
         recentRecord.forEach(record -> upToDateCompanySymbols.add(record.getSymbol()));
 
         List<StockCompanyPOJO> outOfDateCompanies = stockInfoDBService.queryCompany(nin("symbol", upToDateCompanySymbols));
@@ -113,8 +113,11 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
     private long getOutOfDateTime() {
         long currentTimestamp = System.currentTimeMillis();
         long offsetTimestamp = currentTimestamp;
-        if (TimeClient.getWeekday(currentTimestamp) == 0) {
+        int weekday = TimeClient.getWeekday(currentTimestamp);
+        if (weekday == 0) {
             offsetTimestamp -= 3600 * 1000 * 24;
+        } else if (weekday == 1) {
+            offsetTimestamp -= 3600 * 1000 * 24 * 2;
         }
         // pivot timestamp = current timestamp - 24 * 3600,000 * delta
         return offsetTimestamp - 24 * 3600 * 1000 * StockConstant.DEFAULT_DELTA_IN_DAY_FOR_UPDATE;
