@@ -1,7 +1,6 @@
 package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
-import com.mongodb.Block;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.StockSymbolCrawler;

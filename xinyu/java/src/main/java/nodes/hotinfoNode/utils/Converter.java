@@ -234,7 +234,7 @@ public class Converter {
         } else {
             double number;
             try {
-                switch (string.substring(string.length() - 1, string.length())) {
+                switch (string.substring(string.length() - 1)) {
                     case "万":
                         number = Double.parseDouble(string.substring(0, string.length() - 1));
                         number *= 10000.0;

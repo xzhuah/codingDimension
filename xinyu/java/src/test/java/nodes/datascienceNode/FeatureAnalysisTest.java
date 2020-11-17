@@ -12,8 +12,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Xinyu Zhu on 2020/11/15, 4:53
  * nodes.datascienceNode in codingDimensionTemplate

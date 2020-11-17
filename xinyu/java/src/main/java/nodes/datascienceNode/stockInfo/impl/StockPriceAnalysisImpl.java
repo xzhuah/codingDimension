@@ -3,7 +3,6 @@ package nodes.datascienceNode.stockInfo.impl;
 import com.google.inject.Inject;
 import common.time.TimeInterval;
 import nodes.NodeModule;
-import nodes.datascienceNode.stockInfo.StockFeatureAnalysis;
 import nodes.datascienceNode.stockInfo.StockTimeSeriesFeatureAnalysis;
 import nodes.datascienceNode.stockInfo.constants.Config;
 import nodes.datascienceNode.stockInfo.facade.impl.StockExpectedReturnFeature;
