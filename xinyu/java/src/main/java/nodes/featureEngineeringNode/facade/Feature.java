@@ -7,6 +7,8 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by Xinyu Zhu on 2020/11/14, 20:31
  * nodes.datascienceNode.facade in codingDimensionTemplate
+ *
+ * Feature is not a kind of data type, it is a kind of methodology defined by extractForInstance()
  */
 public interface Feature<T, E> {
     E extractForInstance(T target);

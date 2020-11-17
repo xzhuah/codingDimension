@@ -1,99 +1,32 @@
 package nodes.datascienceNode.stockInfo.models;
 
 
-import com.google.common.math.Stats;
-import com.google.common.primitives.Ints;
 import lombok.Getter;
-import nodes.datascienceNode.stockInfo.utils.AlgorithmUtils;
-import nodes.datascienceNode.stockInfo.utils.Converter;
-import nodes.stockinfoNode.models.StockDailyRecordPOJO;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static common.utils.ConditionChecker.checkStatus;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by Xinyu Zhu on 2020/11/15, 0:43
  * nodes.datascienceNode.stockInfo.models in codingDimensionTemplate
+ *
+ * The standard way of calculating this feature is defined in @StockExpectedReturnFeature
  */
 @Getter
+@Setter
+@NoArgsConstructor
 public class StockReturnIndicator implements Comparable<StockReturnIndicator>{
-    private String symbol;
-    private double returnRatio;
-    private int sampleDays;
-    private long endTime;
-
-    // these are calculated
-    private List<Integer> returnDays;
     private double avgReturnDays;
     private double avgReturnProbability;
     private double stdReturnDays;
-
-    private StockReturnIndicator() {
-
-    }
 
     @Override
     public String toString() {
         return String.format("(Prob=%.3f, Duration=%.2f, Std=%.2f)", avgReturnProbability, avgReturnDays, stdReturnDays);
     }
 
-    public static StockReturnIndicator getInstance(List<StockDailyRecordPOJO> sortedDailyPrice, double returnRatio, int daysFromEnd) {
-        checkStatus(sortedDailyPrice.size() > 0, "You can't get StockReturnIndicator with an empty StockDailyRecordPOJO List");
-        if (sortedDailyPrice.size() > daysFromEnd) {
-            sortedDailyPrice = sortedDailyPrice.subList(sortedDailyPrice.size() - daysFromEnd, sortedDailyPrice.size());
-        }
-        StockReturnIndicator stockReturnIndicator = new StockReturnIndicator();
-        stockReturnIndicator.returnRatio = returnRatio;
-        stockReturnIndicator.symbol = sortedDailyPrice.get(0).getSymbol();
-        stockReturnIndicator.sampleDays = sortedDailyPrice.size();
-        stockReturnIndicator.endTime = sortedDailyPrice.get(sortedDailyPrice.size()-1).getTime();
-
-        List<Double> sortedDailyAvgPrice = Converter.toDailyAvgPriceList(sortedDailyPrice);
-        int[] expectedDays = AlgorithmUtils.returnExpectedDays(sortedDailyAvgPrice, returnRatio);
-        stockReturnIndicator.returnDays = Ints.asList(expectedDays);
-
-        List<Integer> allReturnDays = stockReturnIndicator.returnDays.stream().filter(day -> day > 0).collect(Collectors.toList());
-        Stats statistics = Stats.of(allReturnDays);
-
-
-        stockReturnIndicator.avgReturnProbability = (statistics.count() * 1.0) / (stockReturnIndicator.sampleDays * 1.0);
-        if (statistics.count() == 0) {
-            stockReturnIndicator.avgReturnDays = stockReturnIndicator.sampleDays;
-            stockReturnIndicator.stdReturnDays = 0;
-        } else {
-            stockReturnIndicator.avgReturnDays = statistics.mean();
-            stockReturnIndicator.stdReturnDays = statistics.populationStandardDeviation();
-        }
-        return stockReturnIndicator;
-    }
-
-    public static StockReturnIndicator getInstance(List<StockDailyRecordPOJO> sortedDailyPrice, double returnRatio) {
-        return getInstance(sortedDailyPrice, returnRatio, sortedDailyPrice.size());
-    }
-
-    public static StockReturnIndicator getInstanceWithSorting(List<StockDailyRecordPOJO> sortedDailyPrice, double returnRatio) {
-        return getInstanceWithSorting(sortedDailyPrice, returnRatio, sortedDailyPrice.size());
-    }
-
-    public static StockReturnIndicator getInstanceWithSorting(List<StockDailyRecordPOJO> sortedDailyPrice, double returnRatio, int daysFromEnd) {
-        sortedDailyPrice.sort((record1, record2) -> {
-            long timeDiff = record1.getTime() - record2.getTime();
-            if (timeDiff > 0) {
-                return 1;
-            } else if (timeDiff < 0) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
-        return getInstance(sortedDailyPrice, returnRatio, daysFromEnd);
-    }
-
     @Override
     public int compareTo(StockReturnIndicator other) {
+        // We might use a weighted schema to better compare
         if (avgReturnProbability > other.getAvgReturnProbability()) {
             return 1;
         } else if (avgReturnProbability < other.getAvgReturnProbability()) {
