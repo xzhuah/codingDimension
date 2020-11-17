@@ -9,6 +9,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * nodes.datascienceNode.facade in codingDimensionTemplate
  *
  * Feature is not a kind of data type, it is a kind of methodology defined by extractForInstance()
+ * When you define a feature, simply saying the feature is a vector does not make any sense, you should give the
+ * algorithm to calculate it. Vector is not a feature, is a model, feature is a Mapping from one data model to another
+ * data model, in this case, is from T to E
  */
 public interface Feature<T, E> {
     E extractForInstance(T target);
