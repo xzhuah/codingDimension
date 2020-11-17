@@ -30,6 +30,7 @@ public interface Feature<T, E> {
         return subClassName;
     }
 
+    // Only comparable feature can compare with each other and sort
     default boolean isComparable() {
         return false;
     }
