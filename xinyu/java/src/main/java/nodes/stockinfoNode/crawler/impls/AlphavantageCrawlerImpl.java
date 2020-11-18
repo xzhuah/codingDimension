@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Key;
 import nodes.NodeModule;
 import nodes.crawlerNode.AutoCoolDownCrawler;
-import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
