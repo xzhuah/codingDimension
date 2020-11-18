@@ -50,8 +50,8 @@ public class StockExpectedReturnFeature implements ComparableFeature<List<StockD
         }
         StockReturnIndicator stockReturnIndicator = new StockReturnIndicator();
         List<Double> sortedDailyAvgPrice = Converter.toDailyAvgPriceList(sortedDailyPrice);
-        int[] expectedDays = AlgorithmUtils.returnExpectedDays(sortedDailyAvgPrice, returnRatio);
 
+        int[] expectedDays = AlgorithmUtils.returnExpectedDays(sortedDailyAvgPrice, returnRatio);
 
         List<Integer> allReturnDays = Ints.asList(expectedDays).stream().filter(day -> day > 0).collect(Collectors.toList());
         Stats statistics = Stats.of(allReturnDays);

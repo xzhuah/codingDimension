@@ -76,7 +76,9 @@ public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<Li
 
         // Generate report based on sorted feature
         List<String> fields = featureGroup.getFeatureNameAsList();
+        long startTime = System.currentTimeMillis();
         List<List<String>> values = featureGroup.getFeatureValueAsString(dailyPriceData);
+        System.out.println((System.currentTimeMillis() - startTime));
         ReportPrinter.printReport(fields,
                 dailyPriceData.stream().map(dailyData -> dailyData.get(0).getSymbol()).collect(Collectors.toList()),
                 values, "Symbol", true);
@@ -85,9 +87,19 @@ public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<Li
 
     public static void main(String[] args) {
         StockPriceAnalysisImpl stockPriceAnalysisImpl = NodeModule.getGlobalInjector().getInstance(StockPriceAnalysisImpl.class);
-        int sampleDuration = 30;
-        stockPriceAnalysisImpl.setFeature(new StockExpectedReturnFeature(sampleDuration, 0.05));
+        int sampleDuration = 3000;
 
-        stockPriceAnalysisImpl.printReportForTarget(List.of("SIVB", "ANET", "TMUS"));
+        stockPriceAnalysisImpl.setFeature(new StockExpectedReturnFeature(sampleDuration, 0.05),
+                new StockExpectedReturnFeature(sampleDuration, 0.1),
+                new StockExpectedReturnFeature(sampleDuration, 0.15),
+                new StockExpectedReturnFeature(sampleDuration, 0.2),
+                new StockExpectedReturnFeature(sampleDuration, 0.25),
+                new StockExpectedReturnFeature(sampleDuration, 0.3),
+                new StockExpectedReturnFeature(sampleDuration, 0.35),
+                new StockExpectedReturnFeature(sampleDuration, 0.4));
+
+        stockPriceAnalysisImpl.printReportForTarget();
+
+        //stockPriceAnalysisImpl.printReportForTarget(List.of("SIVB", "ANET", "TMUS"));
     }
 }
