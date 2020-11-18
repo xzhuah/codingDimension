@@ -17,7 +17,8 @@ public class WebsiteConstant {
 
     public static final String SYMBOL_QUERY_ENDPOINT = "https://api.iextrading.com/1.0/ref-data/symbols";
 
-    public static final long COOL_DOWN_TIME = 12000;
+    public static final long COOL_DOWN_TIME_MIN = 10000;
+    public static final long COOL_DOWN_TIME_MAX = 15000;
 
     public static final int REQUEST_LIMIT_PER_MINUTE = 5;
 

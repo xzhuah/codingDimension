@@ -5,6 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import common.io.web.facade.ResponseProcessor;
 import common.io.web.impl.processors.ResponseToJsonArrayProcessorImpl;
+import nodes.crawlerNode.AutoCoolDownCrawler;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.StockSymbolCrawler;
@@ -25,6 +26,9 @@ import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
 import java.util.List;
 
+import static nodes.stockinfoNode.crawler.constants.WebsiteConstant.COOL_DOWN_TIME_MAX;
+import static nodes.stockinfoNode.crawler.constants.WebsiteConstant.COOL_DOWN_TIME_MIN;
+
 public class StockInfoModule extends AbstractModule {
 
     @Override
@@ -36,14 +40,14 @@ public class StockInfoModule extends AbstractModule {
         bind(new TypeLiteral<ResponseProcessor<StockCompanyPOJO>>() {
         }).toInstance(companyInfoProcessor);
 
-        bind(new TypeLiteral<BaseCrawler<StockCompanyPOJO>>() {
-        }).toInstance(new BaseCrawler<>(companyInfoProcessor));
+        bind(new TypeLiteral<AutoCoolDownCrawler<StockCompanyPOJO>>() {
+        }).toInstance(new AutoCoolDownCrawler<>(companyInfoProcessor, COOL_DOWN_TIME_MIN, COOL_DOWN_TIME_MAX, 0));
 
         bind(new TypeLiteral<ResponseProcessor<List<StockDailyRecordPOJO>>>() {
         }).toInstance(dailyPriceProcessor);
 
-        bind(new TypeLiteral<BaseCrawler<List<StockDailyRecordPOJO>>>() {
-        }).toInstance(new BaseCrawler<>(dailyPriceProcessor));
+        bind(new TypeLiteral<AutoCoolDownCrawler<List<StockDailyRecordPOJO>>>() {
+        }).toInstance(new AutoCoolDownCrawler<>(dailyPriceProcessor,COOL_DOWN_TIME_MIN, COOL_DOWN_TIME_MAX, 0));
 
         bind(new TypeLiteral<BaseCrawler<JsonArray>>() {
         }).toInstance(new BaseCrawler<>(jsonArrayResponseProcessor));

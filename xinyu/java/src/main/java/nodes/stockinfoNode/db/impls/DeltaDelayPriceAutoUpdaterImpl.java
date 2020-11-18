@@ -5,7 +5,6 @@ import common.time.TimeClient;
 import common.time.TimeInterval;
 import nodes.stockinfoNode.constants.StockConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
-import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
@@ -65,11 +64,6 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
                     System.out.println("Successfully updated price for " + company.getSymbol());
                 } else {
                     System.err.println(futureCompanyPriceRecord + ": is skipped during processing due to some error");
-                }
-                // API need cool down
-                if (companies.size() > WebsiteConstant.REQUEST_LIMIT_PER_MINUTE) {
-                    // Only need cool down if more than 5
-                    Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

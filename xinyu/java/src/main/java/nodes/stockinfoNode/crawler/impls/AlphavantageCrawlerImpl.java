@@ -3,6 +3,7 @@ package nodes.stockinfoNode.crawler.impls;
 import com.google.inject.Inject;
 import com.google.inject.Key;
 import nodes.NodeModule;
+import nodes.crawlerNode.AutoCoolDownCrawler;
 import nodes.crawlerNode.BaseCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
@@ -19,10 +20,10 @@ import java.util.concurrent.Future;
 public class AlphavantageCrawlerImpl implements AlphavantageCrawler<List<StockDailyRecordPOJO>> {
 
     private final Set<String> acceptedSymbol;
-    private final BaseCrawler<List<StockDailyRecordPOJO>> crawler;
+    private final AutoCoolDownCrawler<List<StockDailyRecordPOJO>> crawler;
 
     @Inject
-    public AlphavantageCrawlerImpl(BaseCrawler<List<StockDailyRecordPOJO>> crawler) {
+    public AlphavantageCrawlerImpl(AutoCoolDownCrawler<List<StockDailyRecordPOJO>> crawler) {
         this.crawler = crawler;
         acceptedSymbol = new HashSet<>();
     }

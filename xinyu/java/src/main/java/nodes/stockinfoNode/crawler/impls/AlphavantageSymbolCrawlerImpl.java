@@ -3,7 +3,7 @@ package nodes.stockinfoNode.crawler.impls;
 import com.google.inject.Inject;
 import com.google.inject.Key;
 import nodes.NodeModule;
-import nodes.crawlerNode.BaseCrawler;
+import nodes.crawlerNode.AutoCoolDownCrawler;
 import nodes.crawlerNode.constants.CrawlerConstant;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.constants.WebsiteConstant;
@@ -15,10 +15,10 @@ import java.util.concurrent.Future;
 public class AlphavantageSymbolCrawlerImpl implements AlphavantageCrawler<StockCompanyPOJO> {
 
     private final Set<String> acceptedSymbol;
-    private final BaseCrawler<StockCompanyPOJO> crawler;
+    private final AutoCoolDownCrawler<StockCompanyPOJO> crawler;
 
     @Inject
-    public AlphavantageSymbolCrawlerImpl(BaseCrawler<StockCompanyPOJO> crawler) {
+    public AlphavantageSymbolCrawlerImpl(AutoCoolDownCrawler<StockCompanyPOJO> crawler) {
         this.crawler = crawler;
         acceptedSymbol = new HashSet<>();
     }

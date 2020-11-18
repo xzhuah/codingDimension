@@ -102,10 +102,6 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
             boolean firstProcessSuccess = false;
             try {
                 Future<Optional<StockCompanyPOJO>> resultFuture = companyInfoCrawler.getResultFuture(symbol);
-                // Sleep some time
-                if (symbols.size() > WebsiteConstant.REQUEST_LIMIT_PER_MINUTE) {
-                    Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
-                }
 
                 Optional<StockCompanyPOJO> optionalResult = resultFuture.get();
                 if (optionalResult.isPresent()) {
@@ -130,10 +126,6 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
                 try {
                     companyInfoCrawler.addSymbolToQueue(newSymbol);
                     Future<Optional<StockCompanyPOJO>> resultFuture = companyInfoCrawler.getResultFuture(symbol);
-                    // Sleep some time
-                    if (symbols.size() > 5) {
-                        Thread.sleep(WebsiteConstant.COOL_DOWN_TIME);
-                    }
                     Optional<StockCompanyPOJO> optionalResult = resultFuture.get();
                     optionalResult.ifPresent(result -> {
                         System.out.println("Successfully got data for " + newSymbol + " at second try");
