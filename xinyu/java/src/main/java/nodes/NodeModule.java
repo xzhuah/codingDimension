@@ -7,6 +7,7 @@ import common.CommonModule;
 import nodes.crawlerNode.CrawlerModule;
 import nodes.datascienceNode.DataScienceModule;
 import nodes.hotinfoNode.HotInfoModule;
+import nodes.personalAccountingNode.PersonalAccountingModule;
 import nodes.stockinfoNode.StockInfoModule;
 import nodes.wordcloudNode.WordCloudModule;
 
@@ -54,6 +55,7 @@ public class NodeModule extends AbstractModule {
         install(new StockInfoModule());
         install(new WordCloudModule());
         install(new DataScienceModule());
+        install(new PersonalAccountingModule());
 
 
     }

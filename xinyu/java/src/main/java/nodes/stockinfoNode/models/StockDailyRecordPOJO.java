@@ -1,22 +1,17 @@
 package nodes.stockinfoNode.models;
 
+import common.io.database.mongodb.BaseMongoPOJO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.bson.types.ObjectId;
 
 /**
  * Created by Xinyu Zhu on 2020/11/6, 23:36
  * nodes.stockinfoNode.models in codingDimensionTemplate
  */
 @Data
-@ToString(exclude = "id")
 @NoArgsConstructor
-public class StockDailyRecordPOJO {
-
-    // This is POJO indicator: real primary key
-    @EqualsAndHashCode.Exclude private ObjectId id;
+public class StockDailyRecordPOJO extends BaseMongoPOJO {
 
     // These two are primary key
     private String symbol;

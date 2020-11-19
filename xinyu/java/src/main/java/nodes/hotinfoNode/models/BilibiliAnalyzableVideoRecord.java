@@ -1,22 +1,18 @@
 package nodes.hotinfoNode.models;
 
 import com.google.gson.JsonObject;
+import common.io.database.mongodb.BaseMongoPOJO;
 import common.time.TimeClient;
 import common.time.TimeConstant;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import nodes.hotinfoNode.utils.Converter;
-import org.bson.types.ObjectId;
 
 import java.text.ParseException;
 
 @Data
-@ToString(exclude = "id")
 @NoArgsConstructor
-public class BilibiliAnalyzableVideoRecord {
-
-    private ObjectId id;
+public class BilibiliAnalyzableVideoRecord extends BaseMongoPOJO {
 
     private String videoAddress;
     private String title;
@@ -36,7 +32,6 @@ public class BilibiliAnalyzableVideoRecord {
     private Long recordTime;
 
     public BilibiliAnalyzableVideoRecord(final JsonObject jsonObject) {
-
         videoAddress = jsonObject.get("地址").getAsString();
         title = jsonObject.get("标题").getAsString();
         description = jsonObject.get("描述").getAsString();
