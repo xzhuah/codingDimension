@@ -1,6 +1,12 @@
 package nodes.personalAccountingNode;
 
 import com.google.inject.AbstractModule;
+import nodes.personalAccountingNode.dataSource.excel.StockTranscationReader;
+import nodes.personalAccountingNode.dataSource.excel.impl.StockTransactionReaderImpl;
+import nodes.personalAccountingNode.db.StockTransactionDBService;
+import nodes.personalAccountingNode.db.StockTransactionUpdater;
+import nodes.personalAccountingNode.db.impl.StockTransactionDBServiceImpl;
+import nodes.personalAccountingNode.db.impl.StockTransactionUpdaterImpl;
 
 /**
  * Created by Xinyu Zhu on 2020/11/18, 21:15
@@ -12,6 +18,8 @@ import com.google.inject.AbstractModule;
 public class PersonalAccountingModule extends AbstractModule {
     @Override
     protected void configure() {
-
+        bind(StockTranscationReader.class).to(StockTransactionReaderImpl.class);
+        bind(StockTransactionDBService.class).to(StockTransactionDBServiceImpl.class);
+        bind(StockTransactionUpdater.class).to(StockTransactionUpdaterImpl.class);
     }
 }

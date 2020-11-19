@@ -2,6 +2,8 @@ package nodes.personalAccountingNode.dataSource.excel;
 
 import nodes.personalAccountingNode.models.StockTransactionPOJO;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -9,5 +11,5 @@ import java.util.List;
  * nodes.personalAccountingNode.dataSource.excel in codingDimensionTemplate
  */
 public interface StockTranscationReader {
-    List<StockTransactionPOJO> readMyStockTransactionsInTimeOrder(String excelFile, String tableName);
+    List<StockTransactionPOJO> readMyStockTransactionsInTimeOrder(String excelFile, String tableName) throws IOException, ParseException;
 }

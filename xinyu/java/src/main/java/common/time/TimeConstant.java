@@ -9,5 +9,6 @@ import java.text.SimpleDateFormat;
 public class TimeConstant {
     public static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat dateOnlyFormatWithSlash = new SimpleDateFormat("yyyy/MM/dd");
     // Add new format here to use
 }
