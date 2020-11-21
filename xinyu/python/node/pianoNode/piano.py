@@ -4,6 +4,7 @@ import pygame.midi
 import turtle
 import threading
 
+# print is not allowed since when java call this file, print statement will break the keyboard listener
 
 def _pre_pre_process_key(key):
     key = str(key).lower()
@@ -337,7 +338,6 @@ class PianoEffector:
             self.piano.shift_change()
         else:
             return
-        print(self)
 
         try:
             my_turtle.clear()

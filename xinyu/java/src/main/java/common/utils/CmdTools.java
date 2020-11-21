@@ -27,11 +27,21 @@ public class CmdTools {
         return readOutputFromConsole(process.getInputStream());
     }
 
-    public static void runCommandInBackground(String... command) throws IOException {
+    public static void runCommandInBackground(String... command) {
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command(command);
-        Process process = processBuilder.start();
-        new Thread(() -> printOutputFromConsole(process.getInputStream())).start();
+        processBuilder.redirectErrorStream(true);
+
+        new Thread(() -> {
+            Process process;
+            try {
+                process = processBuilder.start();
+                printOutputFromConsole(process.getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }).start();
     }
 
     private static List<String> readOutputFromConsole(InputStream inputStream) {
@@ -60,10 +70,6 @@ public class CmdTools {
 
     // Some commanly used command
     public static void runMongoBIConnector() {
-        try {
-            runCommandInBackground("mongosqld");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        runCommandInBackground("mongosqld");
     }
 }
