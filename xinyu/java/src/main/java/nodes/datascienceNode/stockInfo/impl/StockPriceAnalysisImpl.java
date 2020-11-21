@@ -6,7 +6,7 @@ import nodes.NodeModule;
 import nodes.datascienceNode.stockInfo.StockTimeSeriesFeatureAnalysis;
 import nodes.datascienceNode.stockInfo.constants.Config;
 import nodes.datascienceNode.stockInfo.facade.impl.StockExpectedReturnFeature;
-import nodes.datascienceNode.stockInfo.facade.impl.StockPriceFeatureGroup;
+import nodes.datascienceNode.stockInfo.facade.impl.featureGroup.StockPriceFeatureGroup;
 import nodes.datascienceNode.stockInfo.utils.ReportPrinter;
 import nodes.featureEngineeringNode.BaseFeatureGroup;
 import nodes.featureEngineeringNode.facade.ComparableFeature;

@@ -17,7 +17,7 @@ public interface Feature<T, E> {
     E extractForInstance(T target);
 
     default List<E> extractForInstances(List<T> targets) {
-        List<E> result = new ArrayList<>();
+        List<E> result = new ArrayList<>(targets.size());
         targets.forEach(target -> result.add(extractForInstance(target)));
         return result;
     }

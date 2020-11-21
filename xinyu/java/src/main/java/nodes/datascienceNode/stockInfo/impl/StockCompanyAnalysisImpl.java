@@ -7,7 +7,7 @@ import nodes.datascienceNode.stockInfo.constants.Config;
 import nodes.datascienceNode.stockInfo.facade.impl.EmployeeNumFeature;
 import nodes.datascienceNode.stockInfo.facade.impl.MarketFeature;
 import nodes.datascienceNode.stockInfo.facade.impl.MarketPerEmployeeFeature;
-import nodes.datascienceNode.stockInfo.facade.impl.StockCompanyFeatureGroup;
+import nodes.datascienceNode.stockInfo.facade.impl.featureGroup.StockCompanyFeatureGroup;
 import nodes.datascienceNode.stockInfo.utils.ReportPrinter;
 import nodes.featureEngineeringNode.BaseFeatureGroup;
 import nodes.featureEngineeringNode.facade.ComparableFeature;

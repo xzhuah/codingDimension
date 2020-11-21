@@ -1,4 +1,4 @@
-package nodes.datascienceNode.stockInfo.facade.impl;
+package nodes.datascienceNode.stockInfo.facade.impl.featureGroup;
 
 import nodes.featureEngineeringNode.BaseFeatureGroup;
 import nodes.stockinfoNode.models.StockCompanyPOJO;

@@ -14,7 +14,7 @@ import java.util.List;
  * Refer to https://www.baeldung.com/java-lang-processbuilder-api
  */
 public class CmdTools {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         runCommandInBackground("java", "--version");
     }
