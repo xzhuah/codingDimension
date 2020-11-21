@@ -16,8 +16,8 @@ import java.util.List;
 public class CmdTools {
     public static void main(String[] args) throws IOException {
 
-       // runCommandInBackground("java", "--version");
-        runMongoBIConnector();
+        runCommandInBackground("java", "--version");
+        // runMongoBIConnector();
     }
 
     public static List<String> runCommand(String... command) throws IOException {
