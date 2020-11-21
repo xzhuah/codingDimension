@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class CmdTools {
     public static void main(String[] args) throws IOException {
-        
+
        // runCommandInBackground("java", "--version");
         runMongoBIConnector();
     }
@@ -34,7 +34,7 @@ public class CmdTools {
         new Thread(() -> printOutputFromConsole(process.getInputStream())).start();
     }
 
-    public static List<String> readOutputFromConsole(InputStream inputStream) {
+    private static List<String> readOutputFromConsole(InputStream inputStream) {
         List<String> result = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String str;
@@ -47,7 +47,7 @@ public class CmdTools {
         return result;
     }
 
-    public static void printOutputFromConsole(InputStream inputStream) {
+    private static void printOutputFromConsole(InputStream inputStream) {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String str;
             while ((str = in.readLine()) != null) {
@@ -58,6 +58,7 @@ public class CmdTools {
         }
     }
 
+    // Some commanly used command
     public static void runMongoBIConnector() {
         try {
             runCommandInBackground("mongosqld");
