@@ -4,6 +4,7 @@ import pygame.midi
 import turtle
 import threading
 
+
 # print is not allowed since when java call this file, print statement will break the keyboard listener
 
 def _pre_pre_process_key(key):
@@ -48,7 +49,8 @@ class Piano:
 
         self.shift = False
 
-        self.selected_instrument = [0, 8, 9, 10, 11, 24, 32, 34, 44, 46, 48, 49, 50, 51, 53, 54, 72, 73, 75, 77, 88, 89, 92, 93, 95, 98 ,99]
+        self.selected_instrument = [0, 8, 9, 10, 11, 24, 32, 34, 44, 46, 48, 49, 50, 51, 53, 54, 72, 73, 75, 77, 88, 89,
+                                    92, 93, 95, 98, 99]
         self.instrument_pointer = 0
 
         # circle of five
@@ -171,13 +173,13 @@ class Piano:
             self.instrument = instrument_number
 
     def simple_set_instrument(self):
-    	self.instrument_pointer += 1
-    	if self.instrument_pointer >= len(self.selected_instrument):
-    		self.instrument_pointer = 0
-    	self.instrument = self.selected_instrument[self.instrument_pointer]
-    	self.set_instrument(self.instrument)
+        self.instrument_pointer += 1
+        if self.instrument_pointer >= len(self.selected_instrument):
+            self.instrument_pointer = 0
+        self.instrument = self.selected_instrument[self.instrument_pointer]
+        self.set_instrument(self.instrument)
 
-        #self.set_instrument(self.instrument + 1)
+        # self.set_instrument(self.instrument + 1)
 
     def set_off_set(self, offset):
         if offset < 0:
@@ -386,7 +388,6 @@ class PianoEffector:
             self.key_status[key] = True
             self.piano.play_node(code, velocity=self._filter_low_sound(code))
 
-
     def normal_end(self, code, key):
         key = key.lower()
         if key in self.piano._key_transform:
@@ -428,7 +429,6 @@ class PianoEffector:
             to_play = self._chord_generator(code)
             for c in to_play:
                 self.piano.play_node(c, velocity=self._filter_low_sound(code))
-
 
     def chord_effect_release(self, code, key):
         to_play = self._chord_generator(code)

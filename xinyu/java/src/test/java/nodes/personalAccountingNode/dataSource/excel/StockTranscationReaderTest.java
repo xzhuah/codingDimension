@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Xinyu Zhu on 2020/11/18, 23:21
