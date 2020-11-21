@@ -1,5 +1,7 @@
 package nodes.datascienceNode.common.utils;
 
+import com.google.common.math.Stats;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -120,7 +122,71 @@ public class Algorithms {
         LEFT, RIGHT, BOTH
     }
 
+    // normalize the list with this formula: f[n] = (f[n] - min) / (max - min)
+    public static List<Double> normalizeList(List<? extends Number> targetList) {
+        if (targetList.size() == 0) {
+            return new ArrayList<>();
+        }
+        Stats statistics = Stats.of(targetList);
+        double max = statistics.max();
+        double min = statistics.min();
+        double base = max - min;
+
+        List<Double> result = new ArrayList<>(targetList.size());
+        if (min == max) {
+            for (int i = 0; i < targetList.size(); i++) {
+                result.add(1.0);
+            }
+            return result;
+        } else {
+            for (Number number : targetList) {
+                result.add((number.doubleValue() - min) / base);
+            }
+            return result;
+        }
+    }
+
+    // normalize the list with this formula: f[n] = f[n] / sum
+    public static List<Double> normalizeListWithSum(List<? extends Number> targetList) {
+        if (targetList.size() == 0) {
+            return new ArrayList<>();
+        }
+        Stats statistics = Stats.of(targetList);
+        double sum = statistics.sum();
+
+        List<Double> result = new ArrayList<>(targetList.size());
+        for (Number number : targetList) {
+            result.add(number.doubleValue() / sum);
+        }
+        return result;
+
+    }
+
+    public static List<Double> standardizeList(List<? extends Number> targetList) {
+        if (targetList.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        if (targetList.size() == 1) {
+            return List.of(0D);
+        }
+        Stats statistics = Stats.of(targetList);
+        double mean = statistics.mean();
+        double mu = statistics.sampleStandardDeviation();
+
+        List<Double> result = new ArrayList<>(targetList.size());
+        if (mu == 0) {
+            result.add(0D);
+        } else {
+            for (Number number : targetList) {
+                result.add((number.doubleValue() - mean) / mu);
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         System.out.println(slidingWindowAvg(listPadding(List.of(2, 3, 4), 1, PaddingPolicy.LEFT), 2));
+        System.out.println(standardizeList(List.of(2, 3, 6)));
     }
 }
