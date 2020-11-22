@@ -17,7 +17,7 @@ import java.util.List;
  * nodes.datascienceNode.stockInfo.facade.impl in codingDimensionTemplate
  */
 @Setter
-public class StockNdayAvgPriceFeature implements Feature<List<StockDailyRecordPOJO>, JsonArray> {
+public class StockNdayAvgPriceFeature implements Feature<List<StockDailyRecordPOJO>, List<Double>> {
     private int nDay;
 
     public StockNdayAvgPriceFeature(int nDay) {
@@ -25,23 +25,24 @@ public class StockNdayAvgPriceFeature implements Feature<List<StockDailyRecordPO
     }
 
     @Override
-    public JsonArray extractForInstance(List<StockDailyRecordPOJO> target) {
+    public List<Double> extractForInstance(List<StockDailyRecordPOJO> target) {
         List<Double> dailyAvg = Converter.toDailyAvgPriceList(target);
         List<Double> result = Algorithms.slidingWindowAvg(Algorithms.listPadding(dailyAvg,nDay - 1,  Algorithms.PaddingPolicy.LEFT), nDay);
-        JsonArray resultArray = new JsonArray();
-        Gson gson = new GsonBuilder().create();
-        for (int i = 0; i < target.size(); i++) {
-            JsonObject obj = gson.toJsonTree(target.get(i)).getAsJsonObject();
-            obj.addProperty(nDay + " avg", result.get(i));
-            obj.remove("id");
-            resultArray.add(obj);
-        }
-
-        return resultArray;
+        return result;
+//        JsonArray resultArray = new JsonArray();
+//        Gson gson = new GsonBuilder().create();
+//        for (int i = 0; i < target.size(); i++) {
+//            JsonObject obj = gson.toJsonTree(target.get(i)).getAsJsonObject();
+//            obj.addProperty(nDay + " avg", result.get(i));
+//            obj.remove("id");
+//            resultArray.add(obj);
+//        }
+//
+//        return resultArray;
     }
 
     @Override
     public String getFeatureName() {
-       return String.format("%s day avg price", this.nDay);
+       return String.format("%sday avg", this.nDay);
     }
 }

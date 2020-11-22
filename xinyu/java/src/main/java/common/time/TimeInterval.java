@@ -32,4 +32,8 @@ public class TimeInterval {
         return new TimeInterval(startTimeInMillis, System.currentTimeMillis());
     }
 
+    public static TimeInterval getUpToNowIntervalWithDuration(long timeInMillis) {
+        return new TimeInterval(System.currentTimeMillis() - timeInMillis, System.currentTimeMillis());
+    }
+
 }
