@@ -87,16 +87,13 @@ public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<Li
 
     public static void main(String[] args) {
         StockPriceAnalysisImpl stockPriceAnalysisImpl = NodeModule.getGlobalInjector().getInstance(StockPriceAnalysisImpl.class);
-        int sampleDuration = 3000;
+        int sampleDuration = 14;
 
-        stockPriceAnalysisImpl.setFeature(new StockExpectedReturnFeature(sampleDuration, 0.05),
-                new StockExpectedReturnFeature(sampleDuration, 0.1),
-                new StockExpectedReturnFeature(sampleDuration, 0.15),
-                new StockExpectedReturnFeature(sampleDuration, 0.2),
-                new StockExpectedReturnFeature(sampleDuration, 0.25),
-                new StockExpectedReturnFeature(sampleDuration, 0.3),
-                new StockExpectedReturnFeature(sampleDuration, 0.35),
-                new StockExpectedReturnFeature(sampleDuration, 0.4));
+        stockPriceAnalysisImpl.setFeature(new StockExpectedReturnFeature(sampleDuration, 0.01),
+                new StockExpectedReturnFeature(sampleDuration, 0.02),
+                new StockExpectedReturnFeature(sampleDuration, 0.03),
+                new StockExpectedReturnFeature(sampleDuration, 0.04),
+                new StockExpectedReturnFeature(sampleDuration, 0.05));
 
         stockPriceAnalysisImpl.printReportForTarget();
 

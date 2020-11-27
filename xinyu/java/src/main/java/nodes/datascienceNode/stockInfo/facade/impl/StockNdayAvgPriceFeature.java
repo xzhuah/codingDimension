@@ -29,16 +29,6 @@ public class StockNdayAvgPriceFeature implements Feature<List<StockDailyRecordPO
         List<Double> dailyAvg = Converter.toDailyAvgPriceList(target);
         List<Double> result = Algorithms.slidingWindowAvg(Algorithms.listPadding(dailyAvg,nDay - 1,  Algorithms.PaddingPolicy.LEFT), nDay);
         return result;
-//        JsonArray resultArray = new JsonArray();
-//        Gson gson = new GsonBuilder().create();
-//        for (int i = 0; i < target.size(); i++) {
-//            JsonObject obj = gson.toJsonTree(target.get(i)).getAsJsonObject();
-//            obj.addProperty(nDay + " avg", result.get(i));
-//            obj.remove("id");
-//            resultArray.add(obj);
-//        }
-//
-//        return resultArray;
     }
 
     @Override
