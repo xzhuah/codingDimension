@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Created by Xinyu Zhu on 2020/11/21, 19:44
  * nodes.datascienceNode.stockInfo.facade.impl in codingDimensionTemplate
+ * 这是一组股市价格均线数据, 默认计算5日均线, 10日均线以及20,30,60日
  */
 public class StockPriceFeatureSet implements Feature<List<StockDailyRecordPOJO>, JsonArray> {
     List<StockNdayAvgPriceFeature> nDayAvgS;
@@ -24,6 +25,13 @@ public class StockPriceFeatureSet implements Feature<List<StockDailyRecordPOJO>,
         nDayAvgS.add(new StockNdayAvgPriceFeature(20));
         nDayAvgS.add(new StockNdayAvgPriceFeature(30));
         nDayAvgS.add(new StockNdayAvgPriceFeature(60));
+    }
+
+    public StockPriceFeatureSet(int... ndays) {
+        nDayAvgS = new ArrayList<>();
+        for (int n : ndays) {
+            nDayAvgS.add(new StockNdayAvgPriceFeature(n));
+        }
     }
 
     @Override
