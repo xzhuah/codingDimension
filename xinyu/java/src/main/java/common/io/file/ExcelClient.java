@@ -34,7 +34,7 @@ public class ExcelClient {
     }
 
     public static List<Map<String, String>> readExcelTableByRowAsColumnOfMap(String filename, String tableName) throws IOException {
-       return readExcelTableByRowAsColumnOfMap(filename, tableName, 0);
+        return readExcelTableByRowAsColumnOfMap(filename, tableName, 0);
     }
 
     public static Map<String, Map<String, String>> readExcelTableByRowAndColAsRowToColMap(String filename, String tableName) throws IOException {
@@ -62,8 +62,8 @@ public class ExcelClient {
 
         Iterator<Row> rawIterator = sheet.rowIterator();
 
-        for (int i = 0; i <skipRowNum; i++) {
-            checkStatus(rawIterator.hasNext(), "There is no " + skipRowNum +" rows to skip in table " + tableName + " of file " + filename);
+        for (int i = 0; i < skipRowNum; i++) {
+            checkStatus(rawIterator.hasNext(), "There is no " + skipRowNum + " rows to skip in table " + tableName + " of file " + filename);
             rawIterator.next();
         }
 
@@ -128,8 +128,7 @@ public class ExcelClient {
     }
 
     private static String getCellValueAsString(Cell cell) {
-        switch (cell.getCellType())
-        {
+        switch (cell.getCellType()) {
             case NUMERIC:
                 return cell.getNumericCellValue() + "";
             case FORMULA:
@@ -150,7 +149,7 @@ public class ExcelClient {
         return (excelTime * 3600L * 24L - 2209161600L) * 1000L;
     }
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         Map<String, List<String>> result = readExcelTableByRowAsMapToColumn("C:/my C/Finance/炒股记录表.xlsx", "历史");
         for (String key : result.keySet()) {
             System.out.println(key);

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Xinyu Zhu on 2020/11/16, 22:50
  * nodes.featureEngineeringNode.facade in codingDimensionTemplate
- *
+ * <p>
  * QuantifiableFeature is at higher level of ComparableFeature, it just provides a easy way to help you manage your
  * model class, most of the time you can and should use ComparableFeature instead, using this QuantifiableFeature
  * simple means you want to use it with some Complex but Quantifiable Models. If you model is just Number, you can

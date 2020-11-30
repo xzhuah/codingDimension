@@ -10,8 +10,8 @@ import static common.utils.ConditionChecker.checkStatus;
  */
 @Getter
 public class TimeInterval {
-    private long startTimeInMillis=0;
-    private long endTimeInMillis=1;
+    private long startTimeInMillis = 0;
+    private long endTimeInMillis = 1;
 
     private TimeInterval() {
         this.startTimeInMillis = 0;

@@ -16,13 +16,20 @@ public class StockCompanyPOJO extends BaseMongoPOJO {
     // Primary key
     private String symbol;
 
-    @EqualsAndHashCode.Exclude private String name;
-    @EqualsAndHashCode.Exclude private String exchange;
-    @EqualsAndHashCode.Exclude private String sector;
-    @EqualsAndHashCode.Exclude private String industry;
-    @EqualsAndHashCode.Exclude private String country;
+    @EqualsAndHashCode.Exclude
+    private String name;
+    @EqualsAndHashCode.Exclude
+    private String exchange;
+    @EqualsAndHashCode.Exclude
+    private String sector;
+    @EqualsAndHashCode.Exclude
+    private String industry;
+    @EqualsAndHashCode.Exclude
+    private String country;
 
-    @EqualsAndHashCode.Exclude private int employee;
-    @EqualsAndHashCode.Exclude private long market;
+    @EqualsAndHashCode.Exclude
+    private int employee;
+    @EqualsAndHashCode.Exclude
+    private long market;
 
 }

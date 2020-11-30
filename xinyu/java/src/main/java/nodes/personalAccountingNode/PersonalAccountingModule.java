@@ -11,7 +11,7 @@ import nodes.personalAccountingNode.db.impl.StockTransactionUpdaterImpl;
 /**
  * Created by Xinyu Zhu on 2020/11/18, 21:15
  * nodes.personalAccountingNode in codingDimensionTemplate
- *
+ * <p>
  * The task of this module is to help record different kinds of personal transactions
  * To help monitering personal financial activity
  */

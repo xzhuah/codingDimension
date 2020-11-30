@@ -10,7 +10,7 @@ import static com.google.common.collect.Maps.newHashMapWithExpectedSize;
 /**
  * Created by Xinyu Zhu on 2020/11/14, 20:48
  * nodes.datascienceNode in codingDimensionTemplate
- *
+ * <p>
  * This class is just for fun, provides some crazy but workable examples
  * A better usage of features would be to use them seprately.
  */

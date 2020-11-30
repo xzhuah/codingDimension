@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Xinyu Zhu on 2020/11/11, 20:00
  * nodes.stockinfoNode.querier in codingDimensionTemplate
- *
+ * <p>
  * This Interface provides the basic operations needed to interact with the database in stock price business
  */
 public interface StockInfoDBService {

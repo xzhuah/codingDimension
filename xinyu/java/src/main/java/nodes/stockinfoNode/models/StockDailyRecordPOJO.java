@@ -18,12 +18,20 @@ public class StockDailyRecordPOJO extends BaseMongoPOJO {
     private long time;
 
     // These are other data
-    @EqualsAndHashCode.Exclude private double open;
-    @EqualsAndHashCode.Exclude private double high;
-    @EqualsAndHashCode.Exclude private double low;
-    @EqualsAndHashCode.Exclude private double close;
-    @EqualsAndHashCode.Exclude private double volume;
-    @EqualsAndHashCode.Exclude private double adjustedClose;
-    @EqualsAndHashCode.Exclude private double dividend;
-    @EqualsAndHashCode.Exclude private double splitCoefficient;
+    @EqualsAndHashCode.Exclude
+    private double open;
+    @EqualsAndHashCode.Exclude
+    private double high;
+    @EqualsAndHashCode.Exclude
+    private double low;
+    @EqualsAndHashCode.Exclude
+    private double close;
+    @EqualsAndHashCode.Exclude
+    private double volume;
+    @EqualsAndHashCode.Exclude
+    private double adjustedClose;
+    @EqualsAndHashCode.Exclude
+    private double dividend;
+    @EqualsAndHashCode.Exclude
+    private double splitCoefficient;
 }

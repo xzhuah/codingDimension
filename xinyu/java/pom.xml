@@ -113,6 +113,12 @@
             <version>4.5.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>24.0</version>
+        </dependency>
+
 
     </dependencies>
 

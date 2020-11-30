@@ -57,7 +57,7 @@ public class StockSymbolCrawlerImpl implements nodes.stockinfoNode.crawler.Stock
             }
         });
 
-       return allStockSymbol;
+        return allStockSymbol;
 
     }
 

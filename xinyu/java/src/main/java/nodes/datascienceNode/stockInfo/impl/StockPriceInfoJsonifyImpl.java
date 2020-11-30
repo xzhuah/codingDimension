@@ -34,6 +34,7 @@ public class StockPriceInfoJsonifyImpl implements StockPriceInfoJsonify {
     /**
      * 为股市最近n天的数据计算stockPriceFeatureSet中定义的feature的值
      * 并以JsonArray的形式连同股票原始数据返回, 便于Tableau等可视化软件进行分析
+     *
      * @param n
      * @return
      */

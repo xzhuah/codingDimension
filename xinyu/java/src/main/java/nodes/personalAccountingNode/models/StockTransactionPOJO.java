@@ -8,8 +8,8 @@ import lombok.ToString;
  * nodes.personalAccountingNode.models in codingDimensionTemplate
  */
 @Data
-@ToString(callSuper=true)
-public class StockTransactionPOJO extends CashFlowTransactionPOJO{
+@ToString(callSuper = true)
+public class StockTransactionPOJO extends CashFlowTransactionPOJO {
     // actually will be the line number
     protected int primaryId;
     private double shares;

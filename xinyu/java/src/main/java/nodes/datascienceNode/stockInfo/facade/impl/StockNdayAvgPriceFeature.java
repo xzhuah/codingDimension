@@ -23,12 +23,12 @@ public class StockNdayAvgPriceFeature implements Feature<List<StockDailyRecordPO
     @Override
     public List<Double> extractForInstance(List<StockDailyRecordPOJO> target) {
         List<Double> dailyAvg = Converter.toDailyAvgPriceList(target);
-        List<Double> result = Algorithms.slidingWindowAvg(Algorithms.listPadding(dailyAvg,nDay - 1,  Algorithms.PaddingPolicy.LEFT), nDay);
+        List<Double> result = Algorithms.slidingWindowAvg(Algorithms.listPadding(dailyAvg, nDay - 1, Algorithms.PaddingPolicy.LEFT), nDay);
         return result;
     }
 
     @Override
     public String getFeatureName() {
-       return String.format("%sday avg", this.nDay);
+        return String.format("%sday avg", this.nDay);
     }
 }

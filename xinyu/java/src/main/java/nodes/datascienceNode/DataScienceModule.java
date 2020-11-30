@@ -24,8 +24,10 @@ public class DataScienceModule extends AbstractModule {
         super.configure();
 
         // For stockInfo
-        bind(new TypeLiteral<FeatureAnalysis<StockCompanyPOJO, String>>(){}).to(StockCompanyAnalysisImpl.class);
-        bind(new TypeLiteral<FeatureAnalysis<List<StockDailyRecordPOJO>, String>>(){}).to(StockPriceAnalysisImpl.class);
+        bind(new TypeLiteral<FeatureAnalysis<StockCompanyPOJO, String>>() {
+        }).to(StockCompanyAnalysisImpl.class);
+        bind(new TypeLiteral<FeatureAnalysis<List<StockDailyRecordPOJO>, String>>() {
+        }).to(StockPriceAnalysisImpl.class);
         bind(StockPriceInfoJsonify.class).to(StockPriceInfoJsonifyImpl.class);
         bind(StockFilterService.class).to(StockFilterServiceImpl.class);
     }

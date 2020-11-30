@@ -38,7 +38,8 @@ public class AlphavantageCrawlerImpl implements AlphavantageCrawler<List<StockDa
     }
 
     public static void main(String[] args) throws Exception {
-        AlphavantageCrawler<List<StockDailyRecordPOJO>> alphavantageCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>(){});
+        AlphavantageCrawler<List<StockDailyRecordPOJO>> alphavantageCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>() {
+        });
         alphavantageCrawler.addSymbolToQueue("IBM");
 
         Future<Optional<List<StockDailyRecordPOJO>>> result = alphavantageCrawler.getResultFuture("IBM");
@@ -56,7 +57,6 @@ public class AlphavantageCrawlerImpl implements AlphavantageCrawler<List<StockDa
             acceptedSymbol.add(symbol);
         }
     }
-
 
 
     @Override

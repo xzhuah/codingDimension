@@ -23,6 +23,7 @@ public class StockTransactionDBServiceImpl implements StockTransactionDBService 
         this.transactionCollection = this.mongoDBPojoClient.getCollection(AccountingConstant.ACCOUNTING_DATABASE,
                 AccountingConstant.STOCK_TRANSACTION_COLLECTION, StockTransactionPOJO.class);
     }
+
     @Override
     public void insert(List<StockTransactionPOJO> stockTransactionPOJOs) {
 

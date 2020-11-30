@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Xinyu Zhu on 2020/11/29, 0:56
  * nodes.datascienceNode.stockInfo.facade.impl in codingDimensionTemplate
- *
+ * <p>
  * 这个类的命名并不好, 实际上是想计算近期10日均价大于5日均价的累计天数, 但这个特征不好描述
  */
 public class DaysOverFeature implements ComparableFeature<List<StockDailyRecordPOJO>, Integer> {

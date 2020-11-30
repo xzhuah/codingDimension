@@ -23,8 +23,8 @@ public class StockTranscationReaderTest {
     public void readMyStockTransactionsInTimeOrder() throws IOException, ParseException {
         List<StockTransactionPOJO> result
                 = stockTranscationReader.readMyStockTransactionsInTimeOrder(
-                        AccountingConstant.STOCK_TRANSACTION_SOURCE_PATH,
-                        AccountingConstant.STOCK_TRANSACTION_SOURCE_TABLE);
+                AccountingConstant.STOCK_TRANSACTION_SOURCE_PATH,
+                AccountingConstant.STOCK_TRANSACTION_SOURCE_TABLE);
 
         System.out.println(result);
 

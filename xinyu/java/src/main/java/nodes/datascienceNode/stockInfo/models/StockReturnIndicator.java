@@ -8,13 +8,13 @@ import lombok.Setter;
 /**
  * Created by Xinyu Zhu on 2020/11/15, 0:43
  * nodes.datascienceNode.stockInfo.models in codingDimensionTemplate
- *
+ * <p>
  * The standard way of calculating this feature is defined in @StockExpectedReturnFeature
  */
 @Getter
 @Setter
 @NoArgsConstructor
-public class StockReturnIndicator implements Comparable<StockReturnIndicator>{
+public class StockReturnIndicator implements Comparable<StockReturnIndicator> {
     private double avgReturnDays;
     private double avgReturnProbability;
     private double stdReturnDays;

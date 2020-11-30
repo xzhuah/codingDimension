@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Xinyu Zhu on 2020/11/14, 20:36
  * nodes.datascienceNode.facade in codingDimensionTemplate
  */
-public interface ComparableFeature<T, E extends Comparable<E>> extends Feature<T, E>{
+public interface ComparableFeature<T, E extends Comparable<E>> extends Feature<T, E> {
     default List<T> sortInstanceWithFeature(List<T> targets, boolean reverse) {
         List<T> sortedResult = new java.util.ArrayList<>(targets);
         sortedResult.sort((target1, target2) -> {
@@ -18,6 +18,7 @@ public interface ComparableFeature<T, E extends Comparable<E>> extends Feature<T
         });
         return sortedResult;
     }
+
     default boolean isComparable() {
         return true;
     }

@@ -31,9 +31,9 @@ public class StockInfoDBServiceImpl implements StockInfoDBService {
     private StockInfoDBServiceImpl(MongoDBPojoClient mongoDBClient) {
         this.mongoDBClient = mongoDBClient;
 
-        symbolCollection =  this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE,
+        symbolCollection = this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE,
                 StockConstant.SYMBOL_COLLECTION, StockCompanyPOJO.class);
-        priceCollection =  this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE,
+        priceCollection = this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE,
                 StockConstant.PRICE_COLLECTION, StockDailyRecordPOJO.class);
     }
 
@@ -93,14 +93,14 @@ public class StockInfoDBServiceImpl implements StockInfoDBService {
 
     // To support other complex query
     @Override
-    public MongoCollection<StockCompanyPOJO>  getCompanyInfoCollection() {
+    public MongoCollection<StockCompanyPOJO> getCompanyInfoCollection() {
         return this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE, StockConstant.SYMBOL_COLLECTION, StockCompanyPOJO.class);
     }
 
     // To support other complex query
     @Override
     public MongoCollection<StockDailyRecordPOJO> getPriceCollection() {
-        return this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE,StockConstant.PRICE_COLLECTION, StockDailyRecordPOJO.class);
+        return this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE, StockConstant.PRICE_COLLECTION, StockDailyRecordPOJO.class);
     }
 
     @Override

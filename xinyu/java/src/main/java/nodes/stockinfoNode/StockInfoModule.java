@@ -47,13 +47,15 @@ public class StockInfoModule extends AbstractModule {
         }).toInstance(dailyPriceProcessor);
 
         bind(new TypeLiteral<AutoCoolDownCrawler<List<StockDailyRecordPOJO>>>() {
-        }).toInstance(new AutoCoolDownCrawler<>(dailyPriceProcessor,COOL_DOWN_TIME_MIN, COOL_DOWN_TIME_MAX, 0));
+        }).toInstance(new AutoCoolDownCrawler<>(dailyPriceProcessor, COOL_DOWN_TIME_MIN, COOL_DOWN_TIME_MAX, 0));
 
         bind(new TypeLiteral<BaseCrawler<JsonArray>>() {
         }).toInstance(new BaseCrawler<>(jsonArrayResponseProcessor));
 
-        bind(new TypeLiteral<AlphavantageCrawler<StockCompanyPOJO>>(){}).to(AlphavantageSymbolCrawlerImpl.class);
-        bind(new TypeLiteral<AlphavantageCrawler<List<StockDailyRecordPOJO>>>(){}).to(AlphavantageCrawlerImpl.class);
+        bind(new TypeLiteral<AlphavantageCrawler<StockCompanyPOJO>>() {
+        }).to(AlphavantageSymbolCrawlerImpl.class);
+        bind(new TypeLiteral<AlphavantageCrawler<List<StockDailyRecordPOJO>>>() {
+        }).to(AlphavantageCrawlerImpl.class);
         bind(StockSymbolCrawler.class).to(StockSymbolCrawlerImpl.class);
 
         bind(StockInfoDBService.class).to(StockInfoDBServiceImpl.class);

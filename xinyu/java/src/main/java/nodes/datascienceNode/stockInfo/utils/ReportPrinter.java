@@ -9,7 +9,7 @@ import static common.utils.ConditionChecker.checkStatus;
  * nodes.datascienceNode.stockInfo.utils in codingDimensionTemplate
  */
 public class ReportPrinter {
-    public static void printReport(final List<String> columnLabels,  final List<String> rowLabels, final List<List<String>> values, final String cornerLabel, final boolean showLineNumber) {
+    public static void printReport(final List<String> columnLabels, final List<String> rowLabels, final List<List<String>> values, final String cornerLabel, final boolean showLineNumber) {
         checkStatus(rowLabels.size() == values.size(), "row labels number does not match values number");
         checkStatus(values.size() == 0 || values.get(0).size() == columnLabels.size(), "column number is incorrect");
 

@@ -17,6 +17,7 @@ public class StockTransactionUpdaterImpl implements StockTransactionUpdater {
 
     private final StockTransactionDBService dbService;
     private final StockTranscationReader transcationReader;
+
     @Inject
     public StockTransactionUpdaterImpl(StockTransactionDBService dbService, StockTranscationReader transcationReader) {
         this.dbService = dbService;

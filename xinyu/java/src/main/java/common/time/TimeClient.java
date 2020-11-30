@@ -75,13 +75,13 @@ public class TimeClient {
         return stringToTimestamp(timestampToString(timestamp).split(" ")[0], TimeConstant.dateOnlyFormat);
     }
 
-    public static Calendar toCalendar(Date date){
+    public static Calendar toCalendar(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
     }
 
-    public static Calendar toCalendar(long timestamp){
+    public static Calendar toCalendar(long timestamp) {
         checkNormalMilliTimestamp(timestamp);
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp);
@@ -121,6 +121,6 @@ public class TimeClient {
 
     public static void main(String[] args) throws ParseException {
         //System.out.println(getCurrentTimeString());
-        System.out.println(getMonth(System.currentTimeMillis()+3600000*24*4));
+        System.out.println(getMonth(System.currentTimeMillis() + 3600000 * 24 * 4));
     }
 }

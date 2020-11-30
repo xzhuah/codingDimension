@@ -10,6 +10,7 @@ import org.junit.Test;
 public class StockTransactionUpdaterTest {
 
     StockTransactionUpdater stockTransactionUpdater = NodeModule.getGlobalInjector().getInstance(StockTransactionUpdater.class);
+
     @Test
     public void autoUpdate() {
         stockTransactionUpdater.autoUpdate();

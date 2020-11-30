@@ -12,5 +12,6 @@ import org.bson.types.ObjectId;
 @Data
 @ToString(exclude = "id")
 public class BaseMongoPOJO {
-    @EqualsAndHashCode.Exclude protected ObjectId id;
+    @EqualsAndHashCode.Exclude
+    protected ObjectId id;
 }

@@ -15,7 +15,8 @@ import java.util.concurrent.Future;
  */
 public class StockPriceDBServiceTest {
     StockInfoDBService stockInfoDBService = NodeModule.getGlobalInjector().getInstance(StockInfoDBService.class);
-    AlphavantageCrawler<StockCompanyPOJO> crawler = NodeModule.getGlobalInjector().getInstance(new Key<>(){});
+    AlphavantageCrawler<StockCompanyPOJO> crawler = NodeModule.getGlobalInjector().getInstance(new Key<>() {
+    });
 
 
     @Test

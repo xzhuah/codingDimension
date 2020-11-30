@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by Xinyu Zhu on 2020/11/14, 20:31
  * nodes.datascienceNode.facade in codingDimensionTemplate
- *
+ * <p>
  * Feature is not a kind of data type, it is a kind of methodology defined by extractForInstance()
  * When you define a feature, simply saying the feature is a vector does not make any sense, you should give the
  * algorithm to calculate it. Vector is not a feature, is a model, feature is a Mapping from one data model to another
@@ -25,7 +25,7 @@ public interface Feature<T, E> {
     default String getFeatureName() {
         String subClassName = getClass().getSimpleName();
         if (subClassName.length() == 0) {
-            return "Feature" +  ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
+            return "Feature" + ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
         }
         return subClassName;
     }

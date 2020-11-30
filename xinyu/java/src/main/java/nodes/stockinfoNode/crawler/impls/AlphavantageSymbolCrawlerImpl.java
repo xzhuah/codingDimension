@@ -33,7 +33,8 @@ public class AlphavantageSymbolCrawlerImpl implements AlphavantageCrawler<StockC
     }
 
     public static void main(String[] args) throws Exception {
-        AlphavantageCrawler<StockCompanyPOJO> alphavantageCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>(){});
+        AlphavantageCrawler<StockCompanyPOJO> alphavantageCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>() {
+        });
         alphavantageCrawler.addSymbolToQueue("IBMCS");
 
         Future<Optional<StockCompanyPOJO>> result = alphavantageCrawler.getResultFuture("IBMCS");

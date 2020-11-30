@@ -17,7 +17,7 @@ import static common.utils.ConditionChecker.checkStatus;
 /**
  * Created by Xinyu Zhu on 2020/11/18, 20:45
  * nodes.datascienceNode.stockInfo.facade.impl in codingDimensionTemplate
- *
+ * <p>
  * Index is just a list of stock
  */
 public class IndexExpectedReturnFeature implements ComparableFeature<List<List<StockDailyRecordPOJO>>, StockReturnIndicator> {

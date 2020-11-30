@@ -89,7 +89,7 @@ public class AlgorithmUtils {
 
         minHeap.add(ImmutablePair.of(valueList.get(0) * returnRate, 0));
 
-        for (int i = 1; i <valueList.size(); i++) {
+        for (int i = 1; i < valueList.size(); i++) {
             double currentElement = valueList.get(i);
             while (!minHeap.isEmpty() && minHeap.peek().left <= currentElement) {
                 ImmutablePair<Double, Integer> founded = minHeap.poll();

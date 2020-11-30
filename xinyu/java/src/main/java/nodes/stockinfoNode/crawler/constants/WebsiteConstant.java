@@ -30,7 +30,7 @@ public class WebsiteConstant {
 
     static {
         LOAD_KEY = APIKeyClient.getApiKey("stock_price_api");
-        if (null == LOAD_KEY ) {
+        if (null == LOAD_KEY) {
             LOAD_KEY = "demo";
         }
         LOAD_KEY = LOAD_KEY.trim();

@@ -19,6 +19,7 @@ public class OCRServiceImpl implements OCRService {
         tesseract = new Tesseract();
         tesseract.setDatapath(OCRConstant.TESSERACT_PATH);
     }
+
     @Override
     public String extractTextFromImage(String imageFile) {
         try {
