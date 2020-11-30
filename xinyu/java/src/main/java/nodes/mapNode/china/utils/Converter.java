@@ -1,12 +1,16 @@
 package nodes.mapNode.china.utils;
 
 import nodes.mapNode.china.models.ChineseLevel5AreaInfoPOJO;
+import nodes.mapNode.models.Position;
+import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.mongodb.client.model.Filters.*;
 
 /**
  * Created by Xinyu Zhu on 2020/11/29, 20:17
@@ -53,6 +57,21 @@ public class Converter {
             }
         }
         return result;
+    }
+
+    public static Bson toAreaFilter(Position north, Position east, Position south, Position west) {
+        // 考虑0度经线引起的错误
+        Bson latFilter = and(gte("lat", south.getLat()), lte("lat", north.getLat()));
+
+        Bson lngFilter;
+        if (east.getLng() < west.getLng()) {
+            // 跨过了0度经线
+            lngFilter = and(gte("lng", west.getLng()), lte("lng", 180),
+                    gte("lng", -180), lte("lng", east.getLng()));
+        } else {
+            lngFilter = and(gte("lng", west.getLng()), lte("lng", east.getLng()));
+        }
+        return and(latFilter, lngFilter);
     }
 
     public static void main(String[] args) throws IOException {
