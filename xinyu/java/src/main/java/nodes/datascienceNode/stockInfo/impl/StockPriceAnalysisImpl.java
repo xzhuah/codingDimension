@@ -95,8 +95,8 @@ public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<Li
                 new StockExpectedReturnFeature(sampleDuration, 0.04),
                 new StockExpectedReturnFeature(sampleDuration, 0.05));
 
-        stockPriceAnalysisImpl.printReportForTarget();
+        //stockPriceAnalysisImpl.printReportForTarget();
 
-        //stockPriceAnalysisImpl.printReportForTarget(List.of("SIVB", "ANET", "TMUS"));
+        stockPriceAnalysisImpl.printReportForTarget(List.of("V", "ITW", "HD", "MCK", "CVS", "LKQ"));
     }
 }

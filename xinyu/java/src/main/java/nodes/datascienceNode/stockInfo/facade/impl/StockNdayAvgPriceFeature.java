@@ -1,9 +1,5 @@
 package nodes.datascienceNode.stockInfo.facade.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import lombok.Setter;
 import nodes.datascienceNode.common.utils.Algorithms;
 import nodes.datascienceNode.stockInfo.utils.Converter;

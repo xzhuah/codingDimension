@@ -1,5 +1,6 @@
 package nodes.stockinfoNode.crawler.constants;
 
+import common.io.file.APIKeyClient;
 import common.io.file.PlaintextClient;
 
 import java.io.IOException;
@@ -22,16 +23,14 @@ public class WebsiteConstant {
 
     public static final int REQUEST_LIMIT_PER_MINUTE = 5;
 
-    private static final String keyFile = "stockinfoKey.pass";
     private static final String stockFile = "SP500.pass";
 
     public static String LOAD_KEY;
     public static List<String> SP_500_SYMBOL = new ArrayList<>(520);
 
     static {
-        try {
-            LOAD_KEY = PlaintextClient.readFile(keyFile);
-        } catch (IOException e) {
+        LOAD_KEY = APIKeyClient.getApiKey("stock_price_api");
+        if (null == LOAD_KEY ) {
             LOAD_KEY = "demo";
         }
         LOAD_KEY = LOAD_KEY.trim();

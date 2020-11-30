@@ -1,7 +1,6 @@
 package nodes.datascienceNode.stockInfo.facade.impl;
 
 import nodes.featureEngineeringNode.facade.ComparableFeature;
-import nodes.featureEngineeringNode.facade.Feature;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
 import java.util.List;
