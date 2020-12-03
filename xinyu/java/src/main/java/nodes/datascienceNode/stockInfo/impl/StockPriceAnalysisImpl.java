@@ -97,6 +97,6 @@ public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<Li
 
         //stockPriceAnalysisImpl.printReportForTarget();
 
-        stockPriceAnalysisImpl.printReportForTarget(List.of("V", "ITW", "HD", "MCK", "CVS", "LKQ"));
+        stockPriceAnalysisImpl.printReportForTarget(List.of("ZTS", "CHD", "ALXN", "EL", "AES", "UNH", "HOLX", "TMO", "CMS", "ABMD", "ANET", "PKI", "PLD", "GILD", "AAPL", "CPRT", "ANTM"));
     }
 }

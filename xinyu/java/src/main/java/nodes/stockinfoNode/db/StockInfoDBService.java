@@ -15,10 +15,10 @@ import java.util.List;
  */
 public interface StockInfoDBService {
     // Query company info
-    List<StockCompanyPOJO> queryCompany(Bson bsonFilter);
+    List<? extends StockCompanyPOJO> queryCompany(Bson bsonFilter);
 
     // Query price info
-    List<StockDailyRecordPOJO> queryPrice(Bson bsonFilter);
+    List<? extends StockDailyRecordPOJO> queryPrice(Bson bsonFilter);
 
     // Insert a list of company, auto deduplication if the database has correct unique index
     void insertCompany(List<StockCompanyPOJO> companies);
@@ -35,10 +35,10 @@ public interface StockInfoDBService {
     }
 
     // To support other complex query
-    MongoCollection<StockCompanyPOJO> getCompanyInfoCollection();
+    MongoCollection<? extends StockCompanyPOJO> getCompanyInfoCollection();
 
     // To support other complex query
-    MongoCollection<StockDailyRecordPOJO> getPriceCollection();
+    MongoCollection<? extends StockDailyRecordPOJO> getPriceCollection();
 
     void shutdown();
 }

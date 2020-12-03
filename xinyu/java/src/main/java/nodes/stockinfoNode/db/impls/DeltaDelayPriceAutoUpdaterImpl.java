@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import common.time.TimeClient;
 import common.time.TimeInterval;
 import nodes.stockinfoNode.constants.StockConstant;
+import nodes.stockinfoNode.constants.UsStock;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.db.StockInfoDBService;
@@ -35,7 +36,7 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
     private final AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler;
 
     @Inject
-    private DeltaDelayPriceAutoUpdaterImpl(StockInfoDBService stockInfoDBService, AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler) {
+    private DeltaDelayPriceAutoUpdaterImpl(@UsStock StockInfoDBService stockInfoDBService, AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler) {
         this.stockInfoDBService = stockInfoDBService;
         this.priceInfoCrawler = priceInfoCrawler;
     }
@@ -81,9 +82,8 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
         // query for that company's record with  timestamp: current timestamp > timestamp > pivot timestamp (some dirty record may have wrong timestamp and this can help filter some error)
         Bson timeFilter = getTimeFilterForStockDailyRecord(TimeInterval.getUpToNowInterval(pivotTimestamp));
         Bson primaryKeyFilter = Converter.toPrimaryFilter(company);
-        List<StockDailyRecordPOJO> recentRecord = stockInfoDBService.queryPrice(and(timeFilter, primaryKeyFilter));
         // if exist --> false
-        return recentRecord.isEmpty();
+        return stockInfoDBService.queryPrice(and(timeFilter, primaryKeyFilter)).isEmpty();
     }
 
     @Override
@@ -92,13 +92,13 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
 
         // query for all company record with timestamp: has current timestamp > timestamp > pivot timestamp
         Bson timeFilter = getTimeFilterForStockDailyRecord(TimeInterval.getUpToNowInterval(pivotTimestamp));
-        List<StockDailyRecordPOJO> recentRecord = stockInfoDBService.queryPrice(timeFilter);
+        List<StockDailyRecordPOJO> recentRecord = (List<StockDailyRecordPOJO>) stockInfoDBService.queryPrice(timeFilter);
 
         // create a set of them, set based on primary key (Symbol) only
         Set<String> upToDateCompanySymbols = new HashSet<>(recentRecord.size());
         recentRecord.forEach(record -> upToDateCompanySymbols.add(record.getSymbol()));
 
-        List<StockCompanyPOJO> outOfDateCompanies = stockInfoDBService.queryCompany(nin("symbol", upToDateCompanySymbols));
+        List<StockCompanyPOJO> outOfDateCompanies = (List<StockCompanyPOJO>) stockInfoDBService.queryCompany(nin("symbol", upToDateCompanySymbols));
 
         return outOfDateCompanies;
     }

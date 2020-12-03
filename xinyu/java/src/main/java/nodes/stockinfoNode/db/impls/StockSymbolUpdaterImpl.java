@@ -2,6 +2,7 @@ package nodes.stockinfoNode.db.impls;
 
 import com.google.inject.Inject;
 import nodes.stockinfoNode.constants.StockConstant;
+import nodes.stockinfoNode.constants.UsStock;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.StockSymbolCrawler;
 import nodes.stockinfoNode.db.StockInfoDBService;
@@ -29,7 +30,7 @@ public class StockSymbolUpdaterImpl implements StockSymbolUpdater {
     private Set<String> symbolAlreadyHave;
 
     @Inject
-    public StockSymbolUpdaterImpl(AlphavantageCrawler<StockCompanyPOJO> companyInfoCrawler, StockSymbolCrawler stockSymbolCrawler, StockInfoDBService dbService) {
+    public StockSymbolUpdaterImpl(AlphavantageCrawler<StockCompanyPOJO> companyInfoCrawler, StockSymbolCrawler stockSymbolCrawler, @UsStock StockInfoDBService dbService) {
         this.companyInfoCrawler = companyInfoCrawler;
         this.stockSymbolCrawler = stockSymbolCrawler;
         this.dbService = dbService;

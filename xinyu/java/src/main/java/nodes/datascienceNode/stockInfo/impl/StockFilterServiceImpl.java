@@ -81,7 +81,7 @@ public class StockFilterServiceImpl implements StockFilterService {
 
     public static void main(String[] args) {
         StockFilterService stockFilterService = NodeModule.getGlobalInjector().getInstance(StockFilterService.class);
-        List<String> symbols = stockFilterService.filterGoldenCrossStock(3, 3);
+        List<String> symbols = stockFilterService.filterGoldenCrossStock(3, 2);
         System.out.println(symbols);
     }
 }

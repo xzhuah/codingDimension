@@ -59,9 +59,11 @@ public class ChineseAreaInfoServiceImpl implements ChineseAreaInfoService {
 
     public static void main(String[] args) {
         ChineseAreaInfoService chineseAreaInfoService = NodeModule.getGlobalInjector().getInstance(ChineseAreaInfoService.class);
-        List<ChineseLevel5AreaInfoPOJO> result = chineseAreaInfoService.queryCityWithinRadius(112.687998, 22.367829, 2000);
+        List<ChineseLevel5AreaInfoPOJO> result = chineseAreaInfoService.queryCityWithinRadius(121.642931, 38.913463, 20000, true);
         for (ChineseLevel5AreaInfoPOJO chineseLevel5AreaInfoPOJO : result) {
-            System.out.println(chineseLevel5AreaInfoPOJO);
+            if (chineseLevel5AreaInfoPOJO.getLevel() <= 2) {
+                System.out.println(chineseLevel5AreaInfoPOJO);
+            }
         }
     }
 }
