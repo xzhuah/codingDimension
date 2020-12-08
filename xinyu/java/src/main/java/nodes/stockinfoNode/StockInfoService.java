@@ -1,6 +1,7 @@
 package nodes.stockinfoNode;
 
 import common.time.TimeInterval;
+import nodes.NodeModelProvider;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
@@ -29,7 +30,7 @@ public interface StockInfoService {
 
     List<StockCompanyPOJO> sortCompanyByEmployee(Collection<String> symbols);
 
-    List<StockCompanyPOJO> sortCompanyByMarket();
+    NodeModelProvider sortCompanyByMarket();
 
     List<StockCompanyPOJO> sortCompanyByEmployee();
 

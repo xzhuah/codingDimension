@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import com.mongodb.Block;
 import com.mongodb.client.model.Sorts;
 import common.time.TimeInterval;
+import nodes.NodeModelProvider;
+import nodes.stockinfoNode.StockInfoModelProvider;
 import nodes.stockinfoNode.StockInfoService;
 import nodes.stockinfoNode.constants.UsStock;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
@@ -76,8 +78,11 @@ public class StockInfoServiceImpl implements StockInfoService {
 
 
     @Override
-    public List<StockCompanyPOJO> sortCompanyByMarket() {
-        return queryCompanies(null, Sorts.descending("market"));
+    public NodeModelProvider sortCompanyByMarket() {
+        List<StockCompanyPOJO> result = queryCompanies(null, Sorts.descending("market"));
+        NodeModelProvider provider = new NodeModelProvider();
+        provider.setAllModel(result, StockCompanyPOJO.class);
+        return provider;
     }
 
     @Override

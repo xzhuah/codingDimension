@@ -1,11 +1,13 @@
 package nodes.stockinfoNode;
 
+import nodes.NodeModelProvider;
 import nodes.NodeModule;
 import nodes.stockinfoNode.models.StockCompanyPOJO;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Xinyu Zhu on 2020/11/14, 18:14
@@ -24,17 +26,13 @@ public class StockInfoServiceTest {
 
     @Test
     public void sortCompanyByMarket() {
-        List<StockCompanyPOJO> sortedCompany = stockInfoService.sortCompanyByMarket();
-        System.out.println(sortedCompany);
-        System.out.println(sortedCompany.size());
+        NodeModelProvider sortedCompany = stockInfoService.sortCompanyByMarket();
+        Optional<List<StockCompanyPOJO>> result = sortedCompany.getAllModel(StockCompanyPOJO.class);
+        assert result.isPresent();
+        System.out.println(result.get());
+        System.out.println(result.get().size());
     }
-
-    @Test
-    public void sortCompanyByEmployee() {
-        List<StockCompanyPOJO> sortedCompany = stockInfoService.sortCompanyByEmployee();
-        System.out.println(sortedCompany);
-        System.out.println(sortedCompany.size());
-    }
+    
 
     @Test
     public void getAllSymbols() {
