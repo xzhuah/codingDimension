@@ -19,7 +19,7 @@ public class StockInfoServiceTest {
 
     @Test
     public void getSortedPriceForSymbol() {
-        List<StockDailyRecordPOJO> sortedPrice = stockInfoService.getSortedPriceForSymbol("IBM");
+        List<StockDailyRecordPOJO> sortedPrice = stockInfoService.getSortedPriceForSymbol("IBM").getAllModel(StockDailyRecordPOJO.class).get();
         System.out.println(sortedPrice);
         System.out.println(sortedPrice.size());
     }

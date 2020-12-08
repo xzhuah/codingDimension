@@ -18,21 +18,21 @@ import java.util.List;
  */
 public interface StockInfoService {
 
-    List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol, TimeInterval timeInterval);
+    StockInfoModelProvider getSortedPriceForSymbol(String symbol, TimeInterval timeInterval);
 
-    default List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol) {
+    default StockInfoModelProvider getSortedPriceForSymbol(String symbol) {
         return getSortedPriceForSymbol(symbol, TimeInterval.getUpToNowInterval());
     }
 
     List<String> filterSymbols(Collection<String> symbols);
 
-    List<StockCompanyPOJO> sortCompanyByMarket(Collection<String> symbols);
+    StockInfoModelProvider sortCompanyByMarket(Collection<String> symbols);
 
-    List<StockCompanyPOJO> sortCompanyByEmployee(Collection<String> symbols);
+    StockInfoModelProvider sortCompanyByEmployee(Collection<String> symbols);
 
     NodeModelProvider sortCompanyByMarket();
 
-    List<StockCompanyPOJO> sortCompanyByEmployee();
+    StockInfoModelProvider sortCompanyByEmployee();
 
     List<String> getAllSymbols();
 

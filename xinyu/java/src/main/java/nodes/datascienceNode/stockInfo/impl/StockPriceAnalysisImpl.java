@@ -67,7 +67,7 @@ public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<Li
         companySymbol = this.stockInfoService.filterSymbols(companySymbol);
         List<List<StockDailyRecordPOJO>> dailyPriceData = new ArrayList<>();
         for (String company : companySymbol) {
-            dailyPriceData.add(stockInfoService.getSortedPriceForSymbol(company, timeInterval));
+            dailyPriceData.add(stockInfoService.getSortedPriceForSymbol(company, timeInterval).getAllModel(StockDailyRecordPOJO.class).get());
         }
         if (sortByPrimaryFeature) {
             // sort by feature value

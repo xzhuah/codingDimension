@@ -3,6 +3,7 @@ package nodes.stockinfoNode.impls;
 import com.google.inject.Inject;
 import com.mongodb.Block;
 import com.mongodb.client.model.Sorts;
+import common.framework.BaseModelProvider;
 import common.time.TimeInterval;
 import nodes.NodeModelProvider;
 import nodes.stockinfoNode.StockInfoModelProvider;
@@ -45,11 +46,13 @@ public class StockInfoServiceImpl implements StockInfoService {
     }
 
     @Override
-    public List<StockDailyRecordPOJO> getSortedPriceForSymbol(String symbol, TimeInterval timeInterval) {
+    public StockInfoModelProvider getSortedPriceForSymbol(String symbol, TimeInterval timeInterval) {
         ensureUpdated(symbol);
-        return queryPrice(and(eq("symbol", symbol),
+        return BaseModelProvider.toModelProvider(queryPrice(and(eq("symbol", symbol),
                 gte("time", timeInterval.getStartTimeInMillis()),
-                lt("time", timeInterval.getEndTimeInMillis())), Sorts.ascending("time"));
+                lt("time", timeInterval.getEndTimeInMillis())), Sorts.ascending("time")),
+                StockDailyRecordPOJO.class, StockInfoModelProvider.class);
+
     }
 
     @Override
@@ -65,15 +68,17 @@ public class StockInfoServiceImpl implements StockInfoService {
     }
 
     @Override
-    public List<StockCompanyPOJO> sortCompanyByMarket(Collection<String> symbols) {
+    public StockInfoModelProvider sortCompanyByMarket(Collection<String> symbols) {
         ensureUpdated(symbols);
-        return queryCompanies(in("symbol", symbols), Sorts.descending("market"));
+        return BaseModelProvider.toModelProvider(queryCompanies(in("symbol", symbols), Sorts.descending("market")),
+                StockCompanyPOJO.class, StockInfoModelProvider.class);
     }
 
     @Override
-    public List<StockCompanyPOJO> sortCompanyByEmployee(Collection<String> symbols) {
+    public StockInfoModelProvider sortCompanyByEmployee(Collection<String> symbols) {
         ensureUpdated(symbols);
-        return queryCompanies(in("symbol", symbols), Sorts.descending("employee"));
+        return BaseModelProvider.toModelProvider(queryCompanies(in("symbol", symbols), Sorts.descending("employee")),
+                StockCompanyPOJO.class, StockInfoModelProvider.class);
     }
 
 
@@ -86,8 +91,9 @@ public class StockInfoServiceImpl implements StockInfoService {
     }
 
     @Override
-    public List<StockCompanyPOJO> sortCompanyByEmployee() {
-        return queryCompanies(null, Sorts.descending("employee"));
+    public StockInfoModelProvider sortCompanyByEmployee() {
+        return BaseModelProvider.toModelProvider(queryCompanies(null, Sorts.descending("employee")),
+                StockCompanyPOJO.class, StockInfoModelProvider.class);
     }
 
     @Override

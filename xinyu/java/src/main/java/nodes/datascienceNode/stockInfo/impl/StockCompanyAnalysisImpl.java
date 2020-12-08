@@ -62,7 +62,7 @@ public class StockCompanyAnalysisImpl implements StockFeatureAnalysis<StockCompa
     public void printReportForTarget(List<String> companies, boolean sortByPrimaryFeature) {
         companies = this.stockInfoService.filterSymbols(companies);
         // Convert to real data
-        List<StockCompanyPOJO> companyPOJOS = stockInfoService.sortCompanyByMarket(companies);
+        List<StockCompanyPOJO> companyPOJOS = stockInfoService.sortCompanyByMarket(companies).getAllModel(StockCompanyPOJO.class).get();
 
         if (sortByPrimaryFeature) {
             // sort by feature value

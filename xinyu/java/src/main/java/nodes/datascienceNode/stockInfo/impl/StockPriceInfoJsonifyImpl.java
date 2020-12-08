@@ -43,7 +43,7 @@ public class StockPriceInfoJsonifyImpl implements StockPriceInfoJsonify {
         List<String> allSymbols = stockInfoService.getAllSymbols();
         JsonArray result = new JsonArray();
         for (String symbol : allSymbols) {
-            List<StockDailyRecordPOJO> sortedPrice = stockInfoService.getSortedPriceForSymbol(symbol, TimeInterval.getUpToNowIntervalWithDuration((long) n * 24L * 3600L * 1000L));
+            List<StockDailyRecordPOJO> sortedPrice = stockInfoService.getSortedPriceForSymbol(symbol, TimeInterval.getUpToNowIntervalWithDuration((long) n * 24L * 3600L * 1000L)).getAllModel(StockDailyRecordPOJO.class).get();
             JsonArray jsonArray = stockPriceFeatureSet.extractForInstance(sortedPrice);
             result.add(jsonArray);
         }

@@ -40,7 +40,7 @@ public class StockFilterServiceImpl implements StockFilterService {
 
         long duration = (Math.max(n, m) + 11L) * 2L * 24L * 3600L * 1000L;
         for (String symbol : allSymbols) {
-            List<StockDailyRecordPOJO> sortedPrice = stockInfoService.getSortedPriceForSymbol(symbol, TimeInterval.getUpToNowIntervalWithDuration(duration));
+            List<StockDailyRecordPOJO> sortedPrice = stockInfoService.getSortedPriceForSymbol(symbol, TimeInterval.getUpToNowIntervalWithDuration(duration)).getAllModel(StockDailyRecordPOJO.class).get();
             int daysOver = daysOverFeature.extractForInstance(sortedPrice);
             if (daysOver < n) {
                 continue;

@@ -72,4 +72,28 @@ public class BaseModelProvider {
         memory.get(clazz).addAll(models);
     }
 
+
+    public static <T, U extends BaseModelProvider> U toModelProvider(T model, Class<T> clazz, Class<U> provideClazz) {
+        try {
+            U result = provideClazz.getDeclaredConstructor().newInstance();
+            result.setModel(model, clazz);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static <T, U extends BaseModelProvider> U toModelProvider(List<T> models, Class<T> clazz, Class<U> provideClazz) {
+        try {
+            U result = provideClazz.getDeclaredConstructor().newInstance();
+            result.setAllModel(models, clazz);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 }
