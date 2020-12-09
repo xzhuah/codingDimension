@@ -1,5 +1,6 @@
 package nodes.stockinfoNode.models;
 
+import common.io.database.mongodb.BaseMongoPOJO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,52 +11,26 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class ChineseStockDailyRecordPOJO extends StockDailyRecordPOJO {
+public class ChineseStockDailyRecordPOJO extends BaseMongoPOJO {
 
     // These two are primary key
-    private String tsCode;
+    private String ts_code;
+    private long time;
 
     // 成交额 （千元）
     @EqualsAndHashCode.Exclude
     private double amount;
 
-    @Override
-    public void setSplitCoefficient(double splitCoefficient) {
-        throw new RuntimeException("Field Not Support in ChineseStockDailyRecordPOJO");
-    }
+    // These are other data
+    @EqualsAndHashCode.Exclude
+    private double open;
+    @EqualsAndHashCode.Exclude
+    private double high;
+    @EqualsAndHashCode.Exclude
+    private double low;
+    @EqualsAndHashCode.Exclude
+    private double close;
+    @EqualsAndHashCode.Exclude
+    private double volume;
 
-    @Override
-    public void setDividend(double dividend) {
-        throw new RuntimeException("Field Not Support in ChineseStockDailyRecordPOJO");
-    }
-
-    @Override
-    public void setAdjustedClose(double adjustedClose) {
-        throw new RuntimeException("Field Not Support in ChineseStockDailyRecordPOJO");
-    }
-
-    @Override
-    public double getSplitCoefficient() {
-        throw new RuntimeException("Field Not Support in ChineseStockDailyRecordPOJO");
-    }
-
-    @Override
-    public double getDividend() {
-        throw new RuntimeException("Field Not Support in ChineseStockDailyRecordPOJO");
-    }
-
-    @Override
-    public double getAdjustedClose() {
-        throw new RuntimeException("Field Not Support in ChineseStockDailyRecordPOJO");
-    }
-
-    @Override
-    public String getSymbol() {
-        return tsCode;
-    }
-
-    @Override
-    public void setSymbol(String symbol) {
-        this.tsCode = symbol;
-    }
 }

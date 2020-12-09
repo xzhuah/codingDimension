@@ -1,6 +1,8 @@
 package nodes.stockinfoNode.models;
 
+import common.io.database.mongodb.BaseMongoPOJO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -9,44 +11,16 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class ChineseStockCompanyPOJO extends StockCompanyPOJO{
-    @Override
-    public int getEmployee() {
-        throw new RuntimeException("Field Not Support in ChineseStockCompanyPOJO");
-    }
+public class ChineseStockCompanyPOJO extends BaseMongoPOJO {
+    // primary key
+    private String ts_code;
 
-    @Override
-    public long getMarket() {
-        throw new RuntimeException("Field Not Support in ChineseStockCompanyPOJO");
-    }
-
-    @Override
-    public String getExchange() {
-        throw new RuntimeException("Field Not Support in ChineseStockCompanyPOJO");
-    }
-
-    @Override
-    public String getSector() {
-        throw new RuntimeException("Field Not Support in ChineseStockCompanyPOJO");
-    }
-
-    @Override
-    public void setMarket(long market) {
-        throw new RuntimeException("Field Not Support in ChineseStockCompanyPOJO");
-    }
-
-    @Override
-    public void setEmployee(int employee) {
-        throw new RuntimeException("Field Not Support in ChineseStockCompanyPOJO");
-    }
-
-    @Override
-    public void setExchange(String exchange) {
-        throw new RuntimeException("Field Not Support in ChineseStockCompanyPOJO");
-    }
-
-    @Override
-    public void setSector(String sector) {
-        throw new RuntimeException("Field Not Support in ChineseStockCompanyPOJO");
-    }
+    @EqualsAndHashCode.Exclude
+    private String symbol;
+    @EqualsAndHashCode.Exclude
+    private String name;
+    @EqualsAndHashCode.Exclude
+    private String area;
+    @EqualsAndHashCode.Exclude
+    private String industry;
 }

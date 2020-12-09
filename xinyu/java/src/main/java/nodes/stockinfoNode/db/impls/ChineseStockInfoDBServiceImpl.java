@@ -5,23 +5,24 @@ import com.google.inject.Singleton;
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
 import common.io.database.mongodb.MongoDBPojoClient;
+import nodes.NodeModule;
 import nodes.stockinfoNode.constants.StockConstant;
-import nodes.stockinfoNode.db.StockInfoDBService;
+import nodes.stockinfoNode.db.ChineseStockInfoDBService;
 import nodes.stockinfoNode.models.ChineseStockCompanyPOJO;
 import nodes.stockinfoNode.models.ChineseStockDailyRecordPOJO;
-import nodes.stockinfoNode.models.StockCompanyPOJO;
-import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mongodb.client.model.Filters.eq;
 
 /**
  * Created by Xinyu Zhu on 2020/12/2, 23:42
  * nodes.stockinfoNode.db.impls in codingDimensionTemplate
  */
 @Singleton
-public class ChineseStockInfoDBServiceImpl implements StockInfoDBService {
+public class ChineseStockInfoDBServiceImpl implements ChineseStockInfoDBService {
 
     private final MongoDBPojoClient mongoDBClient;
 
@@ -55,16 +56,6 @@ public class ChineseStockInfoDBServiceImpl implements StockInfoDBService {
     }
 
     @Override
-    public void insertCompany(List<StockCompanyPOJO> companies) {
-        throw new RuntimeException("Do not support insert operation for ChineseStockInfoDBServiceImpl, please use the python module to do that");
-    }
-
-    @Override
-    public void insertPrice(List<StockDailyRecordPOJO> prices) {
-        throw new RuntimeException("Do not support insert operation for ChineseStockInfoDBServiceImpl, please use the python module to do that");
-    }
-
-    @Override
     public MongoCollection<ChineseStockCompanyPOJO> getCompanyInfoCollection() {
         return this.mongoDBClient.getCollection(StockConstant.DEFAULT_DATABASE,
                 StockConstant.CHINESE_SYMBOL_COLLECTION, ChineseStockCompanyPOJO.class);
@@ -79,5 +70,12 @@ public class ChineseStockInfoDBServiceImpl implements StockInfoDBService {
     @Override
     public void shutdown() {
         this.mongoDBClient.close();
+    }
+
+    public static void main(String[] args) {
+        ChineseStockInfoDBService chineseStockInfoDBService =  NodeModule.getGlobalInjector().getInstance(ChineseStockInfoDBService.class);
+        List<ChineseStockDailyRecordPOJO> result = chineseStockInfoDBService.queryPrice(eq("ts_code", "000001.SZ"));
+        System.out.println(result.size());
+        System.out.println(result.get(0));
     }
 }

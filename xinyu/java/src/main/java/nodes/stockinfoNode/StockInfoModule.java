@@ -7,8 +7,6 @@ import common.io.web.facade.ResponseProcessor;
 import common.io.web.impl.processors.ResponseToJsonArrayProcessorImpl;
 import nodes.crawlerNode.AutoCoolDownCrawler;
 import nodes.crawlerNode.BaseCrawler;
-import nodes.stockinfoNode.constants.CnStock;
-import nodes.stockinfoNode.constants.UsStock;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.crawler.StockSymbolCrawler;
 import nodes.stockinfoNode.crawler.facade.impl.CompanyInfoProcessor;
@@ -16,6 +14,7 @@ import nodes.stockinfoNode.crawler.facade.impl.DailyPriceProcessor;
 import nodes.stockinfoNode.crawler.impls.AlphavantageCrawlerImpl;
 import nodes.stockinfoNode.crawler.impls.AlphavantageSymbolCrawlerImpl;
 import nodes.stockinfoNode.crawler.impls.StockSymbolCrawlerImpl;
+import nodes.stockinfoNode.db.ChineseStockInfoDBService;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.db.StockSymbolUpdater;
@@ -61,8 +60,8 @@ public class StockInfoModule extends AbstractModule {
         }).to(AlphavantageCrawlerImpl.class);
         bind(StockSymbolCrawler.class).to(StockSymbolCrawlerImpl.class);
 
-        bind(StockInfoDBService.class).annotatedWith(UsStock.class).to(StockInfoDBServiceImpl.class);
-        bind(StockInfoDBService.class).annotatedWith(CnStock.class).to(ChineseStockInfoDBServiceImpl.class);
+        bind(StockInfoDBService.class).to(StockInfoDBServiceImpl.class);
+        bind(ChineseStockInfoDBService.class).to(ChineseStockInfoDBServiceImpl.class);
 
         bind(PriceAutoUpdater.class).to(DeltaDelayPriceAutoUpdaterImpl.class);
         bind(StockSymbolUpdater.class).to(StockSymbolUpdaterImpl.class);
