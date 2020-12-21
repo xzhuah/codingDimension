@@ -147,29 +147,34 @@ class Player:
                 self.output.note_on(node, velocity)
             time.sleep(time_interval)
 
-    def play_music(self, attr, music):
-        self.set_attr(attr)
+    def play_music(self, music):
         for section in music:
-            if len(section) > 0:
+            if "=" in section:
+                self.set_attr(section)
+            elif len(section) > 0:
                 self.play_section(self.section_digitialize(section))
 
     def set_attr(self, attr: str):
         attrs = attr.split(",")
-        key = attrs[0].replace("1=", "")
-        self.base_freq = 60 + self.key_offset[key]
-        self.pt = 60 / int(attrs[2].replace("pm=", ""))
+        for attr_unit in attrs:
+            self.set_attr_unit(attr_unit)
 
-        if "offset=" in attr:
-            self.base_freq += int(attrs[3].replace("offset=", "")) * 12
-
-        if "ins=" in attr:
-            self.instrument = int(attrs[4].replace("ins=", ""))
+    def set_attr_unit(self, attr_unit: str):
+        if "1=" in attr_unit:
+            key = attr_unit.replace("1=", "")
+            self.base_freq = 60 + self.key_offset[key]
+        elif "pm=" in attr_unit:
+            self.pt = 60 / int(attr_unit.replace("pm=", ""))
+        elif "offset=" in attr_unit:
+            self.base_freq += int(attr_unit.replace("offset=", "")) * 12
+        elif "ins=" in attr_unit:
+            self.instrument = int(attr_unit.replace("ins=", ""))
             self.output.set_instrument(self.instrument)
 
     def read_and_play_music(self, filename):
         content = read_file(filename)
         content = content.split("\n")
-        self.play_music(content[0], content[1:])
+        self.play_music(content)
 
     def close(self):
         self.output.close()
@@ -178,6 +183,6 @@ class Player:
 if __name__ == '__main__':
     player = Player()
 
-    player.read_and_play_music(project_root + "resources/railgun.ply")
+    player.read_and_play_music(project_root + "resources/myHeartWillGoOn.ply")
 
     player.close()
