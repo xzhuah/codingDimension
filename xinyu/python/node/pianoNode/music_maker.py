@@ -178,6 +178,6 @@ class Player:
 if __name__ == '__main__':
     player = Player()
 
-    player.read_and_play_music(project_root + "resources/myHeartWillGoOn.ply")
+    player.read_and_play_music(project_root + "resources/railgun.ply")
 
     player.close()
