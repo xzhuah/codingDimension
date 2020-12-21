@@ -74,6 +74,21 @@ public class Converter {
         return and(latFilter, lngFilter);
     }
 
+    public static Bson toOutSizeAreaFilter(Position north, Position east, Position south, Position west) {
+        // 考虑0度经线引起的错误
+        Bson latFilter = and(lt("lat", south.getLat()), gt("lat", north.getLat()));
+
+        Bson lngFilter;
+        if (east.getLng() < west.getLng()) {
+            // 跨过了0度经线
+            lngFilter = and(lt("lng", west.getLng()), gt("lng", 180),
+                    lt("lng", -180), gt("lng", east.getLng()));
+        } else {
+            lngFilter = and(lt("lng", west.getLng()), gt("lng", east.getLng()));
+        }
+        return and(latFilter, lngFilter);
+    }
+
     public static void main(String[] args) throws IOException {
 
 

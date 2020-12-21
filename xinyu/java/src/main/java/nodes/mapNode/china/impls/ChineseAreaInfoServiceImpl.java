@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.not;
+
 /**
  * Created by Xinyu Zhu on 2020/11/29, 22:04
  * nodes.mapNode.china.impls in codingDimensionTemplate
@@ -29,26 +32,36 @@ public class ChineseAreaInfoServiceImpl implements ChineseAreaInfoService {
 
     // 查找到给定坐标距离半径小于等于radius(单位米)的所有区域
     public List<ChineseLevel5AreaInfoPOJO> queryCityWithinRadius(double centerLng, double centerLat, double radius, boolean sort) {
-        // 构造一个方格, 选取方格内所有区域 (优化数据库查询操作)
+        // 构造一个外接方格, 选取方格内所有区域 (优化数据库查询操作)
         // 遍历这些城市, 过滤距离小于等于半径的地区
         Position center = new Position(centerLng, centerLat);
 
-
+        // 外接方格
         Position northPoint = BasicGeoTools.moveToNorth(center, radius);
         Position eastPoint = BasicGeoTools.moveToEast(center, radius);
         Position southPoint = BasicGeoTools.moveToSouth(center, radius);
         Position westPoint = BasicGeoTools.moveToWest(center, radius);
 
-        Bson filter = Converter.toAreaFilter(northPoint, eastPoint, southPoint, westPoint);
-        System.out.println(filter);
-        List<ChineseLevel5AreaInfoPOJO> resultInBlock = chineseLevel5AreaInfoDBService.query(filter);
+        // 内接方格
+        Position inNorthPoint = BasicGeoTools.moveToNorth(center, radius / Math.pow(2, 0.5));
+        Position inEastPoint = BasicGeoTools.moveToEast(center, radius / Math.pow(2, 0.5));
+        Position inSouthPoint = BasicGeoTools.moveToSouth(center, radius / Math.pow(2, 0.5));
+        Position inWestPoint = BasicGeoTools.moveToWest(center, radius / Math.pow(2, 0.5));
 
-        List<ChineseLevel5AreaInfoPOJO> result = new ArrayList<>((int) (resultInBlock.size() * 3.14 / 4));
-        for (ChineseLevel5AreaInfoPOJO chineseLevel5AreaInfoPOJO : resultInBlock) {
+        Bson filter = Converter.toAreaFilter(northPoint, eastPoint, southPoint, westPoint);
+
+        Bson inFilter = Converter.toAreaFilter(inNorthPoint, inEastPoint, inSouthPoint, inWestPoint);
+        Bson revertInFilter = Converter.toOutSizeAreaFilter(inNorthPoint, inEastPoint, inSouthPoint, inWestPoint);
+
+        List<ChineseLevel5AreaInfoPOJO> resultInInnerBlock = chineseLevel5AreaInfoDBService.query(inFilter);
+        List<ChineseLevel5AreaInfoPOJO> resultBetweenInnerAndOuterBlock = chineseLevel5AreaInfoDBService.query(and(revertInFilter, filter));
+        List<ChineseLevel5AreaInfoPOJO> result = new ArrayList<>((int) (resultBetweenInnerAndOuterBlock.size() * (Math.PI - 2) / 2));
+        for (ChineseLevel5AreaInfoPOJO chineseLevel5AreaInfoPOJO : resultBetweenInnerAndOuterBlock) {
             if (BasicGeoTools.getDistance(chineseLevel5AreaInfoPOJO.getLng(), chineseLevel5AreaInfoPOJO.getLat(), centerLng, centerLat) <= radius) {
                 result.add(chineseLevel5AreaInfoPOJO);
             }
         }
+        result.addAll(resultInInnerBlock);
 
         if (sort) {
             result.sort(Comparator.comparingDouble(area -> BasicGeoTools.getDistance(centerLng, centerLat, area.getLng(), area.getLat())));

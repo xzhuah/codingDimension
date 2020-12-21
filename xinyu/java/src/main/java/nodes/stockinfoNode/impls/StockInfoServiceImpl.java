@@ -8,7 +8,6 @@ import common.time.TimeInterval;
 import nodes.NodeModelProvider;
 import nodes.stockinfoNode.StockInfoModelProvider;
 import nodes.stockinfoNode.StockInfoService;
-import nodes.stockinfoNode.constants.UsStock;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.db.StockInfoDBService;
 import nodes.stockinfoNode.db.StockSymbolUpdater;
@@ -35,7 +34,7 @@ public class StockInfoServiceImpl implements StockInfoService {
     private boolean autoUpdate;
 
     @Inject
-    private StockInfoServiceImpl(PriceAutoUpdater priceAutoUpdater, StockSymbolUpdater symbolUpdater, @UsStock StockInfoDBService stockInfoDBService) {
+    private StockInfoServiceImpl(PriceAutoUpdater priceAutoUpdater, StockSymbolUpdater symbolUpdater, StockInfoDBService stockInfoDBService) {
         this.priceAutoUpdater = priceAutoUpdater;
         this.symbolUpdater = symbolUpdater;
         this.stockInfoDBService = stockInfoDBService;

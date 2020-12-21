@@ -236,7 +236,7 @@ class Piano:
         code = self._key_to_code(offset_key)
         return code
 
-    def play_node(self, node, velocity):
+    def play_node(self, node, velocity=127):
         self.output.note_on(node, velocity)
 
     def stop_node(self, node):

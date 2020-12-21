@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import common.time.TimeClient;
 import common.time.TimeInterval;
 import nodes.stockinfoNode.constants.StockConstant;
-import nodes.stockinfoNode.constants.UsStock;
 import nodes.stockinfoNode.crawler.AlphavantageCrawler;
 import nodes.stockinfoNode.db.PriceAutoUpdater;
 import nodes.stockinfoNode.db.StockInfoDBService;
@@ -36,7 +35,7 @@ public class DeltaDelayPriceAutoUpdaterImpl implements PriceAutoUpdater {
     private final AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler;
 
     @Inject
-    private DeltaDelayPriceAutoUpdaterImpl(@UsStock StockInfoDBService stockInfoDBService, AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler) {
+    private DeltaDelayPriceAutoUpdaterImpl(StockInfoDBService stockInfoDBService, AlphavantageCrawler<List<StockDailyRecordPOJO>> priceInfoCrawler) {
         this.stockInfoDBService = stockInfoDBService;
         this.priceInfoCrawler = priceInfoCrawler;
     }
