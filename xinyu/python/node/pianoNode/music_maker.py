@@ -44,7 +44,14 @@ class Player:
         }
 
         # 每拍时间长度(s)
-        self.pt = 1.0
+        self.pt = 0.66
+
+        # 4/4 拍, 主要影响每拍的强弱
+        self.beat = "4/4"
+        # 一般音乐本身有设计好拍子的感觉, 不需要刻意调强弱, 响度设置成一样的感觉比较好
+        self.strong_beat = 127
+        self.less_strong_beat = 127
+        self.weak_beat = 127
 
         # 乐器种类: 普通钢琴
         self.instrument = 0
@@ -53,6 +60,9 @@ class Player:
         pygame.midi.init()
         self.output = pygame.midi.Output(pygame.midi.get_default_output_id())
         self.output.set_instrument(self.instrument)
+
+        self.auto_close_instrument = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 47, 112, 113, 114, 115, 116,
+                                      117, 118, 119, 127, 45}
 
     def single_note_to_num(self, single_note: str):
         '''
@@ -105,7 +115,7 @@ class Player:
             "4.._1. 6.._1. 4.._1. 6.._1." is another segment
         '''
         result = []
-        for connected_note in segment.split(" "):
+        for connected_note in segment.split():
             result.append(self.connected_note_to_num_list(connected_note))
         return result
 
@@ -126,6 +136,19 @@ class Player:
             result.append(self.segment_digitialize(segment))
         return result
 
+    def get_velocity(self, node_index):
+
+        if self.beat == "4/4":
+            if node_index == 0:
+                return self.strong_beat
+            elif node_index == 1:
+                return self.weak_beat
+            elif node_index == 2:
+                return self.less_strong_beat
+            elif node_index == 3:
+                return self.weak_beat
+        return self.strong_beat
+
     def play_section(self, section: list):
         '''
         Play a digitialized section,
@@ -135,16 +158,24 @@ class Player:
         for i in range(channel_length):
             threads = []
             for segment in section:
-                threads.append(threading.Thread(target=self.play_connected_node, args=(segment[i], 127)))
+                threads.append(threading.Thread(target=self.play_connected_node, args=(segment[i], self.get_velocity(node_index=i))))
 
             [thr.start() for thr in threads]
             [thr.join() for thr in threads]
+
+    def auto_play_and_close(self, note, velocity=127, duration=2):
+        self.output.note_on(note, velocity)
+        time.sleep(duration)
+        self.output.note_off(note, velocity)
 
     def play_connected_node(self, connected_node: list, velocity=127):
         time_interval = self.pt / len(connected_node)
         for node in connected_node:
             if node != -1:
-                self.output.note_on(node, velocity)
+                if self.instrument not in self.auto_close_instrument:
+                    threading.Thread(target=self.auto_play_and_close, args=(node, velocity, self.pt * 2)).start()
+                else:
+                    self.output.note_on(node, velocity)
             time.sleep(time_interval)
 
     def play_music(self, music):
@@ -163,6 +194,8 @@ class Player:
         if "1=" in attr_unit:
             key = attr_unit.replace("1=", "")
             self.base_freq = 60 + self.key_offset[key]
+        elif "p=" in attr_unit:
+            self.beat = attr_unit.replace("p=", "")
         elif "pm=" in attr_unit:
             self.pt = 60 / int(attr_unit.replace("pm=", ""))
         elif "offset=" in attr_unit:
@@ -183,6 +216,6 @@ class Player:
 if __name__ == '__main__':
     player = Player()
 
-    player.read_and_play_music(project_root + "resources/myHeartWillGoOn.ply")
+    player.read_and_play_music(project_root + "resources/sisterNoise.ply")
 
     player.close()
