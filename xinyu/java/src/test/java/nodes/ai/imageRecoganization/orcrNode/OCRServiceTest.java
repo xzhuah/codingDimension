@@ -15,8 +15,8 @@ public class OCRServiceTest {
 
     @Test
     public void extractTextFromImage() {
-        String result = orcService.extractTextFromImage("resource/tessdata/orcTest.jpg");
+        String result = orcService.extractTextFromImage("D:/1.png");
         System.out.println(result);
-        assertTrue(result.contains("Methiony"));
+
     }
 }

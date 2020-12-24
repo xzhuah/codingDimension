@@ -158,6 +158,8 @@ class Player:
         for i in range(channel_length):
             threads = []
             for segment in section:
+                if i >= len(segment):
+                    print("segment length error:", segment, i)
                 threads.append(threading.Thread(target=self.play_connected_node, args=(segment[i], self.get_velocity(node_index=i))))
 
             [thr.start() for thr in threads]
@@ -179,10 +181,17 @@ class Player:
             time.sleep(time_interval)
 
     def play_music(self, music):
+        play = True
         for section in music:
             if "=" in section:
                 self.set_attr(section)
-            elif len(section) > 0:
+            elif "//" in section:
+                continue
+            elif ">" in section:
+                play = True
+            elif "<" in section:
+                play = False
+            elif len(section) > 0 and play:
                 self.play_section(self.section_digitialize(section))
 
     def set_attr(self, attr: str):
@@ -216,6 +225,6 @@ class Player:
 if __name__ == '__main__':
     player = Player()
 
-    player.read_and_play_music(project_root + "resources/sisterNoise.ply")
+    player.read_and_play_music(project_root + "resources/astronomia.ply")
 
     player.close()
