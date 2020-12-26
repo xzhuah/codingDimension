@@ -65,14 +65,15 @@ class MidiPlayer:
         self.next_channel = 1
 
     def get_channel_for_instrument(self, instrument):
-        if instrument in self.ins_to_channel:
-            return self.ins_to_channel[instrument]
-        else:
-            self.ins_to_channel[instrument] = self.next_channel
-            self.next_channel += 1
-            if self.next_channel > 15:
-                self.next_channel = 1
-            return self.ins_to_channel[instrument]
+        return 0
+        # if instrument in self.ins_to_channel:
+        #     return self.ins_to_channel[instrument]
+        # else:
+        #     self.ins_to_channel[instrument] = self.next_channel
+        #     self.next_channel += 1
+        #     if self.next_channel > 15:
+        #         self.next_channel = 1
+        #     return self.ins_to_channel[instrument]
 
     def auto_play_and_close(self, note, velocity=127, duration=2, channel=0):
         self.output.note_on(note, velocity, channel)
@@ -274,5 +275,5 @@ if __name__ == '__main__':
     player = MidiPlayer()
     # player.play_section(player.parse_section(
     #     "0 0 ..2 0 | 0_.6 ..1_..3 .5 0_-_..1_.7|..1_6 .1_.3 .2 0_-_.1_.7|0_-_6.._3. 1_3._1._6.. 0_-_4.._1. 6._1._6.._4..[ins=99]"))
-    player.play_file(project_root + "resources/sisterNoise.ply")
+    player.play_file(project_root + "resources/tanzilang.ply")
     player.close()
