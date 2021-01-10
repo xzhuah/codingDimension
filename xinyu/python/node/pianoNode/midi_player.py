@@ -176,10 +176,35 @@ class MidiPlayer:
             result.append(note)
         return result
 
+    def parse_repeated_channel(self, channel, last_channel):
+        channel = channel.strip()
+        should_increase_note = 1 if channel.startswith(".") else -1
+        increase_count = channel.count(".")
+        this_channel = []
+
+        for channel_note in last_channel:
+            base_notes = channel_note["note"]
+            new_notes = []
+            for note in base_notes:
+                if note > 0:
+                    new_notes.append(note + increase_count * 12 * should_increase_note)
+                else:
+                    new_notes.append(note)
+            this_channel_node = {
+                "ins": channel_note["ins"],
+                "note": new_notes,
+                "velocity": channel_note["velocity"]
+            }
+            this_channel.append(this_channel_node)
+        return this_channel
+
     def parse_section(self, section_str: str):
         result = []
         for channel in section_str.split("|"):
-            result.append(self.parse_section_channel(channel))
+            if "*" in channel:
+                result.append(self.parse_repeated_channel(channel, result[-1]))
+            else:
+                result.append(self.parse_section_channel(channel))
         re_arranged_result = []
         for i in range(len(result[0])):
             buffer = []
