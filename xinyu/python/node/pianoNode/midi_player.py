@@ -2,6 +2,7 @@
 import pygame.midi
 import time
 import threading
+from node.pianoNode.ply_standardlizer import auto_format_for_file
 
 
 class MidiPlayer:
@@ -54,7 +55,7 @@ class MidiPlayer:
         self.auto_close_instrument = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 47, 112, 113, 114, 115, 116,
                                       117, 118, 119, 127, 45}
         self.auto_close_duration_index = 2
-        self.default_instrument = 0
+        self.default_instrument = [0]
         # 用于发声的midi模块初始化
         pygame.midi.init()
         self.output = pygame.midi.Output(pygame.midi.get_default_output_id())
@@ -63,6 +64,11 @@ class MidiPlayer:
             0: 0
         }
         self.next_channel = 1
+
+    def choose_from_default_instrument(self, channel_index):
+        index = int(channel_index * len(self.default_instrument))
+        # print(channel_index, self.default_instrument, index)
+        return self.default_instrument[index]
 
     def get_channel_for_instrument(self, instrument):
         return 0
@@ -157,7 +163,7 @@ class MidiPlayer:
             result.append(self.single_note_to_num(single_unit))
         return result
 
-    def parse_section_channel(self, channel_str: str) -> list:
+    def parse_section_channel(self, channel_str: str, channel_index: float) -> list:
         # 规定在每个channel后面可以用方括号设定该channel的属性(乐器, 响度等)
         local_attr_str = ""
 
@@ -165,7 +171,7 @@ class MidiPlayer:
             local_attr_str = channel_str[channel_str.index("[") + 1:channel_str.index("]")]
             channel_str = channel_str[0:channel_str.index("[")]
             channel_str = channel_str.strip()
-        attr = self.get_attr_from_str(local_attr_str)
+        attr = self.get_attr_from_str(local_attr_str, channel_index)
         result = []
         for note_str in channel_str.split():
             note = {
@@ -176,7 +182,7 @@ class MidiPlayer:
             result.append(note)
         return result
 
-    def parse_repeated_channel(self, channel, last_channel):
+    def parse_repeated_channel(self, channel, last_channel, channel_index: float):
         channel = channel.strip()
         should_increase_note = 1 if channel.startswith(".") else -1
         increase_count = channel.count(".")
@@ -200,11 +206,12 @@ class MidiPlayer:
 
     def parse_section(self, section_str: str):
         result = []
-        for channel in section_str.split("|"):
+        total_channel_num = section_str.count("|") + 1
+        for i, channel in enumerate(section_str.split("|")):
             if "*" in channel:
-                result.append(self.parse_repeated_channel(channel, result[-1]))
+                result.append(self.parse_repeated_channel(channel, result[-1], i / total_channel_num))
             else:
-                result.append(self.parse_section_channel(channel))
+                result.append(self.parse_section_channel(channel, i / total_channel_num))
         re_arranged_result = []
         for i in range(len(result[0])):
             buffer = []
@@ -216,13 +223,13 @@ class MidiPlayer:
             re_arranged_result.append(buffer)
         return re_arranged_result
 
-    def get_attr_from_str(self, attr=""):
+    def get_attr_from_str(self, attr="", channel_index=0):
         base_attr = {
             "1=": self.base_freq,
             "p=": self.beat,
             "pm=": self.pt,
             "offset=": self.offset,
-            "ins=": self.default_instrument,
+            "ins=": self.choose_from_default_instrument(channel_index),
             "vol=": self.default_velocity
         }
         attrs = attr.split(",")
@@ -260,7 +267,15 @@ class MidiPlayer:
         elif "offset=" in attr_unit:
             self.offset = int(attr_unit.replace("offset=", ""))
         elif "ins=" in attr_unit:
-            self.default_instrument = int(attr_unit.replace("ins=", ""))
+            ins_content = attr_unit.replace("ins=", "")
+            # support things like: ins = (1|2|3)
+            if "(" not in ins_content:
+                self.default_instrument = [int(ins_content)]
+            else:
+                ins_content = ins_content.replace("(", "").replace(")", "")
+                self.default_instrument = []
+                for ins in ins_content.split("|"):
+                    self.default_instrument.append(int(ins))
         elif "vol=" in attr_unit:
             self.default_velocity = int(attr_unit.replace("vol=", ""))
 
@@ -286,6 +301,7 @@ class MidiPlayer:
                 self.play_section(self.parse_section(line))
 
     def play_file(self, filename):
+        auto_format_for_file(filename)
         with open(filename, encoding='utf-8') as f:
             data = f.read()
             self.stream_music(data.split("\n"))
@@ -300,5 +316,21 @@ if __name__ == '__main__':
     player = MidiPlayer()
     # player.play_section(player.parse_section(
     #     "0 0 ..2 0 | 0_.6 ..1_..3 .5 0_-_..1_.7|..1_6 .1_.3 .2 0_-_.1_.7|0_-_6.._3. 1_3._1._6.. 0_-_4.._1. 6._1._6.._4..[ins=99]"))
-    player.play_file(project_root + "resources/tanzilang.ply")
+    # player.play_file(project_root + "resources/bird.ply")
+    # player.play_file(project_root + "resources/astronomia.ply")
+
+    player.play_file(project_root + "resources/level5.ply")
+    # player.play_file(project_root + "resources/faded.ply")
+    # player.play_file(project_root + "resources/myHeartWillGoOn.ply")
+    # player.play_file(project_root + "resources/qianbenying.ply")
+    # player.play_file(project_root + "resources/one_punch.ply")
+    # player.play_file(project_root + "resources/nextToYou.ply")
+    # player.play_file(project_root + "resources/tail.ply")
+    #
+    # player.play_file(project_root + "resources/sisterNoise.ply")
+    # player.play_file(project_root + "resources/tanzilang.ply")
+    # player.play_file(project_root + "resources/railgun.ply")
+    # player.play_file(project_root + "resources/sisterNoise.ply")
+    # player.play_file(project_root + "resources/west.ply")
+    # player.play_file(project_root + "resources/xiaozhiqu.ply")
     player.close()

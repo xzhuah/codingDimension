@@ -1,4 +1,5 @@
 # Created by Xinyu Zhu on 2020/12/21, 1:31
+# deprecated, please use midi_player
 
 import pygame.midi
 import time
