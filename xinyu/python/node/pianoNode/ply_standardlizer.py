@@ -136,6 +136,8 @@ def extract_medium(line: str):
 
 
 def write_to_file(refomatted, filename):
+    while len(refomatted[-1]) == 0:
+        refomatted.pop(-1)
     with open(filename, encoding='utf-8', mode="w") as f:
         for line in refomatted:
             f.write(line + "\n")
@@ -148,7 +150,7 @@ def auto_format_for_file(filename):
 from common.io.file import project_root
 
 if __name__ == '__main__':
-    filename = project_root + "resources/west.ply"
+    filename = project_root + "resources/sisterNoise.ply"
     auto_format_for_file(filename)
 
     # line = "0 6_6 3_6 3_3 |0 0 5# 7 |2.. - 3.. 5#..|2... 2. 3... 5#...|   *.|....*"
