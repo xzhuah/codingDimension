@@ -54,7 +54,8 @@ class MidiPlayer:
 
         self.auto_close_instrument = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 47, 112, 113, 114, 115, 116,
                                       117, 118, 119, 127, 45}
-        self.auto_close_duration_index = 2
+        # 对于无法自动停止的乐器, 在n个节拍后强制停止
+        self.auto_close_duration_index = 1
         self.default_instrument = [0]
         # 用于发声的midi模块初始化
         pygame.midi.init()
@@ -318,7 +319,7 @@ if __name__ == '__main__':
     #     "0 0 ..2 0 | 0_.6 ..1_..3 .5 0_-_..1_.7|..1_6 .1_.3 .2 0_-_.1_.7|0_-_6.._3. 1_3._1._6.. 0_-_4.._1. 6._1._6.._4..[ins=99]"))
     # player.play_file(project_root + "resources/ningchi.ply")
     # player.play_file(project_root + "resources/astronomia.ply")
-
+    # player.play_file(project_root + "resources/railgun_piano.ply")
     # player.play_file(project_root + "resources/level5.ply")
     # player.play_file(project_root + "resources/faded.ply")
     # player.play_file(project_root + "resources/myHeartWillGoOn.ply")
@@ -326,11 +327,12 @@ if __name__ == '__main__':
     # player.play_file(project_root + "resources/one_punch.ply")
     # player.play_file(project_root + "resources/nextToYou.ply")
     # player.play_file(project_root + "resources/tail.ply")
-    #
+    player.play_file(project_root + "resources/bird.ply")
     # player.play_file(project_root + "resources/sisterNoise.ply")
     # player.play_file(project_root + "resources/tanzilang.ply")
-    player.play_file(project_root + "resources/railgun.ply")
+    # player.play_file(project_root + "resources/railgun.ply")
+    #
     # player.play_file(project_root + "resources/sisterNoise.ply")
-    # player.play_file(project_root + "resources/west.ply")
+    # # player.play_file(project_root + "resources/west.ply")
     # player.play_file(project_root + "resources/xiaozhiqu.ply")
     player.close()
