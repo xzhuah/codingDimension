@@ -315,6 +315,7 @@ from common.io.file import project_root
 
 if __name__ == '__main__':
     player = MidiPlayer()
+    player.play_file(project_root + "resources/canon_D.ply")
     # player.play_section(player.parse_section(
     #     "0 0 ..2 0 | 0_.6 ..1_..3 .5 0_-_..1_.7|..1_6 .1_.3 .2 0_-_.1_.7|0_-_6.._3. 1_3._1._6.. 0_-_4.._1. 6._1._6.._4..[ins=99]"))
     # player.play_file(project_root + "resources/ningchi.ply")
@@ -327,12 +328,12 @@ if __name__ == '__main__':
     # player.play_file(project_root + "resources/one_punch.ply")
     # player.play_file(project_root + "resources/nextToYou.ply")
     # player.play_file(project_root + "resources/tail.ply")
-    player.play_file(project_root + "resources/bird.ply")
+    # player.play_file(project_root + "resources/bird.ply")
     # player.play_file(project_root + "resources/sisterNoise.ply")
     # player.play_file(project_root + "resources/tanzilang.ply")
     # player.play_file(project_root + "resources/railgun.ply")
-    #
+    # #
     # player.play_file(project_root + "resources/sisterNoise.ply")
-    # # player.play_file(project_root + "resources/west.ply")
-    # player.play_file(project_root + "resources/xiaozhiqu.ply")
+    # # # player.play_file(project_root + "resources/west.ply")
+    # # player.play_file(project_root + "resources/xiaozhiqu.ply")
     player.close()
