@@ -3,6 +3,7 @@ import pygame.midi
 import time
 import threading
 from node.pianoNode.ply_standardlizer import auto_format_for_file
+from node.pianoNode.music_visualizer import MusicDataManager
 
 
 class MidiPlayer:
@@ -65,6 +66,7 @@ class MidiPlayer:
             0: 0
         }
         self.next_channel = 1
+        self.data_manager = MusicDataManager()
 
     def choose_from_default_instrument(self, channel_index):
         index = int(channel_index * len(self.default_instrument))
@@ -117,6 +119,7 @@ class MidiPlayer:
 
     def play_section(self, list_of_notes: list):
         for notes in list_of_notes:
+            #print(notes)
             self.play_chord(notes)
 
     def single_note_to_num(self, single_note: str):
@@ -299,12 +302,28 @@ class MidiPlayer:
                 self.set_attr(line)
                 continue
             if play and line != "":
+                print(line)
                 self.play_section(self.parse_section(line))
+
+    def compile_music(self, music_sheet: list):
+        self.data_manager.init()
+        for line in music_sheet:
+            if "//" in line or "<" in line or ">" in line:
+                # 跳过注释
+                continue
+            if "=" in line and "[" not in line:
+                # 设置全局属性
+                self.set_attr(line)
+                continue
+            if line != "":
+                self.data_manager.parse_music(self.parse_section(line), self.pt, self.base_freq)
+        self.data_manager.output_current()
 
     def play_file(self, filename):
         auto_format_for_file(filename)
         with open(filename, encoding='utf-8') as f:
             data = f.read()
+            self.compile_music(data.split("\n"))
             self.stream_music(data.split("\n"))
 
     def close(self):
@@ -315,7 +334,7 @@ from common.io.file import project_root
 
 if __name__ == '__main__':
     player = MidiPlayer()
-    player.play_file(project_root + "resources/canon_D.ply")
+    player.play_file(project_root + "resources/canon_1.ply")
     # player.play_section(player.parse_section(
     #     "0 0 ..2 0 | 0_.6 ..1_..3 .5 0_-_..1_.7|..1_6 .1_.3 .2 0_-_.1_.7|0_-_6.._3. 1_3._1._6.. 0_-_4.._1. 6._1._6.._4..[ins=99]"))
     # player.play_file(project_root + "resources/ningchi.ply")
