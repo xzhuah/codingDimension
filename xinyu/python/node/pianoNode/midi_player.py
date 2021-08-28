@@ -68,6 +68,10 @@ class MidiPlayer:
         self.next_channel = 1
         self.data_manager = MusicDataManager()
 
+        # 是否固定使用默认乐器而不根据乐谱调整
+        self.force_instrument = False
+        self.force_to = 0
+
     def choose_from_default_instrument(self, channel_index):
         index = int(channel_index * len(self.default_instrument))
         # print(channel_index, self.default_instrument, index)
@@ -179,7 +183,7 @@ class MidiPlayer:
         result = []
         for note_str in channel_str.split():
             note = {
-                "ins": attr["ins="],
+                "ins":  self.force_to if self.force_instrument else attr["ins="],
                 "note": self.note_str_to_note(note_str),
                 "velocity": attr["vol="]
             }
@@ -201,7 +205,7 @@ class MidiPlayer:
                 else:
                     new_notes.append(note)
             this_channel_node = {
-                "ins": channel_note["ins"],
+                "ins": self.force_to if self.force_instrument else channel_note["ins"],
                 "note": new_notes,
                 "velocity": channel_note["velocity"]
             }
@@ -334,25 +338,30 @@ from common.io.file import project_root
 
 if __name__ == '__main__':
     player = MidiPlayer()
+    player.force_instrument = True
+    player.play_file(project_root + "resources/yuxitan.ply")
+    player.play_file(project_root + "resources/klodia.ply")
+    player.play_file(project_root + "resources/lightofhumanity.ply")
+
+    player.play_file(project_root + "resources/ningchi.ply")
+    player.play_file(project_root + "resources/astronomia.ply")
+    player.play_file(project_root + "resources/railgun_piano.ply")
+    player.play_file(project_root + "resources/level5.ply")
+    player.play_file(project_root + "resources/faded.ply")
+    player.play_file(project_root + "resources/myHeartWillGoOn.ply")
+    player.play_file(project_root + "resources/qianbenying.ply")
+    player.play_file(project_root + "resources/one_punch.ply")
+    player.play_file(project_root + "resources/nextToYou.ply")
+    player.play_file(project_root + "resources/tail.ply")
+    player.play_file(project_root + "resources/bird.ply")
+    player.play_file(project_root + "resources/sisterNoise.ply")
+    player.play_file(project_root + "resources/tanzilang.ply")
+    player.play_file(project_root + "resources/railgun.ply")
     player.play_file(project_root + "resources/canon_1.ply")
+    player.play_file(project_root + "resources/sisterNoise.ply")
+    # player.play_file(project_root + "resources/west.ply")
+    player.play_file(project_root + "resources/xiaozhiqu.ply")
+
     # player.play_section(player.parse_section(
     #     "0 0 ..2 0 | 0_.6 ..1_..3 .5 0_-_..1_.7|..1_6 .1_.3 .2 0_-_.1_.7|0_-_6.._3. 1_3._1._6.. 0_-_4.._1. 6._1._6.._4..[ins=99]"))
-    # player.play_file(project_root + "resources/ningchi.ply")
-    # player.play_file(project_root + "resources/astronomia.ply")
-    # player.play_file(project_root + "resources/railgun_piano.ply")
-    # player.play_file(project_root + "resources/level5.ply")
-    # player.play_file(project_root + "resources/faded.ply")
-    # player.play_file(project_root + "resources/myHeartWillGoOn.ply")
-    # player.play_file(project_root + "resources/qianbenying.ply")
-    # player.play_file(project_root + "resources/one_punch.ply")
-    # player.play_file(project_root + "resources/nextToYou.ply")
-    # player.play_file(project_root + "resources/tail.ply")
-    # player.play_file(project_root + "resources/bird.ply")
-    # player.play_file(project_root + "resources/sisterNoise.ply")
-    # player.play_file(project_root + "resources/tanzilang.ply")
-    # player.play_file(project_root + "resources/railgun.ply")
-    # #
-    # player.play_file(project_root + "resources/sisterNoise.ply")
-    # # # player.play_file(project_root + "resources/west.ply")
-    # # player.play_file(project_root + "resources/xiaozhiqu.ply")
     player.close()

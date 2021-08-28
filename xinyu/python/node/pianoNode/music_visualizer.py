@@ -1,5 +1,7 @@
 # Created by Xinyu Zhu on 2021/6/3, 21:44
-
+from node.graphicNode.turtle.base_graphics import draw_rectangle
+from turtle import Turtle
+import turtle
 class MusicDataManager:
     def __init__(self):
 
@@ -25,6 +27,17 @@ class MusicDataManager:
         self.music_data = []
         self.init()
 
+
+
+        # self.tur = Turtle()
+        # self.window = turtle.Screen()
+        # # self.window.screensize(sizex, sizey)
+        # self.window.setup(width=1.0, height=1.0, startx=None, starty=None)
+        # # wn.setup(width=200, height=200, startx=0, starty=0)
+        # self.window.setworldcoordinates(40, 0, 100, 60*3)
+        # self.window.tracer(0, 0)
+        # self.tur.hideturtle()
+
     def init(self):
         self.current_time = 0
         # support at most 12 channels
@@ -43,6 +56,7 @@ class MusicDataManager:
                 text = "." * offset_num + text
         else:
             text = 0
+        draw_rectangle(self.tur, single_chord["note"], single_chord["start"], 1, single_chord["end"]-single_chord["start"])
         print(text, single_chord["start"], single_chord["end"], single_chord["ins"])
 
     def output_current(self):
@@ -53,6 +67,7 @@ class MusicDataManager:
         self.music_data.sort(key=lambda k: k["start"])
         # for data in self.music_data:
         #     self.visualize_single_chord(data)
+        # self.window.update()
 
     def parse_music(self, music_section: list, pt: float, base_freq: int):
         for notes in music_section:

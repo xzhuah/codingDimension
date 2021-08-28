@@ -1,6 +1,6 @@
 package nodes.datascienceNode.stockInfo;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Xinyu Zhu on 2020/11/29, 0:44
@@ -9,5 +9,5 @@ import java.util.List;
 public interface StockFilterService {
 
 
-    List<String> filterGoldenCrossStock(int n, int m);
+    Map<String, Double> filterGoldenCrossStock(int n, int m);
 }

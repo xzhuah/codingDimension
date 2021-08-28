@@ -9,8 +9,7 @@ import nodes.datascienceNode.stockInfo.facade.impl.StockNdayAvgPriceSlopeFeature
 import nodes.stockinfoNode.StockInfoService;
 import nodes.stockinfoNode.models.StockDailyRecordPOJO;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Xinyu Zhu on 2020/11/29, 0:44
@@ -30,17 +29,20 @@ public class StockFilterServiceImpl implements StockFilterService {
     // 寻找具备5日均线向上穿过10日均线形成金叉趋势的股票
     // 1. 5日均线在10日均线下方至少n日 -->
     // 2. 最近m日5日均线斜率大于0且大于10日均线斜率
-    public List<String> filterGoldenCrossStock(int n, int m) {
+    public Map<String, Double> filterGoldenCrossStock(int n, int m) {
         DaysOverFeature daysOverFeature = new DaysOverFeature(5, 10);
         StockNdayAvgPriceSlopeFeature fiveDaySlope = new StockNdayAvgPriceSlopeFeature(5);
         StockNdayAvgPriceSlopeFeature tenDaySlope = new StockNdayAvgPriceSlopeFeature(10);
 
         List<String> allSymbols = stockInfoService.getAllSymbols();
-        List<String> goldenCrossStock = new ArrayList<>();
+        Map<String, Double> goldenCrossStock = new HashMap<>();
 
         long duration = (Math.max(n, m) + 11L) * 2L * 24L * 3600L * 1000L;
         for (String symbol : allSymbols) {
             List<StockDailyRecordPOJO> sortedPrice = stockInfoService.getSortedPriceForSymbol(symbol, TimeInterval.getUpToNowIntervalWithDuration(duration)).getAllModel(StockDailyRecordPOJO.class).get();
+            if (sortedPrice.isEmpty()) {
+                continue;
+            }
             int daysOver = daysOverFeature.extractForInstance(sortedPrice);
             if (daysOver < n) {
                 continue;
@@ -71,7 +73,13 @@ public class StockFilterServiceImpl implements StockFilterService {
             if (!fiveDaySlopeWithMDayIsLargerThenTenDays) {
                 continue;
             }
-            goldenCrossStock.add(symbol);
+
+            double slopeAvg = 0;
+            for (Double slope : fiveDaySlopeData) {
+                slopeAvg += slope;
+            }
+            slopeAvg /= fiveDaySlopeData.size();
+            goldenCrossStock.put(symbol, slopeAvg);
 
         }
 
@@ -81,7 +89,32 @@ public class StockFilterServiceImpl implements StockFilterService {
 
     public static void main(String[] args) {
         StockFilterService stockFilterService = NodeModule.getGlobalInjector().getInstance(StockFilterService.class);
-        List<String> symbols = stockFilterService.filterGoldenCrossStock(3, 2);
-        System.out.println(symbols);
+        Map<String, Double> symbols = stockFilterService.filterGoldenCrossStock(3, 2);
+
+        System.out.println(sortByValue(symbols));
+    }
+
+    // function to sort hashmap by values
+    public static HashMap<String, Double> sortByValue(Map<String, Double> hm)
+    {
+        // Create a list from elements of HashMap
+        List<Map.Entry<String, Double> > list =
+                new LinkedList<Map.Entry<String, Double> >(hm.entrySet());
+
+        // Sort the list
+        Collections.sort(list, new Comparator<Map.Entry<String, Double> >() {
+            public int compare(Map.Entry<String, Double> o1,
+                               Map.Entry<String, Double> o2)
+            {
+                return -(o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        // put data from sorted list to hashmap
+        HashMap<String, Double> temp = new LinkedHashMap<String, Double>();
+        for (Map.Entry<String, Double> aa : list) {
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        return temp;
     }
 }

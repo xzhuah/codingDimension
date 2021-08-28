@@ -95,8 +95,8 @@ public class StockPriceAnalysisImpl implements StockTimeSeriesFeatureAnalysis<Li
                 new StockExpectedReturnFeature(sampleDuration, 0.04),
                 new StockExpectedReturnFeature(sampleDuration, 0.05));
 
-        //stockPriceAnalysisImpl.printReportForTarget();
+        stockPriceAnalysisImpl.printReportForTarget();
 
-        stockPriceAnalysisImpl.printReportForTarget(List.of("ZTS", "CHD", "ALXN", "EL", "AES", "UNH", "HOLX", "TMO", "CMS", "ABMD", "ANET", "PKI", "PLD", "GILD", "AAPL", "CPRT", "ANTM"));
+        // stockPriceAnalysisImpl.printReportForTarget(List.of("ZTS", "CHD", "ALXN", "EL", "AES", "UNH", "HOLX", "TMO", "CMS", "ABMD", "ANET", "PKI", "PLD", "GILD", "AAPL", "CPRT", "ANTM"));
     }
 }
