@@ -1,5 +1,5 @@
 # Created by Xinyu Zhu on 2021/7/15, 2:32
-from common.io.file.PlainTextClient import read_file
+from common.io.file.PlainTextClient import read_file_from
 from collections import defaultdict
 
 
@@ -19,7 +19,7 @@ def get_count(line: str):
 
 if __name__ == '__main__':
     filename = "C:/my C/Finance/linkedInData.txt"
-    data = read_file(filename)
+    data = read_file_from(filename)
 
     all_company_num = defaultdict(int)
     is_first_line_of_unitivery = False

@@ -6,12 +6,11 @@
 
 import re
 import statistics
+from common.io.file.PlainTextClient import read_io_file, get_io_file
 
 
 def reformat(filename: str):
-    with open(filename, encoding='utf-8') as f:
-        data = f.read()
-        content = data.split("\n")
+    content = read_io_file(filename).split("\n")
     formatted_content = []
     for line in content:
         if need_reformat(line):
@@ -138,7 +137,7 @@ def extract_medium(line: str):
 def write_to_file(refomatted, filename):
     while len(refomatted[-1]) == 0:
         refomatted.pop(-1)
-    with open(filename, encoding='utf-8', mode="w") as f:
+    with get_io_file(filename, mode="w") as f:
         for line in refomatted:
             f.write(line + "\n")
 

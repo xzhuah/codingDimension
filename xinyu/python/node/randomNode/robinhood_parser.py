@@ -1,7 +1,6 @@
 # Created by Xinyu Zhu on 2021/7/30, 0:41
 
 from common.io.file.PlainTextClient import read_file
-from common.io.file import project_root
 
 
 def read_as_table(string, title):
@@ -21,7 +20,7 @@ def read_as_table(string, title):
 
 
 if __name__ == '__main__':
-    content = read_file(project_root + "resources/buffer.txt")
+    content = read_file("buffer.txt")
 
     result = read_as_table(content, ["Name", "Symbol", "Shares", "Price", "Average Cost", "Total Return", "Equity"])
     for obj in result:

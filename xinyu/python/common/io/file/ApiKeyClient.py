@@ -1,7 +1,7 @@
 from common.io.file.JsonFileClient import read_json
 from common.io.file import project_root
 
-all_keys = read_json(project_root + "resources/apikeys.pass")
+all_keys = read_json("apikeys.pass")
 
 
 def get_key(api_name):
