@@ -1,28 +1,44 @@
 # Created by Xinyu Zhu on 2021/8/28, 23:55
 from node.tagTreeNote.Path import Path
+from common.tools.utils import check_state
+from node.tagTreeNote.utils import verify_filename, verify_tag
 
 
 class File:
 
     def __init__(self, filename: str, uri: str, path: Path):
         # name of file
-        self.name = filename
+        self.name = filename.strip()
+        check_state(verify_filename(filename))
         # a string act as uri
         self.uri = uri
-        # path of the file
-        self.path = path
         # a set for holding customer specified tags (str)
         self.tags = set()
         # metadata for the file, free_formed, open for extension
         self.metadata = dict()
+        # path of the file
+        self.metadata["path"] = path
 
     def add_tag(self, tag: str):
+        tag = tag.strip()
+        # disallow { and } in tag to avoid
+        check_state(len(tag) > 0 and verify_tag(tag), "tag is invalid")
         self.tags.add(tag)
         return self
 
-    def add_tags(self, tags):
-        self.tags = self.tags.union(tags)
+    def add_tags(self, tags, need_verify=True):
+        if need_verify:
+            for tag in tags:
+                self.add_tag(tag)
+        else:
+            self.tags = self.tags.union(tags)
         return self
+
+    def put_metadata(self, key, value):
+        self.metadata[key] = value
+
+    def get_path(self):
+        return self.metadata["path"]
 
     def __str__(self):
         return "[{title}]({uri})".format(title=self.name, uri=self.uri)
@@ -31,19 +47,19 @@ class File:
         return "[{title}]({uri})".format(title=self.name, uri=self.uri)
 
     def __lt__(self, other):
-        if self.path != other.path:
-            return self.path < other.path
+        if self.get_path() != other.get_path():
+            return self.get_path() < other.get_path()
         else:
             return self.name < other.name
 
     def __gt__(self, other):
-        if self.path != other.path:
-            return self.path > other.path
+        if self.get_path() != other.get_path():
+            return self.get_path() > other.get_path()
         else:
             return self.name > other.name
 
     def __eq__(self, other):
-        if self.path != other.path:
+        if self.get_path() != other.get_path():
             return False
         else:
             return self.name == other.name
@@ -69,14 +85,14 @@ class FileCollection:
     def filter_by_path(self, root_path: Path):
         result = FileCollection()
         for file in self.collection:
-            if file.path.is_child_of(root_path):
+            if file.get_path().is_child_of(root_path):
                 result.add_file(file)
         return result
 
     def filter_by_path_(self, root_path: str):
         result = FileCollection()
         for file in self.collection:
-            if file.path.is_child_of(Path(root_path)):
+            if file.get_path().is_child_of(Path(root_path)):
                 result.add_file(file)
         return result
 
