@@ -2,6 +2,7 @@
 from node.tagTreeNote.File import File, FileCollection
 from node.tagTreeNote.Path import Path
 from common.tools.utils import check_state
+import json
 
 
 class Render:
@@ -39,10 +40,13 @@ class Render:
 
 
 class MarkdownRender(Render):
+
     def render_file(self, file: File) -> str:
         return "[{title}]({uri}) <!-- {tag_list} --> <!-- {metadata} -->".format(title=file.name, uri=file.uri,
-                                                                         tag_list=MarkdownRender.render_tags(file.tags),
-                                                                         metadata=file.metadata)
+                                                                                 tag_list=MarkdownRender.render_tags(
+                                                                                     file.tags),
+                                                                                 metadata=self.render_metadata(
+                                                                                     file.metadata))
 
     def render_file_collection(self, file_collection: FileCollection, tag_list_2d=None) -> str:
         return ""
@@ -50,6 +54,12 @@ class MarkdownRender(Render):
     @staticmethod
     def render_tags(tags: set) -> str:
         return ", ".join(tags)
+
+    @staticmethod
+    def render_metadata(metadata: dict):
+        result = json.dumps(metadata)
+        check_state("<" not in result)
+        return result
 
 
 if __name__ == '__main__':

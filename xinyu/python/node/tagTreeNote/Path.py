@@ -1,13 +1,13 @@
 # Created by Xinyu Zhu on 2021/8/28, 23:59
 from common.tools.utils import check_state
-from node.tagTreeNote.utils import verify_folder
-
+from node.tagTreeNote.utils import verify_folder, DEFAULT_PATH_SEPARATOR
+import json
 
 class Path:
     # Object should be immutable after init
     def __init__(self, path="", validate_folder_name=True):
         # "/" is reserved for the default separator.
-        self.separator = "/"
+        self.separator = DEFAULT_PATH_SEPARATOR
         # a string in the format of "a/b/c" to represent a path
         # "" can be used
         self.path = path.strip().strip(self.separator).strip()
@@ -113,6 +113,10 @@ class Path:
 
     def __eq__(self, other):
         return self.path == other.path
+
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
 
 if __name__ == '__main__':

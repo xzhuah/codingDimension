@@ -1,7 +1,7 @@
 # Created by Xinyu Zhu on 2021/8/28, 23:55
 from node.tagTreeNote.Path import Path
 from common.tools.utils import check_state
-from node.tagTreeNote.utils import verify_filename, verify_tag
+from node.tagTreeNote.utils import verify_filename, verify_tag, verify_uri
 
 
 class File:
@@ -11,13 +11,16 @@ class File:
         self.name = filename.strip()
         check_state(verify_filename(filename))
         # a string act as uri
-        self.uri = uri
+        self.uri = uri.strip()
+        check_state(verify_uri(self.uri))
         # a set for holding customer specified tags (str)
         self.tags = set()
         # metadata for the file, free_formed, open for extension
+        # it must be a str to str map
         self.metadata = dict()
         # path of the file
-        self.metadata["path"] = path
+        self.metadata["path"] = path.path
+        self.path = path.copy()
 
     def add_tag(self, tag: str):
         tag = tag.strip()
@@ -34,11 +37,12 @@ class File:
             self.tags = self.tags.union(tags)
         return self
 
-    def put_metadata(self, key, value):
+    def put_metadata(self, key: str, value: str):
         self.metadata[key] = value
+        return self
 
-    def get_path(self):
-        return self.metadata["path"]
+    def get_path(self) -> Path:
+        return self.path
 
     def __str__(self):
         return "[{title}]({uri})".format(title=self.name, uri=self.uri)
@@ -130,3 +134,4 @@ if __name__ == '__main__':
     print(file_col.filter_by_path(Path("a/c")))
     print(file_col.filter_by_tags({"bad"}))
     print(file_col.filter_by_tag("middle").filter_by_path(Path("a")))
+

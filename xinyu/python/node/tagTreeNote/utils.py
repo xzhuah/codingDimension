@@ -17,5 +17,9 @@ def verify_filename(filename: str) -> bool:
     return verify_str_with_illegal_char(filename, ILLEGAL_CHARS_FOR_FILENAME)
 
 
+def verify_uri(uri: str) -> bool:
+    return verify_str_with_illegal_char(uri, ILLEGAL_CHARS_FOR_URI)
+
+
 def verify_tag(tag: str) -> bool:
     return verify_str_with_illegal_char(tag, ILLEGAL_CHARS_FOR_TAG)
