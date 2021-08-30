@@ -42,11 +42,23 @@ class Render:
 class MarkdownRender(Render):
 
     def render_file(self, file: File) -> str:
-        return "[{title}]({uri}) <!-- {tag_list} --> <!-- {metadata} -->".format(title=file.name, uri=file.uri,
-                                                                                 tag_list=MarkdownRender.render_tags(
-                                                                                     file.tags),
-                                                                                 metadata=self.render_metadata(
-                                                                                     file.metadata))
+        return self.render_file_helper(file)
+
+    # Parse only support parsing files with tags and metadata
+    def render_file_helper(self, file: File, keep_tags=True, keep_metadata=True) -> str:
+        if keep_tags and keep_metadata:
+            template = "[{title}]({uri}) <!-- {tag_list} --> <!-- {metadata} -->"
+        elif not keep_tags and keep_metadata:
+            template = "[{title}]({uri}) <!-- {metadata} -->"
+        elif keep_tags and not keep_metadata:
+            template = "[{title}]({uri}) <!-- {tag_list} -->"
+        else:
+            template = "[{title}]({uri})"
+        return template.format(title=file.name, uri=file.uri,
+                               tag_list=MarkdownRender.render_tags(
+                                   file.tags),
+                               metadata=self.render_metadata(
+                                   file.metadata))
 
     def render_file_collection(self, file_collection: FileCollection, tag_list_2d=None) -> str:
         return ""
@@ -73,5 +85,5 @@ if __name__ == '__main__':
 
     render = MarkdownRender()
     print(render.render_file(file1))
-    print(render.render_file(file2))
+    print(render.render_file_helper(file2, False, False))
     print(render.render_file_collection(file_col))

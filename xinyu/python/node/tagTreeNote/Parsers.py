@@ -16,7 +16,7 @@ class Parser:
         raise NotImplementedError
 
     # parse from a str in specific format (markdown/html/...) to a FileCollection object
-    def render_file_collection(self, content: str) -> FileCollection:
+    def parse_file_collection(self, content: str) -> FileCollection:
         raise NotImplementedError
 
 
@@ -32,17 +32,17 @@ class MarkdownParser(Parser):
         filename = match_result.group(1)
         uri = match_result.group(2)
         tags = self.parse_tag_str(match_result.group(3))
-        print(match_result.group(4))
         metadata = json.loads(match_result.group(4))
         file = File(filename, uri, Path(metadata["path"]))
         file.metadata = metadata
         file.add_tags(tags)
         return file
 
-    def render_file_collection(self, content: str) -> FileCollection:
+    def parse_file_collection(self, content: str) -> FileCollection:
         pass
 
-    def parse_tag_str(self, tags: str) -> list:
+    @staticmethod
+    def parse_tag_str(tags: str) -> list:
         return tags.strip().split(",")
 
 
