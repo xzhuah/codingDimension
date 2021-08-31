@@ -66,6 +66,10 @@ class MarkdownRender(Render):
                                    file.metadata))
 
     def render_file_collection(self, file_collection: FileCollection, tag_list_2d=None) -> str:
+        return self.render_file_collection_helper(file_collection, tag_list_2d)
+
+    def render_file_collection_helper(self, file_collection: FileCollection, tag_list_2d=None, keep_tags=True,
+                                      keep_metadata=True) -> str:
         validated_tag_list = self.validate_tag_list_2d(tag_list_2d)
         result = ""
         if validated_tag_list is None:
@@ -81,8 +85,8 @@ class MarkdownRender(Render):
                 diff_array_need_to_render = cur_path_array[len(common_parent_array):]
                 for i, folder in enumerate(diff_array_need_to_render):
                     result += (prefix_tab_num + i) * MarkdownRender.tab_str + "* " + folder + MarkdownRender.line_break
-                result += len(cur_path_array) * MarkdownRender.tab_str + "* " + self.render_file(
-                    file) + MarkdownRender.line_break
+                result += len(cur_path_array) * MarkdownRender.tab_str + "* " + self.render_file_helper(
+                    file=file, keep_tags=keep_tags, keep_metadata=keep_metadata) + MarkdownRender.line_break
                 pre_path = cur_path
             return result
         else:
@@ -92,12 +96,9 @@ class MarkdownRender(Render):
                     all_tag_to_level[tag] = i
             all_file = file_collection.collection
             sorted_file = MarkdownRender.sort_files_by_tags(all_file, validated_tag_list)
-            print("sorted_file" , sorted_file)
             pre_tags = []
-            print("all_tag_to_level", all_tag_to_level)
             for file in sorted_file:
                 cur_tags = MarkdownRender.tag_list_ordered_by_level(file.tags, all_tag_to_level)
-                print("cur_tags", cur_tags)
                 if cur_tags is None:
                     continue
                 common_parent_array = common_heading_sub_array(cur_tags, pre_tags)
@@ -105,8 +106,8 @@ class MarkdownRender(Render):
                 diff_array_need_to_render = cur_tags[len(common_parent_array):]
                 for i, tag in enumerate(diff_array_need_to_render):
                     result += (prefix_tab_num + i) * MarkdownRender.tab_str + "* " + tag + MarkdownRender.line_break
-                result += len(cur_tags) * MarkdownRender.tab_str + "* " + self.render_file(
-                    file) + MarkdownRender.line_break
+                result += len(cur_tags) * MarkdownRender.tab_str + "* " + self.render_file_helper(
+                    file=file, keep_tags=keep_tags, keep_metadata=keep_metadata) + MarkdownRender.line_break
                 pre_tags = cur_tags
 
             return result
@@ -119,7 +120,6 @@ class MarkdownRender(Render):
 
     @staticmethod
     def to_list_sort_helper(filtered_file: File, validated_tag_list_2d: list) -> TagsFilenameListSortHelper:
-        print("to_list_sort_helper", filtered_file)
         tags = []
         for tag_list in validated_tag_list_2d:
             for tag in tag_list:
@@ -127,7 +127,6 @@ class MarkdownRender(Render):
                     tags.append(tag)
                     break
         tags.append(filtered_file.name)
-        print("tag", tags)
         return TagsFilenameListSortHelper(tags)
 
     @staticmethod
@@ -229,4 +228,5 @@ if __name__ == '__main__':
     render = MarkdownRender()
     # print(render.render_file(file1))
     # print(render.render_file_helper(file2, False, False))
-    print(render.render_file_collection(file_col, tag_list_2d=[["bad", "middle", "good"], ["1", "2"]]))
+    print(render.render_file_collection_helper(file_col, tag_list_2d=[["bad", "middle", "good"], ["1", "2"]],
+                                               keep_tags=False, keep_metadata=False))
