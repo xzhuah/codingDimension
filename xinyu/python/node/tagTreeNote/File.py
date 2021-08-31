@@ -54,19 +54,25 @@ class File:
         if self.get_path() != other.get_path():
             return self.get_path() < other.get_path()
         else:
-            return self.name < other.name
+            if self.name != other.name:
+                return self.name < other.name
+            else:
+                return self.uri < other.uri
 
     def __gt__(self, other):
         if self.get_path() != other.get_path():
             return self.get_path() > other.get_path()
         else:
-            return self.name > other.name
+            if self.name != other.name:
+                return self.name > other.name
+            else:
+                return self.uri > other.uri
 
     def __eq__(self, other):
         if self.get_path() != other.get_path():
             return False
         else:
-            return self.name == other.name
+            return self.name == other.name and self.uri == other.uri
 
 
 class FileCollection:
@@ -103,14 +109,15 @@ class FileCollection:
     def filter_by_tag(self, tag: str):
         result = FileCollection()
         for file in self.collection:
-            if tag in file.tags:
+            if tag in file.tags_filename:
                 result.add_file(file)
         return result
 
-    def filter_by_tags(self, tags: set):
+    # relation between tags is or
+    def filter_by_tags_or(self, tags: set):
         result = FileCollection()
         for file in self.collection:
-            if len(file.tags.intersection(tags)) > 0:
+            if len(file.tags_filename.intersection(tags)) > 0:
                 result.add_file(file)
         return result
 
@@ -132,6 +139,5 @@ if __name__ == '__main__':
 
     print(file_col)
     print(file_col.filter_by_path(Path("a/c")))
-    print(file_col.filter_by_tags({"bad"}))
+    print(file_col.filter_by_tags_or({"bad"}))
     print(file_col.filter_by_tag("middle").filter_by_path(Path("a")))
-

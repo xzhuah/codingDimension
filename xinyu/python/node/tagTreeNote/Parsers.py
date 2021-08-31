@@ -39,7 +39,11 @@ class MarkdownParser(Parser):
         return file
 
     def parse_file_collection(self, content: str) -> FileCollection:
-        pass
+        file_col = FileCollection()
+        all_file = MarkdownParser.file_line_pattern.findall(content)
+        for file in all_file:
+            file_col.add_file(self.parse_file(file))
+        return file_col
 
     @staticmethod
     def parse_tag_str(tags: str) -> list:

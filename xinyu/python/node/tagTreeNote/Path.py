@@ -1,7 +1,8 @@
 # Created by Xinyu Zhu on 2021/8/28, 23:59
 from common.tools.utils import check_state
-from node.tagTreeNote.utils import verify_folder, DEFAULT_PATH_SEPARATOR
+from node.tagTreeNote.utils import verify_folder, DEFAULT_PATH_SEPARATOR, common_heading_sub_array
 import json
+
 
 class Path:
     # Object should be immutable after init
@@ -28,6 +29,12 @@ class Path:
 
     def get_path(self):
         return self.path
+
+    def common_path(self, other):
+        self_folders = self.split()
+        other_folders = other.split()
+        shared_parent = common_heading_sub_array(self_folders, other_folders)
+        return Path(self.separator.join(shared_parent))
 
     # turn the path into a list of folder name
     def split(self) -> list:
@@ -114,7 +121,6 @@ class Path:
     def __eq__(self, other):
         return self.path == other.path
 
-
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 
@@ -136,3 +142,5 @@ if __name__ == '__main__':
     print(path4)
 
     print(path4.to_map())
+
+    print(",".join([]))
