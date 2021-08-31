@@ -1,7 +1,7 @@
 # Created by Xinyu Zhu on 2021/8/29, 1:53
-from node.tagTreeNote.File import File, FileCollection
-from node.tagTreeNote.Path import Path
-from node.tagTreeNote.Renders import MarkdownRender
+from node.tagTreeNote.models.File import File, FileCollection
+from node.tagTreeNote.models.Path import Path
+from node.tagTreeNote.renders.Renders import MarkdownRender
 from common.tools.utils import check_state
 import re
 import json
@@ -40,9 +40,9 @@ class MarkdownParser(Parser):
 
     def parse_file_collection(self, content: str) -> FileCollection:
         file_col = FileCollection()
-        all_file = MarkdownParser.file_line_pattern.findall(content)
+        all_file = MarkdownParser.file_line_pattern.finditer(content)
         for file in all_file:
-            file_col.add_file(self.parse_file(file))
+            file_col.add_file(self.parse_file(file.group()))
         return file_col
 
     @staticmethod

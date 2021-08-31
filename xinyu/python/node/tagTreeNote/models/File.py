@@ -1,7 +1,7 @@
 # Created by Xinyu Zhu on 2021/8/28, 23:55
-from node.tagTreeNote.Path import Path
+from node.tagTreeNote.models.Path import Path
 from common.tools.utils import check_state
-from node.tagTreeNote.utils import verify_filename, verify_tag, verify_uri
+from node.tagTreeNote.utils.utils import verify_filename, verify_tag, verify_uri
 
 
 class File:
@@ -109,7 +109,7 @@ class FileCollection:
     def filter_by_tag(self, tag: str):
         result = FileCollection()
         for file in self.collection:
-            if tag in file.tags_filename:
+            if tag in file.tags:
                 result.add_file(file)
         return result
 
@@ -117,7 +117,15 @@ class FileCollection:
     def filter_by_tags_or(self, tags: set):
         result = FileCollection()
         for file in self.collection:
-            if len(file.tags_filename.intersection(tags)) > 0:
+            if len(file.tags.intersection(tags)) > 0:
+                result.add_file(file)
+        return result
+
+    # relation between tags is and
+    def filter_by_tags_and(self, tags: set):
+        result = FileCollection()
+        for file in self.collection:
+            if len(file.tags.intersection(tags)) == len(tags):
                 result.add_file(file)
         return result
 

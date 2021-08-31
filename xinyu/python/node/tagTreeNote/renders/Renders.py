@@ -1,8 +1,8 @@
 # Created by Xinyu Zhu on 2021/8/29, 1:48
-from node.tagTreeNote.File import File, FileCollection
-from node.tagTreeNote.Path import Path
+from node.tagTreeNote.models.File import File, FileCollection
+from node.tagTreeNote.models.Path import Path
 from common.tools.utils import check_state
-from node.tagTreeNote.utils import common_heading_sub_array, TagsFilenameListSortHelper
+from node.tagTreeNote.utils.utils import common_heading_sub_array, TagsFilenameListSortHelper
 import json
 import os
 
@@ -44,7 +44,7 @@ class Render:
 
 class MarkdownRender(Render):
     tab_str = "\t"
-    line_break = os.linesep
+    line_break = "\n"
 
     def render_file(self, file: File) -> str:
         return self.render_file_helper(file)
@@ -220,7 +220,7 @@ if __name__ == '__main__':
     file7.add_tags({"7"})
 
     file8 = File("BB8", "a.b.e", Path("b/b/e/d"))
-    file8.add_tags({"7"})
+    file8.add_tags({"7", "middle"})
 
     file_col = FileCollection()
     file_col.add_files([file1, file2, file3, file4, file5, file6, file7, file8])
@@ -228,5 +228,6 @@ if __name__ == '__main__':
     render = MarkdownRender()
     # print(render.render_file(file1))
     # print(render.render_file_helper(file2, False, False))
-    print(render.render_file_collection_helper(file_col, tag_list_2d=[["bad", "middle", "good"], ["1", "2"]],
-                                               keep_tags=False, keep_metadata=False))
+    print(render.render_file_collection(file_col))
+    # print(render.render_file_collection_helper(file_col, tag_list_2d=[["bad", "middle", "good"], ["1", "2", "7"]],
+    #                                            keep_tags=True, keep_metadata=True))

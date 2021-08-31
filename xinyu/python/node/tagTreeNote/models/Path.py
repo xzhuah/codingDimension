@@ -1,6 +1,6 @@
 # Created by Xinyu Zhu on 2021/8/28, 23:59
 from common.tools.utils import check_state
-from node.tagTreeNote.utils import verify_folder, DEFAULT_PATH_SEPARATOR, common_heading_sub_array
+from node.tagTreeNote.utils.utils import verify_folder, DEFAULT_PATH_SEPARATOR, common_heading_sub_array
 import json
 
 
