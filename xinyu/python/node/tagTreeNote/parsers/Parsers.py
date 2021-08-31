@@ -21,7 +21,12 @@ class Parser:
 
 
 class MarkdownParser(Parser):
+    line_break = "\n"
     file_line_pattern = re.compile(r"\[([^\]]+)\]\(([^)]*)\) <!\-\-([^<]*)\-\-> <!\-\-([^<]+)\-\->")
+    # using \t as default tab str
+    folder_line_pattern = re.compile(r"([\t]*)\* ([^\[]+)")
+    file_line_without_metadata_pattern = re.compile(r"\[([^\]]+)\]\(([^)]*)\) <!\-\-([^<]*)\-\->")
+    file_line_without_tags_or_metadata_pattern = re.compile(r"\[([^\]]+)\]\(([^)]*)\)")
 
     def __init__(self):
         super().__init__()
@@ -43,6 +48,42 @@ class MarkdownParser(Parser):
         all_file = MarkdownParser.file_line_pattern.finditer(content)
         for file in all_file:
             file_col.add_file(self.parse_file(file.group()))
+        return file_col
+
+    def parse_file_collection_without_metadata_or_tags(self, content: str) -> FileCollection:
+        file_col = FileCollection()
+
+        pre_path = Path()
+        for line in content.split(MarkdownParser.line_break):
+            if "[" in line:
+                match_result = MarkdownParser.file_line_without_metadata_pattern.search(line)
+                if match_result is not None:
+                    filename = match_result.group(1)
+                    uri = match_result.group(2)
+                    tags = self.parse_tag_str(match_result.group(3))
+                    file = File(filename, uri, pre_path)
+                    file.add_tags(tags)
+                else:
+                    match_result = MarkdownParser.file_line_without_tags_or_metadata_pattern.search(line)
+                    check_state(match_result is not None)
+                    filename = match_result.group(1)
+                    uri = match_result.group(2)
+                    file = File(filename, uri, pre_path)
+                file_col.add_file(file)
+            else:
+                match_result = MarkdownParser.folder_line_pattern.match(line)
+                if match_result is None:
+                    continue
+                folder_level = match_result.group(1).count("\t") + 1
+                folder_name = match_result.group(2)
+                if folder_level == pre_path.depth():
+                    cur_path = pre_path.sibling(folder_name)
+                elif folder_level > pre_path.depth():
+                    cur_path = pre_path.child(folder_name)
+                else:
+                    diff = pre_path.depth() - folder_level
+                    cur_path = pre_path.parent_(diff).sibling(folder_name)
+                pre_path = cur_path
         return file_col
 
     @staticmethod

@@ -50,6 +50,12 @@ class Path:
         else:
             return Path(self.path[: self.path.rindex(self.separator)], validate_folder_name=False)
 
+    def parent_(self, level=1):
+        result = self
+        for i in range(level):
+            result = result.parent()
+        return result
+
     def copy(self):
         return Path(self.path, validate_folder_name=False)
 

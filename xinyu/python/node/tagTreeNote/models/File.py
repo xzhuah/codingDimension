@@ -19,8 +19,9 @@ class File:
         # it must be a str to str map
         self.metadata = dict()
         # path of the file
-        self.metadata["path"] = path.path
         self.path = path.copy()
+        self.metadata["path"] = self.path.path
+
 
     def add_tag(self, tag: str):
         tag = tag.strip()

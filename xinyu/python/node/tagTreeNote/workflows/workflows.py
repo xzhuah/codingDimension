@@ -9,7 +9,8 @@ from node.tagTreeNote.models.File import FileCollection
 def markdown_to_markdown(source_markdown: str, result_markdown: str, processor_func=lambda x: x):
     content = read_file(source_markdown)
     markdown_parser = MarkdownParser()
-    file_collection = markdown_parser.parse_file_collection(content)
+    file_collection = markdown_parser.parse_file_collection_without_metadata_or_tags(content)
+    print(file_collection)
 
     # Do what you want
     processed_collection = processor_func(file_collection)
