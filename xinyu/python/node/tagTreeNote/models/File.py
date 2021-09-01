@@ -26,8 +26,8 @@ class File:
     def add_tag(self, tag: str):
         tag = tag.strip()
         # disallow { and } in tag to avoid
-        check_state(len(tag) > 0 and verify_tag(tag), "tag is invalid")
-        self.tags.add(tag)
+        if len(tag) > 0 and verify_tag(tag):
+            self.tags.add(tag)
         return self
 
     def add_tags(self, tags, need_verify=True):
@@ -92,6 +92,7 @@ class FileCollection:
 
     def add_collection(self, other):
         self.collection.extend(other.collection)
+        return self
 
     def filter_by_path(self, root_path: Path):
         result = FileCollection()

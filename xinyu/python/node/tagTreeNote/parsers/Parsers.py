@@ -55,6 +55,7 @@ class MarkdownParser(Parser):
 
         pre_path = Path()
         for line in content.split(MarkdownParser.line_break):
+            line = MarkdownParser.convert_space_to_tab(line)
             if "[" in line:
                 match_result = MarkdownParser.file_line_without_metadata_pattern.search(line)
                 if match_result is not None:
@@ -89,6 +90,11 @@ class MarkdownParser(Parser):
     @staticmethod
     def parse_tag_str(tags: str) -> list:
         return tags.strip().split(",")
+
+    # using space as a tab is a common editor function, so explicitly replace space with tab before parsing
+    @staticmethod
+    def convert_space_to_tab(line: str, space_per_tab=4):
+        return line.replace(space_per_tab * " ", "\t")
 
 
 if __name__ == '__main__':
