@@ -68,7 +68,7 @@ class DiskFileParser(Parser):
             path_str = path_str[path_str.index(":") + 1:]
             return "file:///" + disk + quote(path_str)
         else:
-            return "file:///" + (path_str)
+            return "file:///" + quote(path_str)
 
     @staticmethod
     def simplify_path(a):
