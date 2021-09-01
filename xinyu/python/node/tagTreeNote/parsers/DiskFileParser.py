@@ -28,6 +28,7 @@ class DiskFileParser(Parser):
     # recursively parse all files under a directory using a brand-width search algorithm, with a maximum search level
     # -1 means parse to the end, 0 means only parse the direct children of the given directory
     def parse_file_collection_helper(self, content: str, max_level=-1) -> FileCollection:
+        content = DiskFileParser.simplify_path(str(SysPath(content).absolute()).replace(os.sep, DEFAULT_PATH_SEPARATOR))
         dir_path, dir_names, filenames = next(os.walk(content))
         if not dir_path.endswith(os.sep):
             dir_path += os.sep
@@ -69,7 +70,24 @@ class DiskFileParser(Parser):
         else:
             return "file:///" + (path_str)
 
-
+    @staticmethod
+    def simplify_path(a):
+        st = [DEFAULT_PATH_SEPARATOR]
+        b = ":" in a
+        a = a.split(DEFAULT_PATH_SEPARATOR)
+        for i in a:
+            if i == '..':
+                if len(st) > 1:
+                    st.pop()
+                else:
+                    continue
+            elif i == '.':
+                continue
+            elif i != '':
+                st.append("/" + str(i))
+        if len(st) == 1:
+            return "/" if not b else ""
+        return "".join(st[1:]) if not b else "".join(st[1:])[1:]
 
 
 if __name__ == '__main__':
