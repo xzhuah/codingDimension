@@ -1,13 +1,12 @@
 # Created by Xinyu Zhu on 2021/9/1, 22:09
 import numpy as np
-
+from common.tools.utils import ListSortHelper
 
 # exclusive tags optimal grouping algorithm
 # Given the exclusive relationship between tags
 # {tag1, tag2}, {tag2, tag3}, {tag4, tag5, tag6}
 # Find a way to group these tags such that, tags in the same group are not exclusive, and the number of total
 # group is minimized.
-
 def optimal_exclusive_grouping(exclusive_sets: list) -> list:
     # create a dictionary for fast fetching exclusive elements for each elements
     exclusive_map = dict()
@@ -58,7 +57,7 @@ def optimal_exclusive_grouping(exclusive_sets: list) -> list:
         elif current_var < optimal_var:
             optimal_var = current_var
             optimal_var_index = i
-    return all_result[optimal_var_index]
+    return sorted(all_result[optimal_var_index], key=lambda x: ListSortHelper(x))
 
 
 def optimal_helper(existing_groups, all_tags, next_pos, exclusive_map, result_holder=[]):
