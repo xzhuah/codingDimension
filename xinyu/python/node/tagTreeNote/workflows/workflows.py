@@ -15,6 +15,10 @@ def markdown_to_markdown(source_markdown: str, result_markdown: str, processor_f
 
 def markdown_to_markdown_(source_markdown: str, processor_func=lambda x: x):
     content = read_file(source_markdown)
+    return _markdown_to_markdown_(content, processor_func)
+
+
+def _markdown_to_markdown_(content: str, processor_func=lambda x: x):
     markdown_parser = MarkdownParser()
     file_collection = markdown_parser.parse_file_collection(content)
 
@@ -46,6 +50,10 @@ def markdown_to_html(markdown_file: str, result_html: str, processor_func=lambda
 
 def markdown_to_html_(markdown_file: str, processor_func=lambda x: x):
     content = read_file(markdown_file)
+    return _markdown_to_html_(content, processor_func)
+
+
+def _markdown_to_html_(content: str, processor_func=lambda x: x):
     markdown_parser = MarkdownParser()
     file_collection = markdown_parser.parse_file_collection(content)
 

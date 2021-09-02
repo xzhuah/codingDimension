@@ -1,6 +1,7 @@
 # Created by Xinyu Zhu on 2021/8/28, 23:55
 from node.tagTreeNote.models.Path import Path
 from common.tools.utils import check_state
+from node.tagTreeNote.utils.algorithms import optimal_exclusive_grouping
 from node.tagTreeNote.utils.utils import verify_filename, verify_tag, verify_uri
 
 
@@ -21,7 +22,6 @@ class File:
         # path of the file
         self.path = path.copy()
         self.metadata["path"] = self.path.path
-
 
     def add_tag(self, tag: str):
         tag = tag.strip()
@@ -131,6 +131,9 @@ class FileCollection:
                 result.add_file(file)
         return result
 
+    def get_all_tag_groups(self):
+        return [set(file.tags) for file in self.collection]
+
     def __str__(self):
         return str(self.collection)
 
@@ -151,3 +154,5 @@ if __name__ == '__main__':
     print(file_col.filter_by_path(Path("a/c")))
     print(file_col.filter_by_tags_or({"bad"}))
     print(file_col.filter_by_tag("middle").filter_by_path(Path("a")))
+    print(file_col.get_all_tag_groups())
+    print(optimal_exclusive_grouping(file_col.get_all_tag_groups()))
