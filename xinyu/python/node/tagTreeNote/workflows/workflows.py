@@ -18,15 +18,20 @@ def markdown_to_markdown_(source_markdown: str, processor_func=lambda x: x):
     return _markdown_to_markdown_(content, processor_func)
 
 
-def _markdown_to_markdown_(content: str, processor_func=lambda x: x):
+def _markdown_to_markdown_(content: str, has_tag_and_metadata=True, processor_func=lambda x: x):
     markdown_parser = MarkdownParser()
-    file_collection = markdown_parser.parse_file_collection(content)
+    if has_tag_and_metadata:
+        file_collection = markdown_parser.parse_file_collection(content)
+    else:
+        file_collection = markdown_parser.parse_file_collection_without_metadata_or_tags(content)
 
     # Do what you want
     processed_collection = processor_func(file_collection)
 
     markdown_render = MarkdownRender()
+
     return markdown_render.render_file_collection(processed_collection)
+
 
 
 def disk_to_markdown(root_dir: str, result_markdown: str, processor_func=lambda x: x):
@@ -53,9 +58,12 @@ def markdown_to_html_(markdown_file: str, processor_func=lambda x: x):
     return _markdown_to_html_(content, processor_func)
 
 
-def _markdown_to_html_(content: str, processor_func=lambda x: x):
+def _markdown_to_html_(content: str, has_tag_and_metadata=True, processor_func=lambda x: x):
     markdown_parser = MarkdownParser()
-    file_collection = markdown_parser.parse_file_collection(content)
+    if has_tag_and_metadata:
+        file_collection = markdown_parser.parse_file_collection(content)
+    else:
+        file_collection = markdown_parser.parse_file_collection_without_metadata_or_tags(content)
 
     # Do what you want
     processed_collection = processor_func(file_collection)

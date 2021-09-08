@@ -102,11 +102,22 @@ class FileCollection:
         return result
 
     def filter_by_path_(self, root_path: str):
+        return self.filter_by_path(Path(root_path))
+
+    # accept list of path
+    def filter_by_paths(self, root_path: list):
         result = FileCollection()
         for file in self.collection:
-            if file.get_path().is_child_of(Path(root_path)):
-                result.add_file(file)
+            for root in root_path:
+                if file.get_path().is_child_of(root):
+                    result.add_file(file)
+                    break
         return result
+
+    # accept list of string
+    def filter_by_paths_(self, root_path: list):
+        root_paths = [Path(path) for path in root_path]
+        return self.filter_by_paths(root_paths)
 
     def filter_by_tag(self, tag: str):
         result = FileCollection()
@@ -134,6 +145,10 @@ class FileCollection:
     def get_all_tag_groups(self):
         return [set(file.tags) for file in self.collection]
 
+    def copy(self):
+        new_fileCollection = FileCollection()
+        new_fileCollection.add_files(self.collection)
+
     def __str__(self):
         return str(self.collection)
 
@@ -151,7 +166,7 @@ if __name__ == '__main__':
     file_col.add_files([file1, file2])
 
     print(file_col)
-    print(file_col.filter_by_path(Path("a/c")))
+    print(file_col.filter_by_paths_(["a/c"]))
     print(file_col.filter_by_tags_or({"bad"}))
     print(file_col.filter_by_tag("middle").filter_by_path(Path("a")))
     print(file_col.get_all_tag_groups())
