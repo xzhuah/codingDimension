@@ -333,17 +333,19 @@ class MidiPlayer:
     def close(self):
         self.output.close()
 
-
 from common.io.file import project_root
-
 if __name__ == '__main__':
     player = MidiPlayer()
     player.force_instrument = True
+    player.play_file("ningchi.ply")
+    player.play_file("yehangxin.ply")
+    player.play_file("spectre.ply")
+    player.play_file("qifengle.ply")
     player.play_file("yuxitan.ply")
     player.play_file("klodia.ply")
     player.play_file("lightofhumanity.ply")
 
-    player.play_file("ningchi.ply")
+    # player.play_file("ningchi.ply")
     player.play_file("astronomia.ply")
     player.play_file("railgun_piano.ply")
     player.play_file("level5.ply")
@@ -360,6 +362,7 @@ if __name__ == '__main__':
     player.play_file("canon_1.ply")
     player.play_file("west.ply")
     player.play_file("xiaozhiqu.ply")
+
 
     # player.play_section(player.parse_section(
     #     "0 0 ..2 0 | 0_.6 ..1_..3 .5 0_-_..1_.7|..1_6 .1_.3 .2 0_-_.1_.7|0_-_6.._3. 1_3._1._6.. 0_-_4.._1. 6._1._6.._4..[ins=99]"))
