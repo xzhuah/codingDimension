@@ -332,7 +332,7 @@ class MidiPlayer:
                 self.set_attr(line)
                 continue
             if play and line != "":
-               yield self.parse_section(line)
+               yield self.parse_section(line), line
 
     def compile_music(self, music_sheet: list):
         self.data_manager.init()

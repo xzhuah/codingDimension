@@ -69,11 +69,16 @@ class MidiIO:
 
         track_start_beats = 0
         next_start = 0
-        for line in self.midi_player.parse_music_line(content_in_line):
+
+        for (line, raw_line) in self.midi_player.parse_music_line(content_in_line):
             # print(line)
             # print(self.line_to_tracks(line))
+            has_error = False
             for i, track in enumerate(self.line_to_tracks(line)):
-                next_start = self.track_to_beats(track, track_start_beats, i)
+                next_start, has_error = self.track_to_beats(track, track_start_beats, i)
+            if has_error:
+                print("debug line:", raw_line)
+                print(line)
             track_start_beats = next_start
 
     def convert_ply_to_midi(self, filename):
@@ -82,6 +87,7 @@ class MidiIO:
 
 
     def line_to_tracks(self, line):
+        # print(line)
         beat_length = len(line)
         track_num = len(line[0])
         result = []
@@ -95,9 +101,10 @@ class MidiIO:
     def track_to_beats(self, track, track_start_beats=0, track_index=0):
         current_pitch = track[0][0]
         current_pitch_start = track_start_beats
+        has_error = False
         if current_pitch < 0:
-            # print("midi io does not support track start with 0, please combine it with formal track line")
-            return
+            print("warining: midi io does not well support track start with -1, please combine it with formal track line")
+            has_error = True
         init = True
         current_beat_length = 1 / len(track[0])
         for i in range(len(track)):
@@ -120,7 +127,7 @@ class MidiIO:
         # print(track_index, current_pitch, current_pitch_start, current_beat_length)
         self.addNote(track_index, current_pitch, current_pitch_start, current_beat_length)
         # for next track start
-        return track_start_beats + len(track)
+        return track_start_beats + len(track), has_error
 
 
     def save_midi(self, filename: str):
@@ -140,7 +147,7 @@ def load_and_play_midi(self_pygame, filename, suggested_music_ms=1000):
 
 
 if __name__ == '__main__':
-    file_name = "level5.ply"
+    file_name = "nextToYou.ply"
 
     convert = False
     # convert = True
@@ -151,35 +158,3 @@ if __name__ == '__main__':
     else:
         pygame.init()
         load_and_play_midi(pygame, file_name+".mid")
-
-#
-# # create your MIDI object
-# mf = MIDIFile(1)  # only 1 track
-# track = 0  # the only track
-#
-# time = 0  # start at the beginning
-# mf.addTrackName(track, time, "Sample Track")
-# mf.addTempo(track, time, 120)
-#
-# # add some notes
-# channel = 0
-# volume = 100
-#
-# pitch = 60  # C4 (middle C)
-# time = 0  # start on beat 0
-# duration = 1  # 1 beat long
-# mf.addNote(track, channel, pitch, time, duration, volume)
-#
-# pitch = 64  # E4
-# time = 2  # start on beat 2
-# duration = 1  # 1 beat long
-# mf.addNote(track, channel, pitch, time, duration, volume)
-#
-# pitch = 67  # G4
-# time = 4  # start on beat 4
-# duration = 1  # 1 beat long
-# mf.addNote(track, channel, pitch, time, duration, volume)
-
-# write it to disk
-# with open("output.mid", 'wb') as outf:
-#     mf.writeFile(outf)
