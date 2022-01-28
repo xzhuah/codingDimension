@@ -6,6 +6,7 @@ from node.pianoNode.ply_standardlizer import auto_format_for_file
 from node.pianoNode.music_visualizer import MusicDataManager
 from common.io.file.PlainTextClient import read_io_file
 
+
 class MidiPlayer:
     def __init__(self):
         # 对于简谱上的一个数, 实际的声调应该在基础音阶的基础上增加多少
@@ -123,7 +124,7 @@ class MidiPlayer:
 
     def play_section(self, list_of_notes: list):
         for notes in list_of_notes:
-            #print(notes)
+            # print(notes)
             self.play_chord(notes)
 
     def single_note_to_num(self, single_note: str):
@@ -145,6 +146,8 @@ class MidiPlayer:
 
         if unit_key in self.unit_offset:
             unit_key_freq = self.base_freq + self.unit_offset[unit_key] + self.offset * 12
+        elif unit_key == '0':
+            return 0
         else:
             return -1
 
@@ -183,7 +186,7 @@ class MidiPlayer:
         result = []
         for note_str in channel_str.split():
             note = {
-                "ins":  self.force_to if self.force_instrument else attr["ins="],
+                "ins": self.force_to if self.force_instrument else attr["ins="],
                 "note": self.note_str_to_note(note_str),
                 "velocity": attr["vol="]
             }
@@ -309,6 +312,28 @@ class MidiPlayer:
                 print(line)
                 self.play_section(self.parse_section(line))
 
+    # an helper function for midi_io
+    def parse_music_line(self, music_sheet: list):
+        play = True
+        for line in music_sheet:
+            if "//" in line:
+                # 跳过注释
+                continue
+            if "<" in line:
+                # 跳过播放
+                play = False
+                continue
+            if ">" in line:
+                # 开始播放
+                play = True
+                continue
+            if "=" in line and "[" not in line:
+                # 设置全局属性
+                self.set_attr(line)
+                continue
+            if play and line != "":
+               yield self.parse_section(line)
+
     def compile_music(self, music_sheet: list):
         self.data_manager.init()
         for line in music_sheet:
@@ -332,7 +357,9 @@ class MidiPlayer:
     def close(self):
         self.output.close()
 
+
 from common.io.file import project_root
+
 if __name__ == '__main__':
     player = MidiPlayer()
     player.force_instrument = True
@@ -347,10 +374,10 @@ if __name__ == '__main__':
     # # player.play_file("ningchi.ply")
     # player.play_file("astronomia.ply")
     # player.play_file("railgun_piano.ply")
-    player.play_file("level5.ply")
+    # player.play_file("level5.ply")
     # player.play_file("faded.ply")
     # player.play_file("myHeartWillGoOn.ply")
-    # player.play_file("qianbenying.ply")
+    player.play_file("qianbenying.ply")
     # player.play_file("one_punch.ply")
     # player.play_file("nextToYou.ply")
     # player.play_file("tail.ply")
@@ -361,7 +388,6 @@ if __name__ == '__main__':
     # player.play_file("canon_1.ply")
     # player.play_file("west.ply")
     # player.play_file("xiaozhiqu.ply")
-
 
     # player.play_section(player.parse_section(
     #     "0 0 ..2 0 | 0_.6 ..1_..3 .5 0_-_..1_.7|..1_6 .1_.3 .2 0_-_.1_.7|0_-_6.._3. 1_3._1._6.. 0_-_4.._1. 6._1._6.._4..[ins=99]"))
