@@ -27,7 +27,7 @@ public class WebpageCommonInfoCrawler extends BaseCrawler<WebpageCommonInfo> {
         BaseCrawler<WebpageCommonInfo> WebpageCommonInfoCrawler = NodeModule.getGlobalInjector().getInstance(new Key<>() {
         });
 
-        String url = "https://www.linkedin.com/school/stanford-university/people/";
+        String url = "https://leetcode.com/problems/insertion-sort-list/";
         WebpageCommonInfoCrawler.addJobToQueue(url);
         List<Future<Optional<WebpageCommonInfo>>> resultFuture = WebpageCommonInfoCrawler.getResultFuture(url, null);
         WebpageCommonInfo webpageCommonInfo;

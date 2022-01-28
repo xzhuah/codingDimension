@@ -1,5 +1,6 @@
 package common.algorithm;
 
+import javax.measure.quantity.Pressure;
 import java.util.*;
 
 /**
@@ -480,7 +481,7 @@ public class RawAlgorithm {
 
         while (!queue.isEmpty()) {
             Coordinate next = queue.pollLast();
-            System.out.println(i + ": " +  next);
+            System.out.println(i + ": " + next);
             result[i] = new int[]{next.x, next.y};
             i += 1;
             Coordinate up = new Coordinate(next.x, next.y - 1);
@@ -516,6 +517,144 @@ public class RawAlgorithm {
 
     // Array 60%
 
+    public int fib(int n) {
+        if (n == 0) {
+            return 0;
+        } else {
+            int f0 = 0;
+            int f1 = 1;
+            int result = f1;
+            for (int i = 1; i < n; i++) {
+                result = f0 + f1;
+                f0 = f1;
+                f1 = result;
+            }
+            return result;
+        }
+    }
+
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int curr = 0;
+        int last = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (last != nums[i]) {
+                curr += 1;
+                last = nums[i];
+                nums[curr] = last;
+            }
+        }
+        return curr + 1;
+    }
+
+    // "pwwkew"
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> leftMaxIndex = new HashMap<>();
+        int currentMaxLength = 0;
+        int maxLength = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char currentChar = s.charAt(i);
+            if (leftMaxIndex.containsKey(currentChar)) {
+                int distance = i - leftMaxIndex.get(currentChar);
+                if (distance <= currentMaxLength) {
+                    currentMaxLength = distance - 1;
+                }
+            }
+            leftMaxIndex.put(currentChar, i);
+            currentMaxLength += 1;
+            if (maxLength < currentMaxLength) {
+                maxLength = currentMaxLength;
+            }
+        }
+        return maxLength;
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode result = new ListNode();
+        ListNode curr = result;
+        int adder = 0;
+        while (l1 != null && l2 != null) {
+            curr.next = new ListNode();
+            int sum = l1.val + l2.val + adder;
+            if (sum >= 10) {
+                adder = 1;
+                sum -= 10;
+            } else {
+                adder = 0;
+            }
+            curr.next.val = sum;
+            l1 = l1.next;
+            l2 = l2.next;
+            curr = curr.next;
+        }
+        if (l1 == null && l2 != null) {
+            while (l2 != null) {
+                curr.next = new ListNode();
+                int sum = l2.val + adder;
+                if (sum >= 10) {
+                    adder = 1;
+                    sum -= 10;
+                } else {
+                    adder = 0;
+                }
+                curr.next.val = sum;
+                l2 = l2.next;
+                curr = curr.next;
+            }
+
+        } else if (l1 != null && l2 == null) {
+            while (l1 != null) {
+                curr.next = new ListNode();
+                int sum = l1.val + adder;
+                if (sum >= 10) {
+                    adder = 1;
+                    sum -= 10;
+                } else {
+                    adder = 0;
+                }
+                curr.next.val = sum;
+                l1 = l1.next;
+                curr = curr.next;
+            }
+        }
+        if (adder == 1) {
+            curr.next = new ListNode();
+            curr.next.val = 1;
+        }
+        return result.next;
+    }
+
+    public int maxArea(int[] height) {
+        int maxArea = 0;
+        int area = 0;
+        int left = 0;
+        int right = height.length - 1;
+        int width = right;
+        while (width > 0) {
+            if (height[right] < height[left]) {
+                area = width * height[right];
+                int currRight = height[right];
+                while (height[right] <= currRight && right > left) {
+                    right -= 1;
+                }
+            } else {
+                area = width * height[left];
+                int currLeft = height[left];
+                while (height[left] <= currLeft  && right > left) {
+                    left += 1;
+                }
+            }
+            if (maxArea < area) {
+                maxArea = area;
+            }
+            width = right - left;
+
+        }
+        return maxArea;
+    }
+
     private static int[] kmpJumpTable(char[] toFind) {
         int[] jumpTable = new int[toFind.length];
         jumpTable[0] = 0;
@@ -525,6 +664,7 @@ public class RawAlgorithm {
         jumpTable[1] = 0;
         return jumpTable;
     }
+
 
     private static void println(int... xs) {
         StringBuilder builder = new StringBuilder();
@@ -575,6 +715,10 @@ public class RawAlgorithm {
         System.out.println(obj);
     }
 
+    private static void print(int[] obj) {
+        System.out.println(Arrays.toString(obj));
+    }
+
     private static void print(int obj) {
         System.out.println(obj);
     }
@@ -606,8 +750,8 @@ public class RawAlgorithm {
 
     public static void main(String[] args) {
         RawAlgorithm rawAlgorithm = new RawAlgorithm();
-
-        printBoard(rawAlgorithm.allCellsDistOrder(2, 3, 1, 2));
+        ListNode result = rawAlgorithm.addTwoNumbers(ListNode.fromString("6"), ListNode.fromString("5,6,4"));
+        ListNode.print(result);
 
 
     }
