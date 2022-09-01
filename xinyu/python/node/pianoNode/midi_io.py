@@ -76,9 +76,9 @@ class MidiIO:
             has_error = False
             for i, track in enumerate(self.line_to_tracks(line)):
                 next_start, has_error = self.track_to_beats(track, track_start_beats, i)
-            if has_error:
-                print("debug line:", raw_line)
-                print(line)
+                if has_error:
+                    print("debug line:", raw_line)
+                    print(line)
             track_start_beats = next_start
 
     def convert_ply_to_midi(self, filename):
@@ -147,10 +147,10 @@ def load_and_play_midi(self_pygame, filename, suggested_music_ms=1000):
 
 
 if __name__ == '__main__':
-    file_name = "nextToYou.ply"
+    file_name = "yehangxin_single.ply"
 
     convert = False
-    # convert = True
+    convert = True
 
     if convert:
         midiIO = MidiIO(120, 2)

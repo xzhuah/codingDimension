@@ -655,6 +655,42 @@ public class RawAlgorithm {
         return maxArea;
     }
 
+    // > return true, <= return false
+    public static boolean compare(String s1, String s2) {
+        if (s1.length() > s2.length()) {
+            return true;
+        }
+        if (s1.length() < s2.length()) {
+            return false;
+        }
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) < s2.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void swap(String s[], int i, int j) {
+        String temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+
+    public static void sort(String s[], int length) {
+        // bubble sort
+        for (int i = 0; i < length - 1 ; i++) {
+            for (int j = 0; j < length - i - 1; j++) {
+                if (compare(s[j], s[j + 1])) {
+                    swap(s, j, j + 1);
+                }
+            }
+        }
+    }
+
+    public
+
+
     private static int[] kmpJumpTable(char[] toFind) {
         int[] jumpTable = new int[toFind.length];
         jumpTable[0] = 0;
@@ -719,6 +755,10 @@ public class RawAlgorithm {
         System.out.println(Arrays.toString(obj));
     }
 
+    private static void print(String[] obj) {
+        System.out.println(Arrays.toString(obj));
+    }
+
     private static void print(int obj) {
         System.out.println(obj);
     }
@@ -749,9 +789,15 @@ public class RawAlgorithm {
 
 
     public static void main(String[] args) {
-        RawAlgorithm rawAlgorithm = new RawAlgorithm();
-        ListNode result = rawAlgorithm.addTwoNumbers(ListNode.fromString("6"), ListNode.fromString("5,6,4"));
-        ListNode.print(result);
+//        RawAlgorithm rawAlgorithm = new RawAlgorithm();
+//        ListNode result = rawAlgorithm.addTwoNumbers(ListNode.fromString("6"), ListNode.fromString("5,6,4"));
+//        ListNode.print(result);
+
+
+        String arr[] = { "azure","purple","green","blue","magenta","orange","yellow","cyan","red","ruby" };
+        sort(arr, arr.length);
+        print(arr);
+
 
 
     }

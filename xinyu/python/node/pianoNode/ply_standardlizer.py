@@ -110,7 +110,10 @@ def sort_channel(line):
     for l in line.split("|"):
         line_to_medium[l] = extract_medium(l)
 
-    sorted_list = sorted(line_to_medium.items(), key=lambda item: item[1], reverse=True)
+    # sorted_list = sorted(line_to_medium.items(), key=lambda item: item[1], reverse=True)
+    # Uncomment this if you don't want to sort
+    sorted_list = line_to_medium.items()
+
     new_line = []
     for item in sorted_list:
         new_line.append(item[0])

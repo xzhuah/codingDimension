@@ -363,8 +363,9 @@ from common.io.file import project_root
 if __name__ == '__main__':
     player = MidiPlayer()
     player.force_instrument = True
+    # player.play_file("tonight.ply")
     # player.play_file("ningchi.ply")
-    # player.play_file("yehangxin.ply")
+    # player.play_file("yehangxin_single.ply")
     # player.play_file("spectre.ply")
     # player.play_file("qifengle.ply")
     # player.play_file("yuxitan.ply")
@@ -374,10 +375,10 @@ if __name__ == '__main__':
     # # player.play_file("ningchi.ply")
     # player.play_file("astronomia.ply")
     # player.play_file("railgun_piano.ply")
-    # player.play_file("level5.ply")
+    player.play_file("level5.ply")
     # player.play_file("faded.ply")
     # player.play_file("myHeartWillGoOn.ply")
-    player.play_file("qianbenying.ply")
+    # player.play_file("qianbenying.ply")
     # player.play_file("one_punch.ply")
     # player.play_file("nextToYou.ply")
     # player.play_file("tail.ply")
