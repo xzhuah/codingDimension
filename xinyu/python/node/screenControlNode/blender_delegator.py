@@ -248,6 +248,6 @@ if __name__ == '__main__':
 
     # press_render()
 
-    指定帧渲染
+    # 指定帧渲染
     render_frames([4395],
                   tasks[0]["project_file"])

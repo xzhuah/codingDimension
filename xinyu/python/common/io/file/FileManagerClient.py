@@ -4,12 +4,19 @@ from os import listdir
 from os.path import isfile, isdir, join
 import hashlib
 import threading
+import shutil
+import re
 
 google_download_root = "C:/GoogleDownload/"
 
 
 def get_all_filename(folder_path: str) -> list:
     return [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
+
+def get_all_filepath(folder_path: str) -> list:
+    if not folder_path.endswith("/"):
+        folder_path = folder_path + "/"
+    return [folder_path + f for f in listdir(folder_path) if isfile(join(folder_path, f))]
 
 
 def get_all_subfolder(folder_path: str) -> list:
@@ -54,9 +61,22 @@ def is_filename_postfix_in(filename: str, target_set: set):
     if target_set is None or len(target_set) == 0:
         return True
     for postfix in target_set:
-        if filename.endswith(postfix):
+        if filename.lower().endswith(postfix.lower()):
             return True
     return False
+
+def to_parent_folder(path: str):
+    if "/" in path:
+        return path[0: path.rindex("/") + 1]
+    else:
+        return "./"
+
+
+def to_filename(path: str):
+    if "/" in path:
+        return path[path.rindex("/") + 1: ]
+    else:
+        return path
 
 
 # 搜索文件夹下所有文件
@@ -115,7 +135,7 @@ def get_files_md5(root, target_types, batch_size=10):
     return all_md5
 
 def found_duplication():
-    root = ensure_path_format("C:/Software/MMD/MikuMikuDanceE_v932x64/UserFile/Model/external/human")
+    root = ensure_path_format("D:/Work/3DWorkspace/MMDResource/human")
 
     all_md5s = get_files_md5(root, {".pmx", ".pmd"})
 
@@ -124,8 +144,68 @@ def found_duplication():
         if all_md5s[filename] not in found:
             found[all_md5s[filename]] = filename
         else:
-            print("found potential duplication:")
-            print(filename, found[all_md5s[filename]])
+            if not ("异次元学者" in filename or "异次元学者" in found[all_md5s[filename]]):
+                print("found potential duplication:")
+                print(filename, found[all_md5s[filename]])
+
+
+def move_directory(source, target):
+    shutil.move(source, target)
+
+
+def fetch_author_name_from_filename(filename: str):
+    if "by_" in filename:
+        return filename[filename.rindex("by_")+3:]
+    return ""
+
+def manage_folder_by_author(target_folder="C:/Software/MarvelousDesigner10/Models/"):
+    all_folders = get_all_subfolder(target_folder)
+    existing_author_folder = set()
+    folder_to_author = {}
+    for filename in all_folders:
+        fetched_name = fetch_author_name_from_filename(filename)
+        if fetched_name == "":
+            existing_author_folder.add(filename)
+        else:
+            folder_to_author[filename] = fetched_name
+
+    for folder in folder_to_author:
+        if folder_to_author[folder] in existing_author_folder:
+            print("Moving folder to author folder", folder)
+            move_directory(target_folder + folder, target_folder + folder_to_author[folder] + "/" + folder)
+        else:
+            pass
+            author_folder = target_folder + folder_to_author[folder]
+            print("making new dir:", author_folder)
+            os.mkdir(author_folder)
+            new_folder = author_folder + "/" + folder
+            move_directory(target_folder + folder, new_folder)
+            existing_author_folder.add(folder_to_author[folder])
+            print("Moving folder to author folder", target_folder + folder, new_folder)
+
+def isMdFolder(folder):
+    all_md_file = search_files(folder, {".zprj", ".zpac"})
+    return len(all_md_file) > 0
+
+def isBlenderFolder(folder):
+    all_md_file = search_files(folder, {".blend"})
+    return len(all_md_file) > 0
+
+def classify_folder(folder_path):
+    all_subfolder = get_all_subfolder(folder_path)
+    if not folder_path.endswith("/"):
+        folder_path += "/"
+    for subFolder in all_subfolder:
+        subFolder = folder_path + subFolder
+        if isMdFolder(subFolder):
+            print(subFolder, "MD")
+            move_directory(subFolder, "D:/Work/3DWorkspace/Models/")
+        elif isBlenderFolder(subFolder):
+            print(subFolder, "Blend")
+            move_directory(subFolder, "D:/Work/3DWorkspace/Stages/")
+        else:
+            print(subFolder, "unknown")
+
 
 
 
@@ -133,10 +213,19 @@ if __name__ == '__main__':
     # all_file = get_all_filename("C:\GoogleDownload")
     # print(all_file)
 
-
     batch_remove_filename_postfix(google_download_root)
+    # #
+    classify_folder(google_download_root)
+    #
+    manage_folder_by_author(target_folder="D:/Work/3DWorkspace/Models/")
+    manage_folder_by_author(target_folder="D:/Work/3DWorkspace/Stages/")
+
+    manage_folder_by_author(target_folder="D:/Work/3DWorkspace/MMDResource/stage/")
+
+    found_duplication()
+
+
+
 
     # rename_file_under_folder("C:/Software/MMD/MikuMikuDanceE_v932x64/UserFile/Model/external/stage/《原神》珊瑚宫 贴图修正版_by_Viero月城/《原神》珊瑚宫 贴图修正版/Tex/", material_rename_proto)
-
-    # 要处理的文件夹目录
 

@@ -9,6 +9,114 @@ from os.path import isfile, join
 import time
 import subprocess
 import re
+from urllib import parse
+#
+
+
+def to_parent_folder(path: str):
+    if "/" in path:
+        return path[0: path.rindex("/") + 1]
+    else:
+        return "./"
+
+
+def to_model_name(model_path: str):
+    if "/" in model_path:
+        return model_path[model_path.rindex("/") + 1:model_path.rindex(".")]
+    else:
+        return model_path[: int(model_path.rindex("."))]
+
+def image_template2(image_path: str):
+    template = """
+<div class="gallery">
+<a target="_blank" href="{image_path}">
+    <img src="{image_path}" alt="404" title={image_path}>
+     </a>
+</div>
+"""
+    return template.format(folder=parse.quote(to_parent_folder(image_path)), image_path=parse.quote(image_path),
+                           model_name=to_model_name(image_path))
+
+
+def html_template2(content: str, image_width=600, image_height="auto"):
+    template = """
+<html>
+<head>
+<style>
+div.gallery {
+  margin: 0px;
+  border: 0px solid #ccc;
+  float: left;
+  width: {image_width};
+  height: {image_height};
+}
+
+div.gallery:hover {
+  border: 0px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+h2.desc {
+  padding: 0px;
+  text-align: center;
+}
+
+div.desc {
+  padding: 0px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+{content}
+
+</body>
+</html>
+
+    """
+    if image_height != "auto":
+        image_height = str(image_height) + "px"
+    return template.replace("{content}", content).replace("{image_width}", str(image_width) + "px").replace(
+        "{image_height}", image_height)
+
+
+def to_relative_path(reference_abs_path: str, abs_path: str):
+    return abs_path.replace(reference_abs_path, "")
+
+def ensure_postfix(folder_path: str):
+    abs_folder_path = folder_path
+    if not abs_folder_path.endswith("/"):
+        abs_folder_path += "/"
+    return abs_folder_path
+
+
+def preview_image_batch(root, image_paths, output_filename="preview.html"):
+    image_components = []
+    for pic_file in image_paths:
+        image_components.append(image_template2(to_relative_path(root, pic_file)))
+    image_content = "\n".join(image_components)
+    index = 24
+    html = html_template2(image_content, image_width=80 * index, image_height=160 * index)
+    with open(ensure_postfix(root) + output_filename, mode="w", encoding="utf-8") as f:
+        f.write(html)
+    print(len(image_paths))
+
+
+def preview_images_by_frames(root, frames, output_filename="preview.html"):
+    image_paths = []
+    for frame in frames:
+        filename = str(frame)
+        while len(filename) < 4:
+            filename = "0" + filename
+        filename += ".png"
+        target_file = root + filename
+        image_paths.append(target_file)
+    preview_image_batch(root, image_paths, output_filename)
 
 # blender 安装路径，不能用空格，中文，和其他特殊字符，以下所有路径均需满足此项要求
 blender_path = "C:/Software/blender3/Windows/Release/blender.exe"
@@ -108,7 +216,7 @@ def close_all_blender_window():
 
 def find_first_blender_window():
     for t in pygetwindow.getAllTitles():
-        if t.startswith("Blender"):
+        if t.startswith("Blender") and "Blender渲染" not in t:
             return pygetwindow.getWindowsWithTitle(t)[0]
     return False
 
@@ -125,6 +233,63 @@ def press_render():
     time.sleep(1)
 
 
+def render_in_foreground_range(start_frame: int, end_frame: int):
+    window = find_first_blender_window()
+    window.activate()
+    window.maximize()
+    # 等待2秒，让窗口稳定
+    time.sleep(1)
+
+    pyautogui.click(1981, 1293)
+    time.sleep(0.2)
+    pyautogui.click(1981, 1292)
+    print("setting start frame:", start_frame)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    for s in str(start_frame):
+        time.sleep(0.2)
+        pyautogui.press(s)
+    # pyautogui.write(str(start_frame), interval=1)
+    time.sleep(0.2)
+    pyautogui.press('enter')
+    time.sleep(0.2)
+    pyautogui.click(2077, 1294)
+    time.sleep(0.2)
+    pyautogui.click(2076, 1294)
+    print("setting end frame:", end_frame)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    time.sleep(0.2)
+    pyautogui.press("backspace")
+    for s in str(end_frame):
+        time.sleep(0.2)
+        pyautogui.press(s)
+
+    time.sleep(0.2)
+    pyautogui.press('enter')
+
+    time.sleep(0.2)
+    while is_render_started() is False:
+        press_render()
+
+
+
 # 使用按键精灵的方式来打开blender渲染
 def render_in_foreground(start_frame: int, end_frame: int, target_project: str, skip_first_init=False):
     if not skip_first_init:
@@ -132,7 +297,7 @@ def render_in_foreground(start_frame: int, end_frame: int, target_project: str, 
         subprocess.Popen([blender_launcher, target_project], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         # 等待20秒程序启动
-        time.sleep(15)
+        time.sleep(20)
 
     window = find_first_blender_window()
     window.activate()
@@ -148,6 +313,17 @@ def render_in_foreground(start_frame: int, end_frame: int, target_project: str, 
     pyautogui.click(331, 35)
     time.sleep(1)
 
+    # 设定SDEF, 项目必须选定十字星后保存，不支持多人模式
+    pyautogui.moveTo(321, 371)
+    time.sleep(1)
+    pyautogui.press("q")
+    time.sleep(1) 
+    pyautogui.moveTo(309, 412)
+    pyautogui.click(309, 412)
+    time.sleep(1)
+    pyautogui.moveTo(328, 520)
+    pyautogui.click(328, 520)
+    time.sleep(3)
     # 设定开始和结束帧
 
     time.sleep(1)
@@ -209,7 +385,10 @@ def render_in_foreground(start_frame: int, end_frame: int, target_project: str, 
 
 def force_render(tasks, debugging=False):
     for task in tasks:
-        start_task(task, debugging)
+        if "frames" in task and len(task["frames"]) > 0:
+            render_frames(task)
+        else:
+            start_task(task, debugging)
 
 
 task_status = [
@@ -258,8 +437,36 @@ def check_task_status(task, last_check_timestamp, last_check_frame_number):
                 return "rendering", [], time.time(), len(all_rendered_frames)
 
 
+def render_frames(task):
+    # assume blender is running and ready
+    task["frames"].sort()
+    for frame in task["frames"]:
+        print("rendering: ", frame)
+        filename = str(frame)
+        while len(filename) < 4:
+            filename = "0" + filename
+        filename += ".png"
+        target_file = ensure_postfix(task["target_folder"]) + filename
+        if os.path.exists(target_file):
+            os.remove(target_file)
+        render_in_foreground_range(frame, frame)
+        while not os.path.exists(target_file):
+            print("wait")
+            time.sleep(5)
+        for t in pygetwindow.getAllTitles():
+            if t.startswith("Blender渲染"):
+                render_window = pygetwindow.getWindowsWithTitle(t)[0]
+                render_window.close()
+        time.sleep(5)
+    preview_images_by_frames(ensure_postfix(task["target_folder"]),task["frames"])
+
+
+
+
 def start_task(task, debugging=False):
     status, next_action, last_check_timestamp, last_check_frame_number = check_task_status(task, time.time(), -1)
+    # print(status, next_action, last_check_timestamp, last_check_frame_number)
+    # return
     while True:
         if debugging:
             print(status, next_action, last_check_timestamp, last_check_frame_number)
@@ -310,17 +517,18 @@ def start_task(task, debugging=False):
 tasks = [
     {
         # blender 工程文件
-        "project_file": "C:/myC/Personal/3DWorkSpace/Project/youla/keting.blend",
+        "project_file": "C:/myC/Personal/3DWorkSpace/Project/laugh_ningguang/bookroom_eevee.blend",
         # 图片输出路径
-        "target_folder": "C:/myC/Personal/3DWorkSpace/Project/youla/image",
+        "target_folder": "C:/myC/Personal/3DWorkSpace/Project/laugh_ningguang/images",
         # 起始帧
-        "start_frame": 31,
+        "start_frame": 30,
         # 结束帧
-        "end_frame": 5142
+        "end_frame": 2500,
+        "frames": [44, 48, 58, 64, 143, 236, 241, 257, 305, 411, 629, 662, 682, 689, 869, 896, 1173, 1290, 1298, 1318, 1340, 1344, 1380, 1512, 1543, 1549, 1553, 1755, 1834, 1835, 1890, 2046, 2129, 2176, 2213, 2234, 2240, 2355, 2358, 2380, 2461]
+
     }
 ]
-
-
+#
 def gaps_to_framelist(gaps):
     framelist = []
     for gap in gaps:
@@ -330,7 +538,8 @@ def gaps_to_framelist(gaps):
 
 
 if __name__ == '__main__':
-    force_render(tasks, debugging=False)
+
+    force_render(tasks, debugging=True)
 
     # task = tasks[0]
     # all_rendered_frames = list_all_rendered_image_index(task["target_folder"])

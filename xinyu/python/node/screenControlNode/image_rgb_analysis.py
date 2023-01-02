@@ -261,7 +261,7 @@ def image_process(data):
 
 if __name__ == '__main__':
     recall = 150
-    root = "C:/myC/Personal/3DWorkSpace/Project/youla/image/"
+    root = "C:/myC/Personal/3DWorkSpace/Project/primaryStar_Ying/image/"
     onlyfiles = [root + f for f in listdir(root) if isfile(join(root, f))]
     all_image = []
     for file in onlyfiles:

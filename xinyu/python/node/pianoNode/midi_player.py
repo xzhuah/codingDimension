@@ -6,7 +6,6 @@ from node.pianoNode.ply_standardlizer import auto_format_for_file
 from node.pianoNode.music_visualizer import MusicDataManager
 from common.io.file.PlainTextClient import read_io_file
 
-
 class MidiPlayer:
     def __init__(self):
         # 对于简谱上的一个数, 实际的声调应该在基础音阶的基础上增加多少
@@ -375,7 +374,10 @@ if __name__ == '__main__':
     # # player.play_file("ningchi.ply")
     # player.play_file("astronomia.ply")
     # player.play_file("railgun_piano.ply")
-    player.play_file("level5.ply")
+    # player.play_file("level5.ply")
+    while True:
+        player.play_file("qihung_end.ply")
+        player.play_file("qihung_end2.ply")
     # player.play_file("faded.ply")
     # player.play_file("myHeartWillGoOn.ply")
     # player.play_file("qianbenying.ply")

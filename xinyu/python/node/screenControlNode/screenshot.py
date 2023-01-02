@@ -7,8 +7,10 @@ from PIL import Image
 import pygetwindow
 import pyautogui
 import subprocess
+import sys
 import time
-from pynput.keyboard import Controller
+from pynput import keyboard
+from pynput.keyboard import Controller, Listener
 import os
 from os import listdir
 from os.path import isfile, isdir, join
@@ -19,6 +21,13 @@ from common.io.file.FileManagerClient import search_files
 
 MAGIC_PREVIEW_IMAGE_POSTFIX = "_ycyxzPreview.png"
 MAGIC_PREVIEW_IMAGE_POSTFIX_GIF = "_ycyxzPreview.gif"
+
+exit_code = []
+
+def listen_esc(key):
+    if str(key) == "Key.esc":
+        print("Exit")
+        exit_code.append(-1)
 
 
 def get_all_filename(folder_path: str) -> list:
@@ -37,61 +46,35 @@ def ensure_postfix(folder_path: str):
 
 
 def get_default_screenshot_name_from_file(file_path: str, postfix=MAGIC_PREVIEW_IMAGE_POSTFIX):
-    if file_path.endswith(".pmx"):
-        return file_path.replace(".pmx", postfix)
+    postfixSet = {".pmx",".Pmx", ".pmd" ,".Zprj",".zprj",".zpac",".blend",".vmd"}
+    for t_postfix in postfixSet:
+        if file_path.endswith(t_postfix):
+            return file_path.replace(t_postfix, postfix)
 
-    if file_path.endswith(".pmd"):
-        return file_path.replace(".pmd", postfix)
-
-    if file_path.endswith(".zprj"):
-        return file_path.replace(".zprj", postfix)
-
-    if file_path.endswith(".zpac"):
-        return file_path.replace(".zpac", postfix)
-
-    if file_path.endswith(".blend"):
-        return file_path.replace(".blend", postfix)
-
-    if file_path.endswith(".vmd"):
-        return file_path.replace(".vmd", postfix)
-    else:
-        print("Error file_path:" + file_path)
-        return "screenshot.png"
+    print("Error file_path:" + file_path)
+    return "screenshot.png"
 
 
 def get_gif_screenshot_name_from_file(file_path: str, postfix=MAGIC_PREVIEW_IMAGE_POSTFIX_GIF):
-    if file_path.endswith(".pmx"):
-        return file_path.replace(".pmx", postfix)
+    postfixSet = {".pmx", ".Pmx", ".pmd", ".Zprj", ".zprj", ".zpac", ".blend", ".vmd"}
+    for t_postfix in postfixSet:
+        if file_path.endswith(t_postfix):
+            return file_path.replace(t_postfix, postfix)
 
-    if file_path.endswith(".pmd"):
-        return file_path.replace(".pmd", postfix)
-
-    if file_path.endswith(".zprj"):
-        return file_path.replace(".zprj", postfix)
-
-    if file_path.endswith(".zpac"):
-        return file_path.replace(".zpac", postfix)
-
-    if file_path.endswith(".blend"):
-        return file_path.replace(".blend", postfix)
-
-    if file_path.endswith(".vmd"):
-        return file_path.replace(".vmd", postfix)
-    else:
-        print("Error file_path:" + file_path)
-        return "screenshot.gif"
+    print("Error file_path:" + file_path)
+    return "screenshot.gif"
 
 
 # pmx_path: 需要截图的pmx文件绝对路径
 def generate_screenshot_for_pmxfile(pmx_path: str, screenshot_name_convertor,
                                     pmxEditor_path="C:/Software/MMD/PmxEditor_0254f_EN - 2.0/PmxEditor_x64.exe"):
     global mouse_mover
-    print("pmx/pmd文件:", pmx_path)
+    # print("pmx/pmd文件:", pmx_path)
     path = screenshot_name_convertor(pmx_path)
 
     # 跳过已存在的截图文件
     if os.path.exists(path):
-        print("截图文件已存在:", pmx_path)
+        # print("截图文件已存在:", pmx_path)
         return
 
     # 需要截图的窗口标题
@@ -165,12 +148,12 @@ def generate_screenshot_for_pmxfile(pmx_path: str, screenshot_name_convertor,
 def generate_screenshot_for_mdfile(file_path: str, screenshot_name_convertor,
                                    exe_path="C:/Software/MarvelousDesigner10/Marvelous Designer 10 Personal/MarvelousDesigner10_Personal_x64.exe"):
     global mouse_mover
-    print("md文件:", file_path)
+    # print("md文件:", file_path)
     path = screenshot_name_convertor(file_path)
 
     # 跳过已存在的截图文件
     if os.path.exists(path):
-        print("截图文件已存在:", file_path)
+        # print("截图文件已存在:", file_path)
         return
 
     # 需要截图的窗口标题
@@ -345,7 +328,7 @@ def screenshot_for_mmd_models():
     pmxEditor_path = ensure_path_format("C:/Software/MMD/PmxEditor_0254f_EN - 2.0/PmxEditor_x64.exe")
 
     # 要处理的文件夹目录
-    root = ensure_path_format("C:/Software/MMD/MikuMikuDanceE_v932x64/UserFile/Model/external/human")
+    root = ensure_path_format("D:/Work/3DWorkspace/MMDResource/human")
 
     all_pmx_file = search_files(root, {".pmx", ".pmd"})
     print("共找到", len(all_pmx_file), "个模型文件")
@@ -388,7 +371,7 @@ def screenshot_for_md():
         "C:/Software/MarvelousDesigner10/Marvelous Designer 10 Personal/MarvelousDesigner10_Personal_x64.exe")
 
     # 要处理的文件夹目录
-    root = ensure_path_format("C:/Software/MarvelousDesigner10/Models")
+    root = ensure_path_format("D:/Work/3DWorkspace/Models")
 
     all_md_file = search_files(root, {".zprj", ".zpac"})
     print("共找到", len(all_md_file), "个模型文件")
@@ -411,8 +394,8 @@ def screenshot_for_md():
         all_model_relative_path.append(rel_pmx_path)
         all_image_relative_path.append(rel_image_path)
 
-        print(rel_image_path, rel_pmx_path)
-        print(to_model_name(rel_pmx_path))
+        # print(rel_image_path, rel_pmx_path)
+        # print(to_model_name(rel_pmx_path))
 
     all_image_component = []
     for i in range(len(all_model_relative_path)):
@@ -443,7 +426,7 @@ def render_frames(frames: list, target_project: str, save_path: str,
         os.rename(path_with_frame_jpg, save_path)
     # 跳过已存在的截图文件
     if os.path.exists(save_path):
-        print("截图文件已存在:", save_path)
+        # print("截图文件已存在:", save_path)
         return
 
     frame_str = ",".join(map(str, frames))
@@ -451,7 +434,7 @@ def render_frames(frames: list, target_project: str, save_path: str,
                                stdout=subprocess.DEVNULL)
 
     path_with_frame = save_path.replace("png", "png0000.png")
-    for i in range(60 * 5):
+    for i in range(30 * 1):
         time.sleep(2)
         if os.path.exists(path_with_frame) or os.path.exists(path_with_frame_jpg):
             break
@@ -481,7 +464,7 @@ def screenshot_for_blend():
         "C:/Software/blender3/Windows/Release/blender.exe")
 
     # 要处理的文件夹目录
-    root = ensure_path_format("C:/myC/Personal/3DWorkSpace/Stages")
+    root = ensure_path_format("D:/Work/3DWorkspace/Stages")
 
     all_blend_file = search_files(root, {".blend"})
     print("共找到", len(all_blend_file), "个模型文件")
@@ -526,7 +509,7 @@ def expected_load_time(file_size):
 
 def screenshot_for_vmd():
     # 要处理的文件夹目录
-    root = ensure_path_format("C:/Software/MMD/MikuMikuDanceE_v932x64/UserFile/Motion/external")
+    root = ensure_path_format("D:/Work/3DWorkspace/MMDResource/Motion")
 
     all_vmd_file = search_files(root, {".vmd"})
 
@@ -539,6 +522,8 @@ def screenshot_for_vmd():
     print("共找到", len(motion_file), "个动作文件")
     #
     for file in motion_file:
+        if len(exit_code) > 0:
+            return
         try:
             render_vmd_frames(file)
         except Exception:
@@ -621,7 +606,7 @@ def screenshot_for_vmd():
 def render_vmd_frames(file: str):
     target_output_file = get_default_screenshot_name_from_file(file, MAGIC_PREVIEW_IMAGE_POSTFIX_GIF)
     if os.path.exists(target_output_file):
-        print("already exist:", target_output_file)
+        # print("already exist:", target_output_file)
         return
     start_time = time.time()
     # 渲染出一系列的jpg文件并合成为gif
@@ -631,7 +616,7 @@ def render_vmd_frames(file: str):
         "C:/Software/MMD/MikuMikuDanceE_v932x64/MikuMikuDance.exe")
 
     # 渲染使用的默认人物模型
-    default_model_path = "C:/Software/MMD/MikuMikuDanceE_v932x64/UserFile/Model/external/human/精选/iRon0129/西装短裙-黑丝-Haku"
+    default_model_path = "D:/Work/3DWorkspace/MMDResource/human/精选/iRon0129/西装短裙-黑丝-Haku"
     default_model_name = "Tda Uniform Haku 2.1 by iRon0129.pmx"
 
     # 缩略gif的起始帧, 间隔帧, 帧数, gif每一帧的时间压缩比例
@@ -674,6 +659,11 @@ def render_vmd_frames(file: str):
     # 确定加载
     pyautogui.press('enter')
 
+    time.sleep(2)
+
+    # 隐藏骨骼显示
+    pyautogui.click(389, 1269)
+
     # 加载动作
     time.sleep(2)
     menu_x, menu_y = 17, 31
@@ -690,13 +680,13 @@ def render_vmd_frames(file: str):
     pyautogui.press('enter')
     time.sleep(expected_load_time(os.path.getsize(file)))
 
-    # 隐藏骨骼显示
-    pyautogui.click(389, 1269)
 
     frame_input_x, frame_input_y = 399, 120
     for frame in target_frames:
         # loop
         # 设置关键帧
+        if len(exit_code) > 0:
+            return
         pyautogui.click(frame_input_x, frame_input_y)
         pyautogui.hotkey("ctrl", "a")
         pyautogui.press("bcakspace")
@@ -797,17 +787,24 @@ def make_gif(source, out, duration):
         os.remove(file)
 
 if __name__ == '__main__':
-    # # 为所有MMD人物模型创建预览图
+    # 为所有MMD人物模型创建预览图
     screenshot_for_mmd_models()
-
-    # # 为所有场景创建预览图
-    screenshot_for_blend()
     #
-    # # 为所有布料模型创建预览图
+    # # # 为所有场景创建预览图
+    screenshot_for_blend()
+    # # #
+    # # # 为所有布料模型创建预览图
     screenshot_for_md()
     #
     # 为所有动作创建gif预览图
+
+    #
+    # listener = keyboard.Listener(
+    #     on_press=listen_esc)
+    # listener.start()
     # screenshot_for_vmd()
+
+
 
     # make_gif(['C:/Software/MMD/MikuMikuDanceE_v932x64/UserFile/Motion/buffer/500.jpg',
     #           'C:/Software/MMD/MikuMikuDanceE_v932x64/UserFile/Motion/buffer/530.jpg',

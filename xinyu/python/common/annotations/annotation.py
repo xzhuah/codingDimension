@@ -11,10 +11,10 @@ def profiling(func):
     """
 
     def profiling_wrapper(*args, **kwargs):
-        now = time.time()
+        now = time.perf_counter()
         result = func(*args, **kwargs)
-        duration = time.time() - now
-        print("Function", str(func), " took", duration, "seconds")
+        duration = time.perf_counter() - now
+        print("Function:", str(func), " took", duration, "seconds")
         return result
 
     return profiling_wrapper

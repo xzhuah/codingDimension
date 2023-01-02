@@ -688,7 +688,6 @@ public class RawAlgorithm {
         }
     }
 
-    public
 
 
     private static int[] kmpJumpTable(char[] toFind) {
