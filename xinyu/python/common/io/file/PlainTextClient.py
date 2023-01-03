@@ -1,10 +1,16 @@
 # Provide basic functions to read string content from file
 from common.io.file import project_input_root, project_output_root, project_io_root
 
+
 def read_file_from(filename) -> str:
     with open(filename, encoding='utf-8') as f:
         data = f.read()
     return data
+
+
+def wrtie_file(filename, content: str):
+    with open(filename, encoding='utf-8', mode="w") as f:
+        f.write(content)
 
 
 def get_file(filename, mode="r"):

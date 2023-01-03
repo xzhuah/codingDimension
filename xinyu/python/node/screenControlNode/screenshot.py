@@ -798,11 +798,11 @@ if __name__ == '__main__':
     #
     # 为所有动作创建gif预览图
 
-    #
-    # listener = keyboard.Listener(
-    #     on_press=listen_esc)
-    # listener.start()
-    # screenshot_for_vmd()
+
+    listener = keyboard.Listener(
+        on_press=listen_esc)
+    listener.start()
+    screenshot_for_vmd()
 
 
 
