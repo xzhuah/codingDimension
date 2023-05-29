@@ -21,6 +21,9 @@ def timestamp_in_millisecond_to_str(timestamp, format=DEFAULT_DATETIME_FORMAT):
 def get_current_timestamp_in_millisecond():
     return time.time() * 1000
 
+def quick_now():
+    return timestamp_in_millisecond_to_str(get_current_timestamp_in_millisecond())
+
 if __name__ == '__main__':
     timestamp = str_to_timestamp_in_millisecond("2020-12-2 22:34:50")
     timestr = timestamp_in_millisecond_to_str(get_current_timestamp_in_millisecond(), NUMERICAL_DATE_FORMAT)

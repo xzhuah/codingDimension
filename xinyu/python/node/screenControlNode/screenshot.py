@@ -412,7 +412,7 @@ def screenshot_for_md():
 
 # 不要输入一个很长的数组，太长会报错
 def render_frames(frames: list, target_project: str, save_path: str,
-                  blender_cmd="C:/Software/blender3/Windows/Release/blender.exe"):
+                  blender_cmd="C:/Software/blender3/blender3.3.1LTS/blender.exe"):
     if "assets" in save_path:
         print("skipping assert file", save_path)
         return
@@ -461,7 +461,7 @@ def render_frames(frames: list, target_project: str, save_path: str,
 def screenshot_for_blend():
     # PMXEditor的安装路径
     blender_path = ensure_path_format(
-        "C:/Software/blender3/Windows/Release/blender.exe")
+        "C:/Software/blender3/blender3.3.1LTS/blender.exe")
 
     # 要处理的文件夹目录
     root = ensure_path_format("D:/Work/3DWorkspace/Stages")
@@ -787,22 +787,22 @@ def make_gif(source, out, duration):
         os.remove(file)
 
 if __name__ == '__main__':
-    # 为所有MMD人物模型创建预览图
-    screenshot_for_mmd_models()
+    # # 为所有MMD人物模型创建预览图
+    # screenshot_for_mmd_models()
     #
     # # # 为所有场景创建预览图
     screenshot_for_blend()
-    # # #
-    # # # 为所有布料模型创建预览图
+    # # # #
+    # # # # 为所有布料模型创建预览图
     screenshot_for_md()
     #
     # 为所有动作创建gif预览图
 
-
-    listener = keyboard.Listener(
-        on_press=listen_esc)
-    listener.start()
-    screenshot_for_vmd()
+    #
+    # listener = keyboard.Listener(
+    #     on_press=listen_esc)
+    # listener.start()
+    # screenshot_for_vmd()
 
 
 

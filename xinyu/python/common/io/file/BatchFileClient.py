@@ -12,7 +12,9 @@ import shutil
 from PIL import Image
 from collections import defaultdict
 from common.io.file.PlainTextClient import wrtie_file
-import concurrent.futures
+from urllib.request import pathname2url
+import zipfile
+from pathlib import Path
 
 
 def get_all_filepath(folder_path: str) -> list:
@@ -371,6 +373,29 @@ class FileTypeProcessor(BaseFileProcessor):
             return postfix
 
 
+# 重命名
+class BatchFileRenameProcessor(BaseFileProcessor):
+    def __init__(self, batch_num=2):
+        super(BatchFileRenameProcessor, self).__init__(batch_num=batch_num, max_depth=0, target_depth=0,
+                                                       file_select_mode=0)
+
+    def filepath_filter(self, filepath: str) -> bool:
+        postfix = os.path.splitext(filepath)[1]
+        if postfix not in {".png"}:
+            return False
+
+        filename = os.path.basename(filepath)
+        return filename.startswith("c2")
+
+    def process_file(self, filepath: str):
+        folder = os.path.dirname(filepath)
+        filename = os.path.basename(filepath)
+        new_name = filename.replace("c2", "")
+        new_path = os.path.join(folder, new_name)
+        os.rename(filepath, new_path)
+        return new_path
+
+
 # 获取文件夹下所有文件的后缀统计, 自动转小写
 class FolderFileTypeProcessor(BaseFileProcessor):
     def __init__(self, batch_num=2, to_lower=True):
@@ -401,11 +426,11 @@ class AplayboxDownloadFileRenameProcessor(BaseFileProcessor):
     def __init__(self, batch_num=2):
         super(AplayboxDownloadFileRenameProcessor, self).__init__(batch_num=batch_num, max_depth=0, target_depth=0,
                                                                   file_select_mode=0)
-        self.aplay_file_format = re.compile("[^_]+_by_[^_]+_[^_]+")
+        self.aplay_file_format = re.compile("[^_]+[_]+by[_]+[^_]+[_]+[^_]+")
 
     def filepath_filter(self, filepath: str) -> bool:
         postfix = os.path.splitext(filepath)[1]
-        if postfix not in {".zip", ".vmd", ".rar"}:
+        if postfix not in {".zip", ".vmd", ".vpd", ".rar"}:
             return False
 
         filename = os.path.basename(filepath)
@@ -455,7 +480,6 @@ class AplayboxDownloadFolderClassifierProcessor(FolderClassificationProcessor):
             shutil.move(filepath, target)
             return target
         return None
-
 
 class Image4KTo2KProcessor(BaseFileProcessor):
     def __init__(self, batch_num=32):
@@ -531,7 +555,8 @@ class YcyxzPreviewToWebpage(BaseFileProcessor):
                        <h2 class="desc">{model_name}</h2>
                      </div>
                      """
-            return template.format(folder=item["dir_path"], image_path=item["image"], title=item["info"]["model_name"],
+            return template.format(folder=item["dir_path"], image_path=pathname2url(item["image"]),
+                                   title=item["info"]["model_name"],
                                    model_name=item["info"]["model_name"])
         elif self.source_postfix == ".vmd":
             pass
@@ -638,6 +663,11 @@ class MyBatchFileProcessor(BaseFileProcessor):
 
 
 if __name__ == '__main__':
+    # f = FolderFileTypeProcessor()
+    # print(f.process_to_map("D:/Work/3DWorkspace/MMDResource/human"))
+    # f.profiling_summary()
+
+    pass
     # duration = 0
     # for i in range(100):
     #     now = time.perf_counter()
@@ -646,15 +676,27 @@ if __name__ == '__main__':
     #     duration += time.perf_counter() - now
     # print(duration)
 
-    my_test_processor = YcyxzPreviewToWebpage(postfix="_ycyxzPreview.png", source_postfix=".pmx", max_batch_size=150)
-    my_test_processor.generate_webpage("D:/Work/3DWorkspace/MMDResource/human/精选/MDJSN")
-    my_test_processor.profiling_summary()
-
+    #
     # rename_processor = AplayboxDownloadFileRenameProcessor()
     # result = rename_processor.process_to_map("C:/GoogleDownload")
+    # rename_processor.profiling_summary()
     #
-    # folder_move_processor = AplayboxDownloadFolderClassifierProcessor()
-    # result = folder_move_processor.process_to_map("C:/GoogleDownload")
+    folder_move_processor = AplayboxDownloadFolderClassifierProcessor()
+    result = folder_move_processor.process_to_map("C:/GoogleDownload")
+    folder_move_processor.profiling_summary()
+
+    # unzip_process = FileUnzipProcessor()
+    # result = unzip_process.process_to_map("C:/GoogleDownload")
+    # unzip_process.profiling_summary()
+    # print(result)
+
+    # processor = BatchFileRenameProcessor()
+    # result = processor.process_to_map("C:/myC/Personal/3DWorkSpace/Project/R/leidian_s")
+    # processor.profiling_summary()
+
+    # my_test_processor = YcyxzPreviewToWebpage(postfix="_ycyxzPreview.png", source_postfix=".pmx", max_batch_size=150)
+    # my_test_processor.generate_webpage("D:/Work/3DWorkspace/MMDResource/human/精选/机动战士牛肉式改/SiganlK_")
+    # my_test_processor.profiling_summary()
 
     # image4k_to_2k = Image4KTo2KProcessor()
     # result = image4k_to_2k.process_to_map("C:/Users/Xinyu Zhu/Pictures/4K高清壁纸")

@@ -1,8 +1,6 @@
 # Created by Xinyu Zhu on 8/21/2022, 8:49 PM
 import struct
-from pprint import pprint
 from node.vmdNode.models import MotionData
-import json
 
 def read_pmx(motion_file: str):
     with open(motion_file, 'rb') as f:
